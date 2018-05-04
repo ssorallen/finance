@@ -5,10 +5,9 @@ import * as React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import AddSymbolForm from './AddSymbolForm';
 import Navbar from './Navbar';
+import PerformanceRow from './PerformanceRow';
 import type { Quote } from './reducers';
-import QuoteChange from './QuoteChange';
 import { connect } from 'react-redux';
-import cx from 'classnames';
 
 type Props = {
   isLoading: boolean,
@@ -55,29 +54,16 @@ class App extends React.Component<Props, State> {
                     <th>Symbol</th>
                     <th>Last Price</th>
                     <th>Change</th>
-                    <th>Market Cap</th>
+                    <th>Cost Basis</th>
+                    <th>Mkt Value</th>
+                    <th>Gain</th>
+                    <th>Gain %</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.symbols.map(symbol => {
-                    const quote = this.props.quotes[symbol];
-                    return (
-                      <tr key={symbol}>
-                        <td style={{ width: 1 }}><input type="checkbox" /></td>
-                        <td>{quote == null ? '...' : quote.companyName}</td>
-                        <td>{symbol}</td>
-                        <td>{quote == null ? '...' : quote.latestPrice}</td>
-                        <td
-                          className={cx({
-                            'text-danger': quote && quote.change < 0,
-                            'text-success': quote && quote.change >= 0,
-                          })}>
-                          <QuoteChange quote={quote} />
-                        </td>
-                        <td>{quote == null ? '...' : abbreviateNumber(quote.marketCap, 1)}</td>
-                      </tr>
-                    );
-                  })}
+                  {this.props.symbols.map(symbol =>
+                    <PerformanceRow key={symbol} symbol={symbol} />
+                  )}
                 </tbody>
               </table>
             </Col>
@@ -98,3 +84,22 @@ export default connect(state => ({
   quotes: state.quotes,
   symbols: state.symbols,
 }))(App);
+
+/* For displaying row of "Overview" page
+<tr key={symbol}>
+  <td style={{ width: 1 }}><input type="checkbox" /></td>
+  <td>{quote == null ? '...' : quote.companyName}</td>
+  <td>{symbol}</td>
+  <td>{quote == null ? '...' : quote.latestPrice}</td>
+  <td
+    className={cx({
+      'text-danger': quote && quote.change < 0,
+      'text-success': quote && quote.change >= 0,
+    })}>
+    <QuoteChange quote={quote} />
+  </td>
+  <td>{quote == null ? '...' : abbreviateNumber(quote.marketCap, 1)}</td>
+  <td>{quote == null ? '...' : quote.open}</td>
+  <td>{quote == null ? '...' : quote.close}</td>
+</tr>
+*/

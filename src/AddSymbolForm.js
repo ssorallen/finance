@@ -44,11 +44,11 @@ class AddSymbolForm extends React.Component<Props, State> {
       date: formData.date,
       price: parseFloat(formData.price) || 0,
       shares: parseFloat(formData.shares) || 0,
-      ticker: formData.ticker.toUpperCase(),
+      symbol: formData.ticker.toUpperCase(),
       type: formData.type,
     };
 
-    this.props.dispatch(addSymbol(transaction.ticker));
+    this.props.dispatch(addSymbol(transaction.symbol));
     if (this.state.showTransactionData) {
       this.props.dispatch(addTransaction(transaction));
     }
@@ -69,7 +69,7 @@ class AddSymbolForm extends React.Component<Props, State> {
             innerRef={ref => { this.formRef = ref; }}>
             <FormGroup>
               <Label for="ticker">Symbol</Label>
-              <Input id="ticker" name="ticker" required />
+              <Input autoComplete="off" id="ticker" name="ticker" required />
             </FormGroup>
             {this.state.showTransactionData ?
               <FormGroup>

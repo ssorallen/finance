@@ -10,7 +10,7 @@ export type Transaction = {
   date: ?string,
   price: number,
   shares: number,
-  ticker: string,
+  symbol: string,
   type: 'Buy' | 'Sell',
 };
 
@@ -28,7 +28,7 @@ type FetchQuotesRequestAction = {
 };
 
 type FetchQuotesSuccessAction = {
-  quotes: {[ticker: string]: Object},
+  quotes: {[symbol: string]: Object},
   type: 'FETCH_QUOTES_SUCCESS',
 };
 
@@ -42,9 +42,11 @@ export type Action =
 export type Quote = {
   change: number,
   changePercent: number,
+  close: number,
   companyName: string,
   latestPrice: number,
   marketCap: number,
+  open: number,
   price: number,
   symbol: string,
 };

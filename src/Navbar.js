@@ -11,23 +11,24 @@ type Props = {
 class Navbar extends React.Component<Props> {
   render() {
     return (
-      <ReactstrapNavbar color="dark" dark>
+      <ReactstrapNavbar color="dark" dark expand="md">
         <Collapse isOpen navbar>
-          {this.props.isLoading ?
-            <div style={{ float: 'right', lineHeight: '32px' }}>
-              <div className="lds-ellipsis" style={{ float: 'right' }} title="Loading...">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-            </div> :
-            null}
-          <Nav navbar>
+          <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink active href="/">Overview</NavLink>
+              <NavLink href="/">Overview</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink active href="/performance">Performance</NavLink>
             </NavItem>
           </Nav>
+          {this.props.isLoading ?
+            <div className="lds-ellipsis" title="Loading...">
+              <div />
+              <div />
+              <div />
+              <div />
+            </div> :
+            null}
         </Collapse>
       </ReactstrapNavbar>
     );
