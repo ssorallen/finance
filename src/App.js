@@ -10,6 +10,7 @@ import { addTicker, fetchQuotes } from './actions';
 
 type Props = {
   dispatch: Function,
+  isLoading: boolean,
   quotes: {[ticker: string]: Quote},
   tickers: Array<string>,
 };
@@ -66,28 +67,15 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <Container>
-        <Row>
-          <Col md="6" style={{ marginBottom: '20px', marginTop: '20px' }}>
-            <div className="card">
-              <div className="card-body">
-                <Form action="/api" method="post" onSubmit={this.addTicker}>
-                  <FormGroup>
-                    <Label for="ticker">Symbol</Label>
-                    <Input
-                      id="ticker"
-                      name="ticker"
-                      onChange={this.handleChangeTickerValue}
-                      value={this.state.tickerValue}
-                    />
-                  </FormGroup>
-                  <FormGroup style={{ marginBottom: 0 }}>
-                    <Button type="submit">Add</Button>
-                  </FormGroup>
-                </Form>
-              </div>
-            </div>
-          </Col>
-        </Row>
+        {this.props.isLoading ?
+          <div style={{ float: 'right', lineHeight: '32px' }}>
+            Loading{' '}
+            <div className="lds-ellipsis" style={{ float: 'right' }}><div></div><div></div><div></div><div></div></div>
+          </div> :
+          null}
+        <h3 style={{ marginTop: '15px' }}>
+          Portfolio
+        </h3>
         <Row>
           <Col>
             <table className="table">
@@ -125,12 +113,35 @@ class App extends React.Component<Props, State> {
             </table>
           </Col>
         </Row>
+        <Row>
+          <Col md="6" style={{ marginBottom: '20px', marginTop: '20px' }}>
+            <div className="card">
+              <div className="card-body">
+                <Form action="/api" method="post" onSubmit={this.addTicker}>
+                  <FormGroup>
+                    <Label for="ticker">Symbol</Label>
+                    <Input
+                      id="ticker"
+                      name="ticker"
+                      onChange={this.handleChangeTickerValue}
+                      value={this.state.tickerValue}
+                    />
+                  </FormGroup>
+                  <FormGroup style={{ marginBottom: 0 }}>
+                    <Button type="submit">Add to portfolio</Button>
+                  </FormGroup>
+                </Form>
+              </div>
+            </div>
+          </Col>
+        </Row>
       </Container>
     );
   }
 }
 
 export default connect(state => ({
+  isLoading: state.isFetchingQuotes,
   quotes: state.quotes,
   tickers: state.tickers,
 }))(App);
