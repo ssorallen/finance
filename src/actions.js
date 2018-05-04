@@ -1,20 +1,25 @@
 /* @flow */
 
-import type Action from './reducers';
+import type { GetState, Transaction } from './reducers';
 
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 
-export function addTicker(ticker: string): Action {
-  return {
-    ticker,
-    type: 'ADD_TICKER',
-  };
+export function addSymbol(symbol: string) {
+  return function (dispatch: Function) {
+    dispatch({ ticker: symbol, type: 'ADD_TICKER' });
+  }
 }
 
-export function fetchQuotes(): Action {
-  return function (dispatch, getState) {
+export function addTransaction(transaction: Transaction) {
+  return function (dispatch: Function) {
+    dispatch({ transaction, type: 'ADD_TRANSACTION' });
+  }
+}
+
+export function fetchQuotes() {
+  return function (dispatch: Function, getState: GetState) {
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
-    fetch(`${IEX_ROOT}/stock/market/batch?types=quote&symbols=${getState().tickers.join(',')}`)
+    fetch(`${IEX_ROOT}/stock/market/batch?types=quote&symbols=${getState().symbols.join(',')}`)
       .then(response => {
         response.json()
           .then((data) => {

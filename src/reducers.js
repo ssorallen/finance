@@ -5,6 +5,20 @@ type AddTickerAction = {
   type: 'ADD_TICKER',
 };
 
+export type Transaction = {
+  commission: number,
+  date: ?string,
+  price: number,
+  shares: number,
+  ticker: string,
+  type: 'Buy' | 'Sell',
+};
+
+type AddTransactionAction = {
+  transaction: Transaction,
+  type: 'ADD_TRANSACTION',
+}
+
 type FetchQuotesFailureAction = {
   type: 'FETCH_QUOTES_FAILURE',
 };
@@ -18,8 +32,9 @@ type FetchQuotesSuccessAction = {
   type: 'FETCH_QUOTES_SUCCESS',
 };
 
-type Action =
+export type Action =
   | AddTickerAction
+  | AddTransactionAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
   | FetchQuotesSuccessAction;
@@ -37,21 +52,33 @@ export type Quote = {
 type State = {
   isFetchingPrices: boolean,
   quotes: {[ticker: string]: Quote},
-  tickers: Array<string>,
+  transactions: Array<Transaction>,
+  symbols: Array<string>,
 };
+
+export type GetState = () => State;
 
 const initialState = {
   isFetchingPrices: false,
   quotes: {},
-  tickers: [],
+  symbols: [],
+  transactions: [],
 }
 
 export default function(state: State = initialState, action: Action) {
   switch(action.type) {
   case 'ADD_TICKER':
+    const nextSymbols = state.symbols.indexOf(action.ticker) === -1 ?
+      state.symbols.concat([action.ticker]) :
+      state.symbols;
     return {
       ...state,
-      tickers: state.tickers.concat(action.ticker),
+      symbols: nextSymbols,
+    };
+  case 'ADD_TRANSACTION':
+    return {
+      ...state,
+      transactions: state.transactions.concat([action.transaction]),
     };
   case 'FETCH_QUOTES_FAILURE':
     return {

@@ -1,22 +1,23 @@
 /* @flow */
 
 import './App.css';
-import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
-import React from 'react';
+import * as React from 'react';
+import { Col, Container, Row } from 'reactstrap';
+import AddSymbolForm from './AddSymbolForm';
+import Navbar from './Navbar';
 import type { Quote } from './reducers';
+import QuoteChange from './QuoteChange';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import { addTicker, fetchQuotes } from './actions';
 
 type Props = {
-  dispatch: Function,
   isLoading: boolean,
   quotes: {[ticker: string]: Quote},
-  tickers: Array<string>,
+  symbols: Array<string>,
 };
 
 type State = {
-  tickerValue: string,
+  selectedSymbols: Set<string>,
 };
 
 function abbreviateNumber(num: number, fixed) {
@@ -31,111 +32,63 @@ function abbreviateNumber(num: number, fixed) {
   return e;
 }
 
-function QuoteChange(props: { quote: ?Quote }) {
-  const { quote } = props;
-  if (quote == null) return '...';
-  else {
-    const isPositive = quote.change >= 0;
-    return (
-      <React.Fragment>
-        {isPositive ? '+' : ''}{quote.change}{' '}
-        ({isPositive ? '+' : ''}{Math.round(quote.changePercent * 10000) / 100}%)
-      </React.Fragment>
-    );
-  }
-}
-
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tickerValue: '',
+      selectedSymbols: new Set(),
     };
-  }
-
-  addTicker = (event: SyntheticEvent<HTMLElement>) => {
-    event.preventDefault();
-    this.props.dispatch(addTicker(this.state.tickerValue.toUpperCase()));
-    this.props.dispatch(fetchQuotes());
-    this.setState({ tickerValue: '' });
-  }
-
-  handleChangeTickerValue = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ tickerValue: event.currentTarget.value });
   }
 
   render() {
     return (
-      <Container>
-        {this.props.isLoading ?
-          <div style={{ float: 'right', lineHeight: '32px' }}>
-            Loading{' '}
-            <div className="lds-ellipsis" style={{ float: 'right' }}><div></div><div></div><div></div><div></div></div>
-          </div> :
-          null}
-        <h3 style={{ marginTop: '15px' }}>
-          Portfolio
-        </h3>
-        <Row>
-          <Col>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th style={{ width: 1 }}><input type="checkbox" /></th>
-                  <th>Name</th>
-                  <th>Symbol</th>
-                  <th>Last Price</th>
-                  <th>Change</th>
-                  <th>Market Cap</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.tickers.map(ticker => {
-                  const quote = this.props.quotes[ticker];
-                  return (
-                    <tr key={ticker}>
-                      <td style={{ width: 1 }}><input type="checkbox" /></td>
-                      <td>{quote == null ? '...' : quote.companyName}</td>
-                      <td>{ticker}</td>
-                      <td>{quote == null ? '...' : quote.latestPrice}</td>
-                      <td
-                        className={cx({
-                          'text-danger': quote && quote.change < 0,
-                          'text-success': quote && quote.change >= 0,
-                        })}>
-                        <QuoteChange quote={quote} />
-                      </td>
-                      <td>{quote == null ? '...' : abbreviateNumber(quote.marketCap, 1)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6" style={{ marginBottom: '20px', marginTop: '20px' }}>
-            <div className="card">
-              <div className="card-body">
-                <Form action="/api" method="post" onSubmit={this.addTicker}>
-                  <FormGroup>
-                    <Label for="ticker">Symbol</Label>
-                    <Input
-                      id="ticker"
-                      name="ticker"
-                      onChange={this.handleChangeTickerValue}
-                      value={this.state.tickerValue}
-                    />
-                  </FormGroup>
-                  <FormGroup style={{ marginBottom: 0 }}>
-                    <Button type="submit">Add to portfolio</Button>
-                  </FormGroup>
-                </Form>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+      <div>
+        <Navbar />
+        <Container>
+          <Row>
+            <Col>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th style={{ width: 1 }}><input type="checkbox" /></th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Last Price</th>
+                    <th>Change</th>
+                    <th>Market Cap</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.symbols.map(symbol => {
+                    const quote = this.props.quotes[symbol];
+                    return (
+                      <tr key={symbol}>
+                        <td style={{ width: 1 }}><input type="checkbox" /></td>
+                        <td>{quote == null ? '...' : quote.companyName}</td>
+                        <td>{symbol}</td>
+                        <td>{quote == null ? '...' : quote.latestPrice}</td>
+                        <td
+                          className={cx({
+                            'text-danger': quote && quote.change < 0,
+                            'text-success': quote && quote.change >= 0,
+                          })}>
+                          <QuoteChange quote={quote} />
+                        </td>
+                        <td>{quote == null ? '...' : abbreviateNumber(quote.marketCap, 1)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6" style={{ marginBottom: '20px', marginTop: '20px' }}>
+              <AddSymbolForm />
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 }
@@ -143,5 +96,5 @@ class App extends React.Component<Props, State> {
 export default connect(state => ({
   isLoading: state.isFetchingQuotes,
   quotes: state.quotes,
-  tickers: state.tickers,
+  symbols: state.symbols,
 }))(App);
