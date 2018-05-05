@@ -48,8 +48,8 @@ class Navbar extends React.Component<Props, State> {
     const { updatedAt } = this.props;
     return (
       <ReactstrapNavbar color="dark" dark expand="md">
-        <NavbarBrand tag={NavLink} to="/">
-          <em className="text-warning">stocks!!!</em>
+        <NavbarBrand className="text-warning" tag={NavLink} to="/">
+          stocks!!!
         </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
