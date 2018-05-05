@@ -32,7 +32,7 @@ const store = createStore(
   initialState,
   composeEnhancers(
     applyMiddleware(thunk),
-    persistState(['quotes', 'symbols', 'transactions', 'updatedAt'])
+    persistState(['quotes', 'symbols', 'transactions', 'updatedAt'], { key: 'default' })
   )
 );
 

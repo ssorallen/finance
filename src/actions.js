@@ -5,21 +5,25 @@ import type { GetState, Transaction } from './reducers';
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 
 export function addSymbol(symbol: string) {
-  return function(dispatch: Function) {
-    dispatch({ symbol, type: 'ADD_SYMBOL' });
-  };
+  return { symbol, type: 'ADD_SYMBOL' };
 }
 
 export function addTransaction(transaction: Transaction) {
-  return function(dispatch: Function) {
-    dispatch({ transaction, type: 'ADD_TRANSACTION' });
-  };
+  return { transaction, type: 'ADD_TRANSACTION' };
+}
+
+export function deleteTransactions(transactions: Array<Transaction>) {
+  return { transactions, type: 'DELETE_TRANSACTIONS' };
 }
 
 export function fetchQuotes() {
   return function(dispatch: Function, getState: GetState) {
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
-    fetch(`${IEX_ROOT}/stock/market/batch?types=quote&symbols=${getState().symbols.join(',')}`)
+    fetch(
+      `${IEX_ROOT}/stock/market/batch?types=quote&symbols=${encodeURIComponent(
+        getState().symbols.join(',')
+      )}`
+    )
       .then(response => {
         response
           .json()

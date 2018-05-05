@@ -19,6 +19,11 @@ type AddTransactionAction = {
   type: 'ADD_TRANSACTION',
 };
 
+type DeleteTransactionsAction = {
+  transactions: Array<Transaction>,
+  type: 'DELETE_TRANSACTIONS',
+};
+
 type FetchQuotesFailureAction = {
   type: 'FETCH_QUOTES_FAILURE',
 };
@@ -35,6 +40,7 @@ type FetchQuotesSuccessAction = {
 export type Action =
   | AddSymbolAction
   | AddTransactionAction
+  | DeleteTransactionsAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
   | FetchQuotesSuccessAction;
@@ -76,6 +82,15 @@ export default function(state: State, action: Action): State {
       return {
         ...state,
         transactions: [...state.transactions, action.transaction],
+      };
+    case 'DELETE_TRANSACTIONS':
+      // Preserve Flow refinement inside `filter` by keeping a reference to `transactions`.
+      const transactions = action.transactions;
+      return {
+        ...state,
+        transactions: state.transactions.filter(
+          transaction => transactions.indexOf(transaction) === -1
+        ),
       };
     case 'FETCH_QUOTES_FAILURE':
       return {
