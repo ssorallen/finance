@@ -1,13 +1,17 @@
 /* @flow */
 
 import * as React from 'react';
-import { Collapse, Nav, Navbar as ReactstrapNavbar, NavItem } from 'reactstrap';
+import { Collapse, Nav, Navbar as ReactstrapNavbar, NavbarToggler, NavItem } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 type Props = {
   isLoading: boolean,
   updatedAt: ?number,
+};
+
+type State = {
+  isOpen: boolean,
 };
 
 const updatedAtFormatter = new window.Intl.DateTimeFormat(undefined, {
@@ -20,11 +24,25 @@ const updatedAtFormatter = new window.Intl.DateTimeFormat(undefined, {
   year: 'numeric',
 });
 
-class Navbar extends React.Component<Props> {
+class Navbar extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isOpen: false,
+    };
+  }
+
+  toggle = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
   render() {
+    // Create local reference to `updatedAt` to enable Flow refinement beyond `null | undefined`.
+    const { updatedAt } = this.props;
     return (
       <ReactstrapNavbar color="dark" dark expand="md">
-        <Collapse isOpen navbar>
+        <NavbarToggler onClick={this.toggle} />
+        <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink className="nav-link" exact to="/">
@@ -52,11 +70,13 @@ class Navbar extends React.Component<Props> {
           ) : null}
           <span>
             <span className="text-white-50">Last updated: </span>
-            <span className="text-white">
-              {this.props.updatedAt == null
-                ? 'never'
-                : updatedAtFormatter.format(this.props.updatedAt)}
-            </span>
+            {updatedAt == null ? (
+              <span className="text-white">never</span>
+            ) : (
+              <time className="text-white" dateTime={new Date(updatedAt).toISOString()}>
+                {updatedAtFormatter.format(updatedAt)}
+              </time>
+            )}
           </span>
         </Collapse>
       </ReactstrapNavbar>

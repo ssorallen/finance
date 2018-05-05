@@ -1,8 +1,8 @@
 /* @flow */
 
-type AddTickerAction = {
-  ticker: string,
-  type: 'ADD_TICKER',
+type AddSymbolAction = {
+  symbol: string,
+  type: 'ADD_SYMBOL',
 };
 
 export type Transaction = {
@@ -33,7 +33,7 @@ type FetchQuotesSuccessAction = {
 };
 
 export type Action =
-  | AddTickerAction
+  | AddSymbolAction
   | AddTransactionAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
@@ -53,7 +53,7 @@ export type Quote = {
 
 type State = {
   isFetchingPrices: boolean,
-  quotes: { [ticker: string]: Quote },
+  quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
   transactions: Array<Transaction>,
   updatedAt: ?number,
@@ -71,10 +71,10 @@ const initialState = {
 
 export default function(state: State = initialState, action: Action) {
   switch (action.type) {
-    case 'ADD_TICKER':
+    case 'ADD_SYMBOL':
       const nextSymbols =
-        state.symbols.indexOf(action.ticker) === -1
-          ? [...state.symbols, action.ticker]
+        state.symbols.indexOf(action.symbol) === -1
+          ? [...state.symbols, action.symbol]
           : state.symbols;
       return {
         ...state,

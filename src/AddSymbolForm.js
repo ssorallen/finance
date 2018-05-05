@@ -38,18 +38,20 @@ class AddSymbolForm extends React.Component<Props, State> {
     event.preventDefault();
     const formData = formSerialize(event.currentTarget, { hash: true });
 
-    // Set some defaults and override the ticker to make sure it's always UPPERCASE.
+    // Set some defaults and override the symbol to make sure it's always UPPERCASE.
     const transaction = {
       commission: parseFloat(formData.commission) || 0,
       date: formData.date,
       price: parseFloat(formData.price) || 0,
       shares: parseFloat(formData.shares) || 0,
-      symbol: formData.ticker.toUpperCase(),
+      symbol: formData.symbol.toUpperCase(),
       type: formData.type,
     };
 
     this.props.dispatch(addSymbol(transaction.symbol));
-    this.props.dispatch(addTransaction(transaction));
+    if (this.state.showTransactionData) {
+      this.props.dispatch(addTransaction(transaction));
+    }
 
     this.props.dispatch(fetchQuotes());
     if (this.props.onSubmit) this.props.onSubmit(transaction);
@@ -68,8 +70,8 @@ class AddSymbolForm extends React.Component<Props, State> {
               this.formRef = ref;
             }}>
             <FormGroup>
-              <Label for="ticker">Symbol</Label>
-              <Input autoComplete="off" id="ticker" name="ticker" required />
+              <Label for="symbol">Symbol</Label>
+              <Input autoComplete="off" bsSize="sm" id="symbol" name="symbol" required />
             </FormGroup>
             {this.state.showTransactionData ? (
               <FormGroup>
@@ -95,28 +97,22 @@ class AddSymbolForm extends React.Component<Props, State> {
             <Collapse isOpen={this.state.showTransactionData}>
               <FormGroup>
                 <Label for="type">Type</Label>
-                <select
+                <Input
+                  bsSize="sm"
                   className="form-control"
                   disabled={!this.state.showTransactionData}
                   id="type"
                   name="type"
-                  required>
+                  required
+                  type="select">
                   <option>Buy</option>
                   <option>Sell</option>
-                </select>
-              </FormGroup>
-              <FormGroup>
-                <Label for="date">Date</Label>
-                <Input
-                  disabled={!this.state.showTransactionData}
-                  id="date"
-                  name="date"
-                  type="date"
-                />
+                </Input>
               </FormGroup>
               <FormGroup>
                 <Label for="shares">Shares</Label>
                 <Input
+                  bsSize="sm"
                   disabled={!this.state.showTransactionData}
                   id="shares"
                   min="0"
@@ -129,6 +125,7 @@ class AddSymbolForm extends React.Component<Props, State> {
               <FormGroup>
                 <Label for="price">Price/Amount</Label>
                 <Input
+                  bsSize="sm"
                   disabled={!this.state.showTransactionData}
                   id="price"
                   min="0"
@@ -138,8 +135,23 @@ class AddSymbolForm extends React.Component<Props, State> {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="commission">Commission</Label>
+                <Label for="date">
+                  Date <small className="text-info">(Optional)</small>
+                </Label>
                 <Input
+                  bsSize="sm"
+                  disabled={!this.state.showTransactionData}
+                  id="date"
+                  name="date"
+                  type="date"
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="commission">
+                  Commission <small className="text-info">(Optional)</small>
+                </Label>
+                <Input
+                  bsSize="sm"
                   disabled={!this.state.showTransactionData}
                   id="commission"
                   min="0"
@@ -150,7 +162,7 @@ class AddSymbolForm extends React.Component<Props, State> {
               </FormGroup>
             </Collapse>
             <FormGroup style={{ marginBottom: 0 }}>
-              <Button color="primary" disabled={this.props.isLoading} type="submit">
+              <Button color="primary" disabled={this.props.isLoading} size="sm" type="submit">
                 Add to portfolio
               </Button>
             </FormGroup>

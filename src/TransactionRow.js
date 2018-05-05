@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import type { Quote, Transaction } from './reducers';
-import QuoteChange from './QuoteChange';
 import { connect } from 'react-redux';
-import cx from 'classnames';
 import formatNumber from 'format-number';
 
 type OwnProps = {
