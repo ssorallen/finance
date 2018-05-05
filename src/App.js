@@ -21,7 +21,7 @@ export default class App extends React.Component<{}> {
 
               See: React Router's ["Dealing With Update Blocking"][0] */}
           <Route component={Navbar} />
-          <Container>
+          <Container className="mb-4">
             <Route exact path="/" component={Overview} />
             <Route path="/performance" component={Performance} />
             <Route path="/transactions" component={Transactions} />
