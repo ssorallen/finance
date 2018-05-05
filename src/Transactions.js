@@ -64,18 +64,19 @@ class Transactions extends React.Component<Props, State> {
         allTransactionsSelected && this.state.selectedTransactions.has(transaction);
     });
 
+    const deleteDisabled =
+      this.props.transactions.length === 0 || this.state.selectedTransactions.size === 0;
     return (
       <React.Fragment>
         <Row className="mb-3 mt-3">
           <Col>
             <Button
-              disabled={
-                this.props.transactions.length === 0 || this.state.selectedTransactions.size === 0
-              }
+              color={deleteDisabled ? 'secondary' : 'danger'}
+              disabled={deleteDisabled}
               onClick={this.handleDeleteSelectedTransactions}
               outline
               size="sm">
-              Delete
+              Delete transactions
             </Button>
           </Col>
         </Row>
