@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import OverviewRow from './OverviewRow';
+import PortfolioActions from './PortfolioActions';
 import { connect } from 'react-redux';
 import { deleteSymbols } from './actions';
 
@@ -18,6 +19,21 @@ type State = {
 };
 
 class Performance extends React.Component<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    // If any currently selected symbols are not in the next props update, remove them from the
+    // internal selected symbols `Set` to stay up-to-date.
+    let hasChanges = false;
+    const nextSymbols = new Set(nextProps.symbols);
+    const nextSelectedSymbols = new Set();
+    for (const symbol of prevState.selectedSymbols) {
+      if (nextSymbols.has(symbol)) nextSelectedSymbols.add(symbol);
+      else hasChanges = true;
+    }
+
+    if (hasChanges) return { selectedSymbols: nextSelectedSymbols };
+    else return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +45,6 @@ class Performance extends React.Component<Props, State> {
 
   handleDeleteSelectedSymbols = () => {
     this.props.dispatch(deleteSymbols(Array.from(this.state.selectedSymbols)));
-    this.setState({ selectedSymbols: new Set() });
   };
 
   handleToggleAllSymbols = () => {
@@ -68,6 +83,7 @@ class Performance extends React.Component<Props, State> {
               Delete
             </Button>
           </Col>
+          <PortfolioActions />
         </Row>
         <Row>
           <Col>

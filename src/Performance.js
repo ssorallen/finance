@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import PerformanceRow from './PerformanceRow';
+import PortfolioActions from './PortfolioActions';
 import { connect } from 'react-redux';
 
 type StateProps = {
@@ -21,6 +22,7 @@ class Performance extends React.Component<Props> {
               Delete
             </Button>
           </Col>
+          <PortfolioActions />
         </Row>
         <Row>
           <Col>

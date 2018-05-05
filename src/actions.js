@@ -12,6 +12,10 @@ export function addTransaction(transaction: Transaction) {
   return { transaction, type: 'ADD_TRANSACTION' };
 }
 
+export function deletePortfolio() {
+  return { type: 'DELETE_PORTFOLIO' };
+}
+
 export function deleteSymbols(symbols: Array<string>) {
   return { symbols, type: 'DELETE_SYMBOLS' };
 }

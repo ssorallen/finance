@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
+import PortfolioActions from './PortfolioActions';
 import type { Transaction } from './reducers';
 import TransactionRow from './TransactionRow';
 import { connect } from 'react-redux';
@@ -19,6 +20,21 @@ type State = {
 };
 
 class Transactions extends React.Component<Props, State> {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // If any currently selected transactions are not in the next props update, remove them from the
+    // internal selected transactions `Set` to stay up-to-date.
+    let hasChanges = false;
+    const nextTransactions = new Set(nextProps.transactions);
+    const nextSelectedTransactions = new Set();
+    for (const transaction of prevState.selectedTransactions) {
+      if (nextTransactions.has(transaction)) nextSelectedTransactions.add(transaction);
+      else hasChanges = true;
+    }
+
+    if (hasChanges) return { selectedTransactions: nextSelectedTransactions };
+    else return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +46,6 @@ class Transactions extends React.Component<Props, State> {
 
   handleDeleteSelectedTransactions = () => {
     this.props.dispatch(deleteTransactions(Array.from(this.state.selectedTransactions)));
-    this.setState({ selectedTransactions: new Set() });
   };
 
   handleToggleAllTransactions = () => {
@@ -78,6 +93,7 @@ class Transactions extends React.Component<Props, State> {
               Delete
             </Button>
           </Col>
+          <PortfolioActions />
         </Row>
         <Row>
           <Col>
