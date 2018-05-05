@@ -30,6 +30,25 @@ export default class App extends React.Component<{}> {
                 <AddSymbolForm />
               </Col>
             </Row>
+            <Row>
+              <Col>
+                <small className="text-secondary">
+                  Data provided for free by{' '}
+                  <a
+                    className="text-secondary"
+                    href="https://iextrading.com/developer/"
+                    style={{ textDecoration: 'underline' }}>
+                    IEX
+                  </a>. Use is subject to{' '}
+                  <a
+                    className="text-secondary"
+                    href="https://iextrading.com/api-exhibit-a/"
+                    style={{ textDecoration: 'underline' }}>
+                    IEX Exhibit A
+                  </a>.
+                </small>
+              </Col>
+            </Row>
           </Container>
         </div>
       </Router>
