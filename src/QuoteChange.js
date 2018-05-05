@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import type { Quote } from './reducers';
+import { currencyFormatter, percentFormatter } from './formatters';
 
 export default function QuoteChange(props: { quote: ?Quote }) {
   const { quote } = props;
@@ -10,8 +11,9 @@ export default function QuoteChange(props: { quote: ?Quote }) {
     const isPositive = quote.change >= 0;
     return (
       <React.Fragment>
-        {isPositive ? '+' : ''}{quote.change}{' '}
-        ({isPositive ? '+' : ''}{Math.round(quote.changePercent * 10000) / 100}%)
+        {isPositive ? '+' : ''}
+        {currencyFormatter.format(quote.change)} ({isPositive ? '+' : ''}
+        {percentFormatter.format(quote.changePercent)})
       </React.Fragment>
     );
   }

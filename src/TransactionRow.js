@@ -3,7 +3,7 @@
 import * as React from 'react';
 import type { Quote, Transaction } from './reducers';
 import { connect } from 'react-redux';
-import formatNumber from 'format-number';
+import { currencyFormatter, numberFormatter } from './formatters';
 
 type OwnProps = {
   transaction: Transaction,
@@ -17,7 +17,6 @@ type Props = OwnProps & StateProps;
 
 class OverviewRow extends React.Component<Props> {
   render() {
-    const formatter = formatNumber({ padRight: 2, round: 2 });
     const { quote, transaction } = this.props;
     return (
       <tr>
@@ -28,9 +27,9 @@ class OverviewRow extends React.Component<Props> {
         <td>{transaction.symbol}</td>
         <td>{transaction.type}</td>
         <td>{transaction.date}</td>
-        <td>{transaction.shares}</td>
-        <td>{formatter(transaction.price)}</td>
-        <td>{formatter(transaction.commission)}</td>
+        <td>{numberFormatter.format(transaction.shares)}</td>
+        <td>{currencyFormatter.format(transaction.price)}</td>
+        <td>{currencyFormatter.format(transaction.commission)}</td>
       </tr>
     );
   }

@@ -136,7 +136,7 @@ class AddSymbolForm extends React.Component<Props, State> {
               </FormGroup>
               <FormGroup>
                 <Label for="date">
-                  Date <small className="text-info">(Optional)</small>
+                  Date <small className="text-secondary">(Optional)</small>
                 </Label>
                 <Input
                   bsSize="sm"
@@ -148,7 +148,7 @@ class AddSymbolForm extends React.Component<Props, State> {
               </FormGroup>
               <FormGroup>
                 <Label for="commission">
-                  Commission <small className="text-info">(Optional)</small>
+                  Commission <small className="text-secondary">(Optional)</small>
                 </Label>
                 <Input
                   bsSize="sm"

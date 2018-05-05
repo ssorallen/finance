@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import type { Quote, Transaction } from './reducers';
+import { currencyFormatter, numberFormatter, percentFormatter } from './formatters';
 import QuoteChange from './QuoteChange';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import formatNumber from 'format-number';
 
 type OwnProps = {
   symbol: string,
@@ -30,6 +30,7 @@ class PerformanceRow extends React.Component<Props> {
       if (transaction.type !== 'Buy') return;
 
       costBasis += transaction.price * transaction.shares;
+      costBasis += transaction.commission;
       shares += transaction.shares;
       if (quote != null) marketValue += quote.latestPrice * transaction.shares;
     });
@@ -41,8 +42,6 @@ class PerformanceRow extends React.Component<Props> {
     // Show returns only if the user owns shares and the quote has been returned from the API call.
     // Showing any earlier will look like some erroneous and funky data.
     const showReturns = shares > 0 && quote != null;
-
-    const formatter = formatNumber({ padRight: 2, round: 2 });
     return (
       <tr>
         <td style={{ width: 1 }}>
@@ -50,7 +49,7 @@ class PerformanceRow extends React.Component<Props> {
         </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{this.props.symbol}</td>
-        <td>{quote == null ? '...' : quote.latestPrice}</td>
+        <td>{quote == null ? '...' : currencyFormatter.format(quote.latestPrice)}</td>
         <td
           className={cx({
             'text-danger': quote && quote.change < 0,
@@ -58,14 +57,22 @@ class PerformanceRow extends React.Component<Props> {
           })}>
           <QuoteChange quote={quote} />
         </td>
-        <td>{shares > 0 ? shares : '...'}</td>
-        <td>{showReturns ? formatter(costBasis) : '...'}</td>
-        <td>{showReturns ? formatter(marketValue) : '...'}</td>
-        <td className={cx({ 'text-danger': gain < 0, 'text-success': gain >= 0 })}>
-          {showReturns ? `${gain >= 0 ? '+' : ''}${formatter(gain)}` : '...'}
+        <td>{shares > 0 ? numberFormatter.format(shares) : '...'}</td>
+        <td>{showReturns ? currencyFormatter.format(costBasis) : '...'}</td>
+        <td>{showReturns ? currencyFormatter.format(marketValue) : '...'}</td>
+        <td
+          className={cx({
+            'text-danger': showReturns && gain < 0,
+            'text-success': showReturns && gain >= 0,
+          })}>
+          {showReturns ? `${gain >= 0 ? '+' : ''}${currencyFormatter.format(gain)}` : '...'}
         </td>
-        <td className={cx({ 'text-danger': gain < 0, 'text-success': gain >= 0 })}>
-          {showReturns ? `${gain >= 0 ? '+' : ''}${Math.round(gainPercent * 10000) / 100}%` : '...'}
+        <td
+          className={cx({
+            'text-danger': showReturns && gain < 0,
+            'text-success': showReturns && gain >= 0,
+          })}>
+          {showReturns ? `${gain >= 0 ? '+' : ''}${percentFormatter.format(gainPercent)}` : '...'}
         </td>
       </tr>
     );

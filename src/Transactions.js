@@ -49,13 +49,16 @@ class Transactions extends React.Component<Props> {
                   </td>
                 </tr>
               ) : (
-                this.props.symbols.map(symbol => (
-                  <React.Fragment key={symbol}>
-                    {transactionsBySymbol[symbol].map((transaction, i) => (
-                      <TransactionRow key={i} transaction={transaction} />
-                    ))}
-                  </React.Fragment>
-                ))
+                this.props.symbols.map(symbol => {
+                  const symbolTransactions = transactionsBySymbol[symbol];
+                  return symbolTransactions == null ? null : (
+                    <React.Fragment key={symbol}>
+                      {symbolTransactions.map((transaction, i) => (
+                        <TransactionRow key={i} transaction={transaction} />
+                      ))}
+                    </React.Fragment>
+                  );
+                })
               )}
             </tbody>
           </table>

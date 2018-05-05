@@ -4,6 +4,7 @@ import * as React from 'react';
 import type { Quote } from './reducers';
 import QuoteChange from './QuoteChange';
 import { connect } from 'react-redux';
+import { currencyFormatter } from './formatters';
 import cx from 'classnames';
 
 type OwnProps = {
@@ -16,6 +17,8 @@ type StateProps = {
 
 type Props = OwnProps & StateProps;
 
+const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
 function abbreviateNumber(num: number, fixed) {
   if (num === null) return null; // terminate early
   if (num === 0) return '0'; // terminate early
@@ -25,8 +28,7 @@ function abbreviateNumber(num: number, fixed) {
   const k = b.length === 1 ? 0 : Math.floor(Math.min(parseInt(b[1].slice(1), 10), 14) / 3); // floor at decimals, ceiling at trillions
   const d = k < 0 ? k : Math.abs(k); // enforce -0 is 0
   const c = d < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3)).toFixed(1 + fixed); // divide by power
-  const e = c + ['', 'K', 'M', 'B', 'T'][k]; // append power
-  return e;
+  return `${bigNumberFormatter.format(c)}${POWER_SUFFIXES[k]}`; // append power
 }
 
 class OverviewRow extends React.Component<Props> {
@@ -39,7 +41,7 @@ class OverviewRow extends React.Component<Props> {
         </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{symbol}</td>
-        <td>{quote == null ? '...' : quote.latestPrice}</td>
+        <td>{quote == null ? '...' : currencyFormatter.format(quote.latestPrice)}</td>
         <td
           className={cx({
             'text-danger': quote && quote.change < 0,
@@ -48,8 +50,8 @@ class OverviewRow extends React.Component<Props> {
           <QuoteChange quote={quote} />
         </td>
         <td>{quote == null ? '...' : abbreviateNumber(quote.marketCap, 1)}</td>
-        <td>{quote == null ? '...' : quote.open}</td>
-        <td>{quote == null ? '...' : quote.close}</td>
+        <td>{quote == null ? '...' : currencyFormatter.format(quote.open)}</td>
+        <td>{quote == null ? '...' : currencyFormatter.format(quote.close)}</td>
       </tr>
     );
   }
