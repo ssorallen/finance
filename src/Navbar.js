@@ -10,6 +10,7 @@ import {
   NavItem,
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import SpinKit from './SpinKit';
 import { connect } from 'react-redux';
 
 type Props = {
@@ -71,12 +72,7 @@ class Navbar extends React.Component<Props, State> {
             </NavItem>
           </Nav>
           {this.props.isLoading ? (
-            <div className="lds-ellipsis" title="Loading...">
-              <div />
-              <div />
-              <div />
-              <div />
-            </div>
+            <SpinKit title="Fetching new quotes..." type="folding-cube" />
           ) : null}
           <span>
             <span className="text-white-50">Last updated: </span>
