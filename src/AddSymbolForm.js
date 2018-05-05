@@ -9,7 +9,7 @@ import formSerialize from 'form-serialize';
 type Props = {
   dispatch: Function,
   isLoading: boolean,
-  onSubmit: ?(formData: Object) => void,
+  onSubmit?: (formData: Object) => void,
 };
 
 type State = {
@@ -49,9 +49,7 @@ class AddSymbolForm extends React.Component<Props, State> {
     };
 
     this.props.dispatch(addSymbol(transaction.symbol));
-    if (this.state.showTransactionData) {
-      this.props.dispatch(addTransaction(transaction));
-    }
+    this.props.dispatch(addTransaction(transaction));
 
     this.props.dispatch(fetchQuotes());
     if (this.props.onSubmit) this.props.onSubmit(transaction);
@@ -120,6 +118,7 @@ class AddSymbolForm extends React.Component<Props, State> {
                   min="0"
                   name="shares"
                   required
+                  step=".001"
                   type="number"
                 />
               </FormGroup>
@@ -130,6 +129,7 @@ class AddSymbolForm extends React.Component<Props, State> {
                   id="price"
                   min="0"
                   name="price"
+                  step=".01"
                   type="number"
                 />
               </FormGroup>
@@ -140,6 +140,7 @@ class AddSymbolForm extends React.Component<Props, State> {
                   id="commission"
                   min="0"
                   name="commission"
+                  step=".01"
                   type="number"
                 />
               </FormGroup>

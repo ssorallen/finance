@@ -21,21 +21,26 @@ type Props = OwnProps & StateProps;
 class PerformanceRow extends React.Component<Props> {
   render() {
     const { quote, transactions } = this.props;
-    const hasTransactions = transactions.length > 0;
+
     let costBasis = 0;
     let marketValue = 0;
+    let shares = 0;
     transactions.forEach(transaction => {
+      // Only summing 'Buy' transactions.
+      if (transaction.type !== 'Buy') return;
+
       costBasis += transaction.price * transaction.shares;
-      if (quote != null) {
-        marketValue += quote.latestPrice * transaction.shares;
-      }
+      shares += transaction.shares;
+      if (quote != null) marketValue += quote.latestPrice * transaction.shares;
     });
 
     const gain = marketValue - costBasis;
-    let gainPercent;
-    if (quote != null) {
-      gainPercent = gain / costBasis;
-    }
+    let gainPercent = 0;
+    if (quote != null) gainPercent = gain / costBasis;
+
+    // Show returns only if the user owns shares and the quote has been returned from the API call.
+    // Showing any earlier will look like some erroneous and funky data.
+    const showReturns = (shares > 0) && (quote != null);
 
     const formatter = formatNumber({ padRight: 2, round: 2 });
     return (
@@ -51,13 +56,14 @@ class PerformanceRow extends React.Component<Props> {
           })}>
           <QuoteChange quote={quote} />
         </td>
-        <td>{hasTransactions ? formatter(costBasis) : '...'}</td>
-        <td>{hasTransactions ? formatter(marketValue) : '...'}</td>
+        <td>{shares > 0 ? shares : '...'}</td>
+        <td>{showReturns ? formatter(costBasis) : '...'}</td>
+        <td>{showReturns ? formatter(marketValue) : '...'}</td>
         <td className={cx({ 'text-danger': gain < 0, 'text-success' : gain >= 0 })}>
-          {hasTransactions ? `${gain >= 0 ? '+' : ''}${formatter(gain)}` : '...'}
+          {showReturns ? `${gain >= 0 ? '+' : ''}${formatter(gain)}` : '...'}
         </td>
         <td className={cx({ 'text-danger': gain < 0, 'text-success' : gain >= 0 })}>
-          {hasTransactions ? `${gain >= 0 ? '+' : ''}${Math.round(gainPercent * 10000) / 100 }%` : '...'}
+          {showReturns ? `${gain >= 0 ? '+' : ''}${Math.round(gainPercent * 10000) / 100 }%` : '...'}
         </td>
       </tr>
     );

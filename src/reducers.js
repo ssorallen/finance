@@ -71,7 +71,7 @@ export default function(state: State = initialState, action: Action) {
   switch(action.type) {
   case 'ADD_TICKER':
     const nextSymbols = state.symbols.indexOf(action.ticker) === -1 ?
-      state.symbols.concat([action.ticker]) :
+      [...state.symbols, action.ticker] :
       state.symbols;
     return {
       ...state,
@@ -80,7 +80,7 @@ export default function(state: State = initialState, action: Action) {
   case 'ADD_TRANSACTION':
     return {
       ...state,
-      transactions: state.transactions.concat([action.transaction]),
+      transactions: [...state.transactions, action.transaction],
     };
   case 'FETCH_QUOTES_FAILURE':
     return {
