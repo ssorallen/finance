@@ -1,10 +1,9 @@
 /* @flow */
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import { applyMiddleware, compose, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux';
 import App from './App';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reducers from './reducers';
