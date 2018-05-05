@@ -76,7 +76,7 @@ class Transactions extends React.Component<Props, State> {
               onClick={this.handleDeleteSelectedTransactions}
               outline
               size="sm">
-              Delete transactions
+              Delete
             </Button>
           </Col>
         </Row>
