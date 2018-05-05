@@ -1,7 +1,14 @@
 /* @flow */
 
 import * as React from 'react';
-import { Collapse, Nav, Navbar as ReactstrapNavbar, NavbarToggler, NavItem } from 'reactstrap';
+import {
+  Collapse,
+  Nav,
+  Navbar as ReactstrapNavbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem,
+} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -41,6 +48,9 @@ class Navbar extends React.Component<Props, State> {
     const { updatedAt } = this.props;
     return (
       <ReactstrapNavbar color="dark" dark expand="md">
+        <NavbarBrand tag={NavLink} to="/">
+          <em className="text-warning">stocks!!!</em>
+        </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="mr-auto" navbar>
