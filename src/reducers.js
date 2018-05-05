@@ -52,7 +52,7 @@ export type Quote = {
 };
 
 type State = {
-  isFetchingPrices: boolean,
+  isFetchingQuotes: boolean,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
   transactions: Array<Transaction>,
@@ -62,14 +62,14 @@ type State = {
 export type GetState = () => State;
 
 const initialState = {
-  isFetchingPrices: false,
+  isFetchingQuotes: false,
   quotes: {},
   symbols: [],
   transactions: [],
   updatedAt: null,
 };
 
-export default function(state: State = initialState, action: Action) {
+export default function(state: State = initialState, action: Action): State {
   switch (action.type) {
     case 'ADD_SYMBOL':
       const nextSymbols =
