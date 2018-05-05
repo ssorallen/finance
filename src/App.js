@@ -25,24 +25,39 @@ export default class App extends React.Component<{}> {
             <Route exact path="/" component={Overview} />
             <Route path="/performance" component={Performance} />
             <Route path="/transactions" component={Transactions} />
-            <Row className="mb-3">
+            <Row>
               <Col md="6">
                 <AddSymbolForm />
               </Col>
             </Row>
-            <Row>
+            <Row className="mt-3">
               <Col>
                 <small className="text-secondary">
-                  Created by <a href="https://github.com/ssorallen">ssorallen</a>. Source available
-                  on GitHub at <a href="https://github.com/ssorallen/stocks">ssorallen/stocks</a>.
+                  Created by{' '}
+                  <a className="link-secondary" href="https://github.com/ssorallen">
+                    ssorallen
+                  </a>{' '}
+                  &middot; Source available at{' '}
+                  <a className="link-secondary" href="https://github.com/ssorallen/stocks">
+                    ssorallen/stocks
+                  </a>{' '}
+                  <span aria-label="" role="img">
+                    🦉
+                  </span>
                 </small>
               </Col>
             </Row>
             <Row>
               <Col>
                 <small className="text-secondary">
-                  Data provided for free by <a href="https://iextrading.com/developer/">IEX</a>. Use
-                  is subject to <a href="https://iextrading.com/api-exhibit-a/">IEX Exhibit A</a>.
+                  Data provided for free by{' '}
+                  <a className="link-secondary" href="https://iextrading.com/developer/">
+                    IEX
+                  </a>{' '}
+                  &middot; Use is subject to{' '}
+                  <a className="link-secondary" href="https://iextrading.com/api-exhibit-a/">
+                    IEX Exhibit A
+                  </a>
                 </small>
               </Col>
             </Row>

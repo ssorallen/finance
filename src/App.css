@@ -1,0 +1,4 @@
+.link-secondary {
+  color: var(--secondary) !important;
+  text-decoration: underline;
+}
