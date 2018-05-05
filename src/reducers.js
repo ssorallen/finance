@@ -61,15 +61,7 @@ type State = {
 
 export type GetState = () => State;
 
-const initialState = {
-  isFetchingQuotes: false,
-  quotes: {},
-  symbols: [],
-  transactions: [],
-  updatedAt: null,
-};
-
-export default function(state: State = initialState, action: Action): State {
+export default function(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_SYMBOL':
       const nextSymbols =

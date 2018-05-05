@@ -6,6 +6,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import persistState from 'redux-localstorage';
 import reducers from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 import thunk from 'redux-thunk';
@@ -13,8 +14,27 @@ import thunk from 'redux-thunk';
 const rootElement = document.getElementById('root');
 if (rootElement == null) throw new Error('Missing element #root to render app');
 
+// Enable Redux Devtools in the browser.
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+
+// Pass an initial state to `createStore` rather than use a default argument in the reducer to
+// enable 'redux-localstorage' to merge its persisted state with this initial state.
+const initialState = {
+  isFetchingQuotes: false,
+  quotes: {},
+  symbols: [],
+  transactions: [],
+  updatedAt: null,
+};
+
+const store = createStore(
+  reducers,
+  initialState,
+  composeEnhancers(
+    applyMiddleware(thunk),
+    persistState(['quotes', 'symbols', 'transactions', 'updatedAt'])
+  )
+);
 
 ReactDOM.render(
   <Provider store={store}>
