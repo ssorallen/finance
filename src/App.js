@@ -25,8 +25,8 @@ export default class App extends React.Component<{}> {
             <Route exact path="/" component={Overview} />
             <Route path="/performance" component={Performance} />
             <Route path="/transactions" component={Transactions} />
-            <Row>
-              <Col md="6" style={{ marginBottom: '20px', marginTop: '20px' }}>
+            <Row className="mb-3">
+              <Col md="6">
                 <AddSymbolForm />
               </Col>
             </Row>
