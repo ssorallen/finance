@@ -33,19 +33,16 @@ export default class App extends React.Component<{}> {
             <Row>
               <Col>
                 <small className="text-secondary">
-                  Data provided for free by{' '}
-                  <a
-                    className="text-secondary"
-                    href="https://iextrading.com/developer/"
-                    style={{ textDecoration: 'underline' }}>
-                    IEX
-                  </a>. Use is subject to{' '}
-                  <a
-                    className="text-secondary"
-                    href="https://iextrading.com/api-exhibit-a/"
-                    style={{ textDecoration: 'underline' }}>
-                    IEX Exhibit A
-                  </a>.
+                  Created by <a href="https://github.com/ssorallen">ssorallen</a>. Source available
+                  on GitHub at <a href="https://github.com/ssorallen/stocks">ssorallen/stocks</a>.
+                </small>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <small className="text-secondary">
+                  Data provided for free by <a href="https://iextrading.com/developer/">IEX</a>. Use
+                  is subject to <a href="https://iextrading.com/api-exhibit-a/">IEX Exhibit A</a>.
                 </small>
               </Col>
             </Row>

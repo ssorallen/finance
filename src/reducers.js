@@ -19,6 +19,11 @@ type AddTransactionAction = {
   type: 'ADD_TRANSACTION',
 };
 
+type DeleteSymbolsAction = {
+  symbols: Array<string>,
+  type: 'DELETE_SYMBOLS',
+};
+
 type DeleteTransactionsAction = {
   transactions: Array<Transaction>,
   type: 'DELETE_TRANSACTIONS',
@@ -40,6 +45,7 @@ type FetchQuotesSuccessAction = {
 export type Action =
   | AddSymbolAction
   | AddTransactionAction
+  | DeleteSymbolsAction
   | DeleteTransactionsAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
@@ -82,6 +88,13 @@ export default function(state: State, action: Action): State {
       return {
         ...state,
         transactions: [...state.transactions, action.transaction],
+      };
+    case 'DELETE_SYMBOLS':
+      // Preserve Flow refinement inside `filter` by keeping a reference to `symbols`.
+      const symbols = action.symbols;
+      return {
+        ...state,
+        symbols: state.symbols.filter(symbol => symbols.indexOf(symbol) === -1),
       };
     case 'DELETE_TRANSACTIONS':
       // Preserve Flow refinement inside `filter` by keeping a reference to `transactions`.

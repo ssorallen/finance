@@ -8,6 +8,8 @@ import { currencyFormatter } from './formatters';
 import cx from 'classnames';
 
 type OwnProps = {
+  onToggleSelected: (symbol: string) => void,
+  selected: boolean,
   symbol: string,
 };
 
@@ -32,12 +34,20 @@ function abbreviateNumber(num: number, fixed) {
 }
 
 class OverviewRow extends React.Component<Props> {
+  handleChangeIsSelected = () => {
+    this.props.onToggleSelected(this.props.symbol);
+  };
+
   render() {
     const { quote, symbol } = this.props;
     return (
       <tr>
         <td style={{ width: 1 }}>
-          <input type="checkbox" />
+          <input
+            checked={this.props.selected}
+            onChange={this.handleChangeIsSelected}
+            type="checkbox"
+          />
         </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{symbol}</td>

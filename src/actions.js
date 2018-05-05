@@ -12,6 +12,10 @@ export function addTransaction(transaction: Transaction) {
   return { transaction, type: 'ADD_TRANSACTION' };
 }
 
+export function deleteSymbols(symbols: Array<string>) {
+  return { symbols, type: 'DELETE_SYMBOLS' };
+}
+
 export function deleteTransactions(transactions: Array<Transaction>) {
   return { transactions, type: 'DELETE_TRANSACTIONS' };
 }

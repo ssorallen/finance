@@ -9,7 +9,6 @@ import { deleteTransactions } from './actions';
 
 type StateProps = {
   dispatch: Function,
-  symbols: Array<string>,
   transactions: Array<Transaction>,
 };
 
@@ -88,6 +87,7 @@ class Transactions extends React.Component<Props, State> {
                   <th style={{ width: 1 }}>
                     <input
                       checked={allTransactionsSelected}
+                      disabled={this.props.transactions.length === 0}
                       onChange={this.handleToggleAllTransactions}
                       type="checkbox"
                     />
@@ -109,7 +109,7 @@ class Transactions extends React.Component<Props, State> {
                     </td>
                   </tr>
                 ) : (
-                  this.props.symbols.map(symbol => {
+                  Object.keys(transactionsBySymbol).map(symbol => {
                     const symbolTransactions = transactionsBySymbol[symbol];
                     return symbolTransactions == null ? null : (
                       <React.Fragment key={symbol}>
@@ -135,6 +135,5 @@ class Transactions extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
-  symbols: state.symbols,
   transactions: state.transactions,
 }))(Transactions);
