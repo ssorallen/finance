@@ -29,7 +29,9 @@ class Transactions extends React.Component<Props> {
           <table className="table">
             <thead>
               <tr>
-                <th style={{ width: 1 }}><input type="checkbox" /></th>
+                <th style={{ width: 1 }}>
+                  <input type="checkbox" />
+                </th>
                 <th>Name</th>
                 <th>Symbol</th>
                 <th>Type</th>
@@ -40,12 +42,20 @@ class Transactions extends React.Component<Props> {
               </tr>
             </thead>
             <tbody>
-              {this.props.symbols.map(symbol =>
-                <React.Fragment key={symbol}>
-                  {transactionsBySymbol[symbol].map((transaction, i) => (
-                    <TransactionRow key={i} transaction={transaction} />
-                  ))}
-                </React.Fragment>
+              {this.props.transactions.length === 0 ? (
+                <tr>
+                  <td className="text-center" colSpan="8">
+                    No transactions yet. Add one using the form below.
+                  </td>
+                </tr>
+              ) : (
+                this.props.symbols.map(symbol => (
+                  <React.Fragment key={symbol}>
+                    {transactionsBySymbol[symbol].map((transaction, i) => (
+                      <TransactionRow key={i} transaction={transaction} />
+                    ))}
+                  </React.Fragment>
+                ))
               )}
             </tbody>
           </table>

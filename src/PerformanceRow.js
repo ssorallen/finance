@@ -40,12 +40,14 @@ class PerformanceRow extends React.Component<Props> {
 
     // Show returns only if the user owns shares and the quote has been returned from the API call.
     // Showing any earlier will look like some erroneous and funky data.
-    const showReturns = (shares > 0) && (quote != null);
+    const showReturns = shares > 0 && quote != null;
 
     const formatter = formatNumber({ padRight: 2, round: 2 });
     return (
       <tr>
-        <td style={{ width: 1 }}><input type="checkbox" /></td>
+        <td style={{ width: 1 }}>
+          <input type="checkbox" />
+        </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{this.props.symbol}</td>
         <td>{quote == null ? '...' : quote.latestPrice}</td>
@@ -59,11 +61,11 @@ class PerformanceRow extends React.Component<Props> {
         <td>{shares > 0 ? shares : '...'}</td>
         <td>{showReturns ? formatter(costBasis) : '...'}</td>
         <td>{showReturns ? formatter(marketValue) : '...'}</td>
-        <td className={cx({ 'text-danger': gain < 0, 'text-success' : gain >= 0 })}>
+        <td className={cx({ 'text-danger': gain < 0, 'text-success': gain >= 0 })}>
           {showReturns ? `${gain >= 0 ? '+' : ''}${formatter(gain)}` : '...'}
         </td>
-        <td className={cx({ 'text-danger': gain < 0, 'text-success' : gain >= 0 })}>
-          {showReturns ? `${gain >= 0 ? '+' : ''}${Math.round(gainPercent * 10000) / 100 }%` : '...'}
+        <td className={cx({ 'text-danger': gain < 0, 'text-success': gain >= 0 })}>
+          {showReturns ? `${gain >= 0 ? '+' : ''}${Math.round(gainPercent * 10000) / 100}%` : '...'}
         </td>
       </tr>
     );

@@ -9,8 +9,8 @@
   position: absolute;
   top: 50%;
   margin-top: -5px;
-  width: 11px;
-  height: 11px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: orange;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);

@@ -17,13 +17,14 @@ type StateProps = {
 type Props = OwnProps & StateProps;
 
 function abbreviateNumber(num: number, fixed) {
-  if (num === null) { return null; } // terminate early
-  if (num === 0) { return '0'; } // terminate early
-  fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
-  const b = (num).toPrecision(2).split('e'); // get power
+  if (num === null) return null; // terminate early
+  if (num === 0) return '0'; // terminate early
+
+  fixed = !fixed || fixed < 0 ? 0 : fixed; // number of decimal places to show
+  const b = num.toPrecision(2).split('e'); // get power
   const k = b.length === 1 ? 0 : Math.floor(Math.min(parseInt(b[1].slice(1), 10), 14) / 3); // floor at decimals, ceiling at trillions
   const d = k < 0 ? k : Math.abs(k); // enforce -0 is 0
-  const c = d < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed); // divide by power
+  const c = d < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3)).toFixed(1 + fixed); // divide by power
   const e = c + ['', 'K', 'M', 'B', 'T'][k]; // append power
   return e;
 }
@@ -33,7 +34,9 @@ class OverviewRow extends React.Component<Props> {
     const { quote, symbol } = this.props;
     return (
       <tr>
-        <td style={{ width: 1 }}><input type="checkbox" /></td>
+        <td style={{ width: 1 }}>
+          <input type="checkbox" />
+        </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{symbol}</td>
         <td>{quote == null ? '...' : quote.latestPrice}</td>

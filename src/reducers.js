@@ -17,7 +17,7 @@ export type Transaction = {
 type AddTransactionAction = {
   transaction: Transaction,
   type: 'ADD_TRANSACTION',
-}
+};
 
 type FetchQuotesFailureAction = {
   type: 'FETCH_QUOTES_FAILURE',
@@ -28,7 +28,7 @@ type FetchQuotesRequestAction = {
 };
 
 type FetchQuotesSuccessAction = {
-  quotes: {[symbol: string]: Object},
+  quotes: { [symbol: string]: Object },
   type: 'FETCH_QUOTES_SUCCESS',
 };
 
@@ -53,9 +53,10 @@ export type Quote = {
 
 type State = {
   isFetchingPrices: boolean,
-  quotes: {[ticker: string]: Quote},
-  transactions: Array<Transaction>,
+  quotes: { [ticker: string]: Quote },
   symbols: Array<string>,
+  transactions: Array<Transaction>,
+  updatedAt: ?number,
 };
 
 export type GetState = () => State;
@@ -65,40 +66,43 @@ const initialState = {
   quotes: {},
   symbols: [],
   transactions: [],
-}
+  updatedAt: null,
+};
 
 export default function(state: State = initialState, action: Action) {
-  switch(action.type) {
-  case 'ADD_TICKER':
-    const nextSymbols = state.symbols.indexOf(action.ticker) === -1 ?
-      [...state.symbols, action.ticker] :
-      state.symbols;
-    return {
-      ...state,
-      symbols: nextSymbols,
-    };
-  case 'ADD_TRANSACTION':
-    return {
-      ...state,
-      transactions: [...state.transactions, action.transaction],
-    };
-  case 'FETCH_QUOTES_FAILURE':
-    return {
-      ...state,
-      isFetchingQuotes: false,
-    };
-  case 'FETCH_QUOTES_REQUEST':
-    return {
-      ...state,
-      isFetchingQuotes: true,
-    };
-  case 'FETCH_QUOTES_SUCCESS':
-    return {
-      ...state,
-      isFetchingQuotes: false,
-      quotes: action.quotes,
-    };
-  default:
-    return state;
+  switch (action.type) {
+    case 'ADD_TICKER':
+      const nextSymbols =
+        state.symbols.indexOf(action.ticker) === -1
+          ? [...state.symbols, action.ticker]
+          : state.symbols;
+      return {
+        ...state,
+        symbols: nextSymbols,
+      };
+    case 'ADD_TRANSACTION':
+      return {
+        ...state,
+        transactions: [...state.transactions, action.transaction],
+      };
+    case 'FETCH_QUOTES_FAILURE':
+      return {
+        ...state,
+        isFetchingQuotes: false,
+      };
+    case 'FETCH_QUOTES_REQUEST':
+      return {
+        ...state,
+        isFetchingQuotes: true,
+      };
+    case 'FETCH_QUOTES_SUCCESS':
+      return {
+        ...state,
+        isFetchingQuotes: false,
+        quotes: action.quotes,
+        updatedAt: Date.now(),
+      };
+    default:
+      return state;
   }
 }

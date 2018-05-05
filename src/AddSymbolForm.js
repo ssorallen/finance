@@ -64,12 +64,14 @@ class AddSymbolForm extends React.Component<Props, State> {
             action="/api"
             method="post"
             onSubmit={this.handleSubmit}
-            innerRef={ref => { this.formRef = ref; }}>
+            innerRef={ref => {
+              this.formRef = ref;
+            }}>
             <FormGroup>
               <Label for="ticker">Symbol</Label>
               <Input autoComplete="off" id="ticker" name="ticker" required />
             </FormGroup>
-            {this.state.showTransactionData ?
+            {this.state.showTransactionData ? (
               <FormGroup>
                 <Button
                   color="link"
@@ -78,7 +80,8 @@ class AddSymbolForm extends React.Component<Props, State> {
                   type="button">
                   - Remove transaction data
                 </Button>
-              </FormGroup> :
+              </FormGroup>
+            ) : (
               <FormGroup>
                 <Button
                   color="link"
@@ -87,7 +90,8 @@ class AddSymbolForm extends React.Component<Props, State> {
                   type="button">
                   + Add transaction data
                 </Button>
-              </FormGroup>}
+              </FormGroup>
+            )}
             <Collapse isOpen={this.state.showTransactionData}>
               <FormGroup>
                 <Label for="type">Type</Label>
@@ -146,10 +150,7 @@ class AddSymbolForm extends React.Component<Props, State> {
               </FormGroup>
             </Collapse>
             <FormGroup style={{ marginBottom: 0 }}>
-              <Button
-                color="primary"
-                disabled={this.props.isLoading}
-                type="submit">
+              <Button color="primary" disabled={this.props.isLoading} type="submit">
                 Add to portfolio
               </Button>
             </FormGroup>

@@ -23,7 +23,9 @@ class OverviewRow extends React.Component<Props> {
     const { quote, transaction } = this.props;
     return (
       <tr>
-        <td style={{ width: 1 }}><input type="checkbox" /></td>
+        <td style={{ width: 1 }}>
+          <input type="checkbox" />
+        </td>
         <td>{quote == null ? '...' : quote.companyName}</td>
         <td>{transaction.symbol}</td>
         <td>{transaction.type}</td>

@@ -32,9 +32,15 @@ class Performance extends React.Component<Props> {
               </tr>
             </thead>
             <tbody>
-              {this.props.symbols.map(symbol =>
-                <PerformanceRow key={symbol} symbol={symbol} />
-              )}
+              {this.props.symbols.length === 0 ?
+                <tr>
+                  <td className="text-center" colSpan="10">
+                    No symbols yet. Add one using the form below.
+                  </td>
+                </tr> :
+                this.props.symbols.map(symbol =>
+                  <PerformanceRow key={symbol} symbol={symbol} />
+                )}
             </tbody>
           </table>
         </Col>
