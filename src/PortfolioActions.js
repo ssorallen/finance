@@ -33,6 +33,7 @@ function transformGfToStocks(gfTransactions: Array<GfTransaction>): Array<Transa
   return gfTransactions.map(transaction => ({
     commission: parseFloat(transaction.Commission),
     date: transaction.Date,
+    id: -1, // A real ID is added in the reducer.
     notes: transaction.Notes,
     price: parseFloat(transaction.Price),
     shares: parseFloat(transaction.Shares),

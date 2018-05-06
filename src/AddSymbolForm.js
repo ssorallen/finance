@@ -42,6 +42,7 @@ class AddSymbolForm extends React.Component<Props, State> {
     const transaction = {
       commission: parseFloat(formData.commission) || 0,
       date: formData.date,
+      id: -1, // A real ID is added in the reducer.
       notes: null,
       price: parseFloat(formData.price) || 0,
       shares: parseFloat(formData.shares) || 0,
