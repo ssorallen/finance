@@ -8,6 +8,7 @@ type AddSymbolAction = {
 export type Transaction = {
   commission: number,
   date: ?string,
+  notes: ?string,
   price: number,
   shares: number,
   symbol: string,
@@ -17,6 +18,11 @@ export type Transaction = {
 type AddTransactionAction = {
   transaction: Transaction,
   type: 'ADD_TRANSACTION',
+};
+
+type AddTransactionsAction = {
+  transactions: Array<Transaction>,
+  type: 'ADD_TRANSACTIONS',
 };
 
 type DeletePortfolioAction = {
@@ -49,6 +55,7 @@ type FetchQuotesSuccessAction = {
 export type Action =
   | AddSymbolAction
   | AddTransactionAction
+  | AddTransactionsAction
   | DeletePortfolioAction
   | DeleteSymbolsAction
   | DeleteTransactionsAction
@@ -80,7 +87,7 @@ export type GetState = () => State;
 
 export default function(state: State, action: Action): State {
   switch (action.type) {
-    case 'ADD_SYMBOL':
+    case 'ADD_SYMBOL': {
       const nextSymbols =
         state.symbols.indexOf(action.symbol) === -1
           ? [...state.symbols, action.symbol]
@@ -89,25 +96,49 @@ export default function(state: State, action: Action): State {
         ...state,
         symbols: nextSymbols,
       };
-    case 'ADD_TRANSACTION':
+    }
+    case 'ADD_TRANSACTION': {
+      const nextSymbols =
+        state.symbols.indexOf(action.transaction.symbol) === -1
+          ? [...state.symbols, action.transaction.symbol]
+          : state.symbols;
+
+      // Adding a new Transaction also adds the Transaction's symbol to the list of symbols to
+      // watch.
       return {
         ...state,
+        symbols: nextSymbols,
         transactions: [...state.transactions, action.transaction],
       };
+    }
+    case 'ADD_TRANSACTIONS': {
+      // Ensure no duplicate symbols are added.
+      const nextSymbols = new Set(state.symbols);
+      action.transactions.forEach(transaction => {
+        nextSymbols.add(transaction.symbol);
+      });
+
+      return {
+        ...state,
+        symbols: Array.from(nextSymbols),
+        transactions: state.transactions.concat(action.transactions),
+      };
+    }
     case 'DELETE_PORTFOLIO':
       return {
         ...state,
         symbols: [],
         transactions: [],
       };
-    case 'DELETE_SYMBOLS':
+    case 'DELETE_SYMBOLS': {
       // Preserve Flow refinement inside `filter` by keeping a reference to `symbols`.
       const symbols = action.symbols;
       return {
         ...state,
         symbols: state.symbols.filter(symbol => symbols.indexOf(symbol) === -1),
       };
-    case 'DELETE_TRANSACTIONS':
+    }
+    case 'DELETE_TRANSACTIONS': {
       // Preserve Flow refinement inside `filter` by keeping a reference to `transactions`.
       const transactions = action.transactions;
       return {
@@ -116,6 +147,7 @@ export default function(state: State, action: Action): State {
           transaction => transactions.indexOf(transaction) === -1
         ),
       };
+    }
     case 'FETCH_QUOTES_FAILURE':
       return {
         ...state,

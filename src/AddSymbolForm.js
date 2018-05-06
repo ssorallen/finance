@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Collapse, Form, FormGroup, Input, Label } from 'reactstrap';
-import { addSymbol, addTransaction, fetchQuotes } from './actions';
+import { addTransaction, fetchQuotes } from './actions';
 import { connect } from 'react-redux';
 import formSerialize from 'form-serialize';
 
@@ -42,17 +42,14 @@ class AddSymbolForm extends React.Component<Props, State> {
     const transaction = {
       commission: parseFloat(formData.commission) || 0,
       date: formData.date,
+      notes: null,
       price: parseFloat(formData.price) || 0,
       shares: parseFloat(formData.shares) || 0,
       symbol: formData.symbol.toUpperCase(),
       type: formData.type,
     };
 
-    this.props.dispatch(addSymbol(transaction.symbol));
-    if (this.state.showTransactionData) {
-      this.props.dispatch(addTransaction(transaction));
-    }
-
+    this.props.dispatch(addTransaction(transaction));
     this.props.dispatch(fetchQuotes());
     if (this.props.onSubmit) this.props.onSubmit(transaction);
     if (this.formRef != null) this.formRef.reset();

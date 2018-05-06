@@ -12,6 +12,10 @@ export function addTransaction(transaction: Transaction) {
   return { transaction, type: 'ADD_TRANSACTION' };
 }
 
+export function addTransactions(transactions: Array<Transaction>) {
+  return { transactions, type: 'ADD_TRANSACTIONS' };
+}
+
 export function deletePortfolio() {
   return { type: 'DELETE_PORTFOLIO' };
 }
