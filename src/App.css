@@ -30,6 +30,10 @@
   content: '';
 }
 
+.react-bootstrap-table {
+  font-size: 0.875rem; /* Match the font-size of `<button class="btn btn-sm" />` */
+}
+
 /* Prevent excessive (and unnecessary) margin from react-table from increasing the height of the
  * `<thead>`
  */
@@ -38,4 +42,10 @@
 .react-bootstrap-table th .order > .dropup > .caret {
   margin-bottom: 0;
   margin-top: 0;
+}
+
+.react-bootstrap-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
