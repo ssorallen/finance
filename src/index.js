@@ -35,7 +35,9 @@ const store = createStore(
   initialState,
   composeEnhancers(
     applyMiddleware(thunk),
-    persistState(['quotes', 'symbols', 'transactions', 'updatedAt'], { key: 'default' })
+    persistState(['nextTransactionId', 'quotes', 'symbols', 'transactions', 'updatedAt'], {
+      key: 'default',
+    })
   )
 );
 
