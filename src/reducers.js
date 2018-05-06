@@ -1,11 +1,15 @@
 /* @flow */
 
+import csvStringify from 'csv-stringify/lib/sync';
+import { transformStocksToGf } from './transformers';
+
 type AddSymbolAction = {
   symbol: string,
   type: 'ADD_SYMBOL',
 };
 
 export type Transaction = {
+  cashValue: ?number,
   commission: number,
   date: ?string,
   id: number,
@@ -40,6 +44,10 @@ type DeleteTransactionsAction = {
   type: 'DELETE_TRANSACTIONS',
 };
 
+type DownloadPortfolioAction = {
+  type: 'DOWNLOAD_PORTFOLIO',
+};
+
 type FetchQuotesFailureAction = {
   error: TypeError,
   type: 'FETCH_QUOTES_FAILURE',
@@ -61,6 +69,7 @@ export type Action =
   | DeletePortfolioAction
   | DeleteSymbolsAction
   | DeleteTransactionsAction
+  | DownloadPortfolioAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
   | FetchQuotesSuccessAction;
@@ -161,6 +170,39 @@ export default function(state: State, action: Action): State {
           transaction => transactions.indexOf(transaction) === -1
         ),
       };
+    }
+    case 'DOWNLOAD_PORTFOLIO': {
+      const documentBody = document.body;
+      if (documentBody == null) throw new Error('How in the hell did we get here?');
+
+      const csvData = csvStringify(transformStocksToGf(state.transactions, state.quotes), {
+        columns: [
+          'Symbol',
+          'Name',
+          'Type',
+          'Date',
+          'Shares',
+          'Price',
+          'Cash value',
+          'Commission',
+          'Notes',
+        ],
+        header: true,
+      });
+
+      // The following is some funky funkiness to download a file generated in JS. Get down with
+      // this funk.
+      const blob = new Blob([csvData], { type: 'text/csv' });
+      const a = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      a.download = 'My Portfolio.csv';
+      a.href = url;
+      a.style.display = 'none';
+      documentBody.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+
+      return state;
     }
     case 'FETCH_QUOTES_FAILURE':
       return {

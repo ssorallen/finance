@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
+import type { Quote, Transaction } from './reducers';
+import { currencyFormatter, numberFormatter } from './formatters';
 import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
-import type { Quote, Transaction } from './reducers';
 import { connect } from 'react-redux';
-import { currencyFormatter, numberFormatter } from './formatters';
 import { deleteTransactions } from './actions';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 type StateProps = {
   dispatch: Function,
@@ -20,6 +21,11 @@ type Props = StateProps;
 type State = {
   selectedTransactionIds: Set<number>,
 };
+
+const pagination = paginationFactory({
+  hideSizePerPage: true, // This seems to use some broken Bootstrap 3 controls.
+  sizePerPage: 50,
+});
 
 const TABLE_COLUMNS = [
   { dataField: 'companyName', sort: true, text: 'Name' },
@@ -122,7 +128,7 @@ class Transactions extends React.Component<Props, State> {
           </Col>
           <PortfolioActions />
         </Row>
-        <Row>
+        <Row className="mb-3">
           <Col>
             <BootstrapTable
               bordered={false}
@@ -131,6 +137,7 @@ class Transactions extends React.Component<Props, State> {
               defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
               keyField="id"
               noDataIndication={() => 'No transactions yet. Add one using the form below.'}
+              pagination={pagination}
               selectRow={{
                 mode: 'checkbox',
                 onSelect: this.handleToggleTransactionSelected,

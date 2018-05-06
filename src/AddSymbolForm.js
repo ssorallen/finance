@@ -40,6 +40,7 @@ class AddSymbolForm extends React.Component<Props, State> {
 
     // Set some defaults and override the symbol to make sure it's always UPPERCASE.
     const transaction = {
+      cashValue: null,
       commission: parseFloat(formData.commission) || 0,
       date: formData.date,
       id: -1, // A real ID is added in the reducer.

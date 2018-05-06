@@ -28,6 +28,10 @@ export function deleteTransactions(transactions: Array<Transaction>) {
   return { transactions, type: 'DELETE_TRANSACTIONS' };
 }
 
+export function downloadPortfolio() {
+  return { type: 'DOWNLOAD_PORTFOLIO' };
+}
+
 export function fetchQuotes() {
   return function(dispatch: Function, getState: GetState) {
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
