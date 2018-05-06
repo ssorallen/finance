@@ -14,6 +14,7 @@ import SpinKit from './SpinKit';
 import { connect } from 'react-redux';
 
 type Props = {
+  fetchErrorMessage: ?string,
   isLoading: boolean,
   updatedAt: ?number,
 };
@@ -45,8 +46,8 @@ class Navbar extends React.Component<Props, State> {
   };
 
   render() {
-    // Create local reference to `updatedAt` to enable Flow refinement beyond `null | undefined`.
-    const { updatedAt } = this.props;
+    // Create local references to enable Flow refinement beyond `null | undefined`.
+    const { fetchErrorMessage, updatedAt } = this.props;
     return (
       <ReactstrapNavbar color="dark" dark expand="md">
         <NavbarBrand className="text-warning" tag={NavLink} to="/">
@@ -74,6 +75,13 @@ class Navbar extends React.Component<Props, State> {
           {this.props.isLoading ? (
             <SpinKit title="Fetching new quotes..." type="folding-cube" />
           ) : null}
+          {fetchErrorMessage == null ? null : (
+            <abbr className="mr-1" title={`Error: ${fetchErrorMessage}`}>
+              <span aria-label="Connection error" role="img">
+                ⚠️
+              </span>
+            </abbr>
+          )}
           <span>
             <span className="text-white-50">Last updated: </span>
             {updatedAt == null ? (
@@ -91,6 +99,7 @@ class Navbar extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  fetchErrorMessage: state.fetchErrorMessage,
   isLoading: state.isFetchingQuotes,
   updatedAt: state.updatedAt,
 }))(Navbar);

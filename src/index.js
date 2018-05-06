@@ -20,6 +20,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // Pass an initial state to `createStore` rather than use a default argument in the reducer to
 // enable 'redux-localstorage' to merge its persisted state with this initial state.
 const initialState = {
+  fetchErrorMessage: null,
   isFetchingQuotes: false,
   quotes: {},
   symbols: [],

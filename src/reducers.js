@@ -40,6 +40,7 @@ type DeleteTransactionsAction = {
 };
 
 type FetchQuotesFailureAction = {
+  error: TypeError,
   type: 'FETCH_QUOTES_FAILURE',
 };
 
@@ -76,6 +77,7 @@ export type Quote = {
 };
 
 type State = {
+  fetchErrorMessage: ?string,
   isFetchingQuotes: boolean,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
@@ -151,11 +153,13 @@ export default function(state: State, action: Action): State {
     case 'FETCH_QUOTES_FAILURE':
       return {
         ...state,
+        fetchErrorMessage: action.error.message,
         isFetchingQuotes: false,
       };
     case 'FETCH_QUOTES_REQUEST':
       return {
         ...state,
+        fetchErrorMessage: null,
         isFetchingQuotes: true,
       };
     case 'FETCH_QUOTES_SUCCESS':

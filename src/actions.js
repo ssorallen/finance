@@ -41,7 +41,7 @@ export function fetchQuotes() {
           .json()
           .then(data => {
             // Data comes back under the endpoint from which it was requested. In this case the key
-            // is `quote`. Unzip the response to match the shape our the store.
+            // is `quote`. Unzip the response to match the shape of the store.
             //
             // See: https://iextrading.com/developer/docs/#batch-requests
             const nextQuotes = {};
@@ -54,8 +54,8 @@ export function fetchQuotes() {
             dispatch({ type: 'FETCH_QUOTES_FAILURE' });
           });
       })
-      .catch(() => {
-        dispatch({ type: 'FETCH_QUOTES_FAILURE' });
+      .catch(error => {
+        dispatch({ error, type: 'FETCH_QUOTES_FAILURE' });
       });
   };
 }
