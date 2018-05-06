@@ -53,14 +53,14 @@ const TABLE_COLUMNS = [
 ];
 
 class Transactions extends React.Component<Props, State> {
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     // If any currently selected transactions are not in the next props update, remove them from the
     // internal selected transactions `Set` to stay up-to-date.
     let hasChanges = false;
     const nextTransactions = new Set(nextProps.transactions);
     const nextSelectedTransactionIds = new Set();
-    for (const transaction of prevState.selectedTransactionIds) {
-      if (nextTransactions.has(transaction)) nextSelectedTransactionIds.add(transaction.id);
+    for (const transactionId of prevState.selectedTransactionIds) {
+      if (nextTransactions.has(transactionId)) nextSelectedTransactionIds.add(transactionId);
       else hasChanges = true;
     }
 
