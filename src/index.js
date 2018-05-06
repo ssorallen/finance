@@ -1,6 +1,7 @@
 /* @flow */
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { applyMiddleware, compose, createStore } from 'redux';
 import App from './App';
 import { Provider } from 'react-redux';
@@ -22,6 +23,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const initialState = {
   fetchErrorMessage: null,
   isFetchingQuotes: false,
+  nextTransactionId: 1,
   quotes: {},
   symbols: [],
   transactions: [],

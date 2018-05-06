@@ -8,6 +8,7 @@ type AddSymbolAction = {
 export type Transaction = {
   commission: number,
   date: ?string,
+  id: number,
   notes: ?string,
   price: number,
   shares: number,
@@ -79,6 +80,7 @@ export type Quote = {
 type State = {
   fetchErrorMessage: ?string,
   isFetchingQuotes: boolean,
+  nextTransactionId: number,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
   transactions: Array<Transaction>,
@@ -109,26 +111,36 @@ export default function(state: State, action: Action): State {
       // watch.
       return {
         ...state,
+        nextTransactionId: state.nextTransactionId + 1,
         symbols: nextSymbols,
-        transactions: [...state.transactions, action.transaction],
+        transactions: [
+          ...state.transactions,
+          { ...action.transaction, id: state.nextTransactionId },
+        ],
       };
     }
     case 'ADD_TRANSACTIONS': {
       // Ensure no duplicate symbols are added.
       const nextSymbols = new Set(state.symbols);
-      action.transactions.forEach(transaction => {
+      let nextTransactionId = state.nextTransactionId;
+      const newTransactions = action.transactions.map(transaction => {
         nextSymbols.add(transaction.symbol);
+        const newTransaction = { ...transaction, id: nextTransactionId };
+        nextTransactionId += 1;
+        return newTransaction;
       });
 
       return {
         ...state,
+        nextTransactionId,
         symbols: Array.from(nextSymbols),
-        transactions: state.transactions.concat(action.transactions),
+        transactions: state.transactions.concat(newTransactions),
       };
     }
     case 'DELETE_PORTFOLIO':
       return {
         ...state,
+        nextTransactionId: 1,
         symbols: [],
         transactions: [],
       };

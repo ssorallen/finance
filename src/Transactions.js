@@ -2,22 +2,49 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
-import type { Transaction } from './reducers';
-import TransactionRow from './TransactionRow';
+import type { Quote, Transaction } from './reducers';
 import { connect } from 'react-redux';
+import { currencyFormatter, numberFormatter } from './formatters';
 import { deleteTransactions } from './actions';
 
 type StateProps = {
   dispatch: Function,
+  quotes: { [symbol: string]: Quote },
   transactions: Array<Transaction>,
 };
 
 type Props = StateProps;
 
 type State = {
-  selectedTransactions: Set<Transaction>,
+  selectedTransactionIds: Set<number>,
 };
+
+const TABLE_COLUMNS = [
+  { dataField: 'companyName', sort: true, text: 'Name' },
+  { dataField: 'symbol', sort: true, text: 'Symbol' },
+  { dataField: 'type', sort: true, text: 'Type' },
+  { dataField: 'date', sort: true, text: 'Date' },
+  {
+    dataField: 'shares',
+    formatter: cell => (cell === 0 ? null : numberFormatter.format(cell)),
+    sort: true,
+    text: 'Shares',
+  },
+  {
+    dataField: 'price',
+    formatter: cell => (cell === 0 ? null : currencyFormatter.format(cell)),
+    sort: true,
+    text: 'Price',
+  },
+  {
+    dataField: 'commission',
+    formatter: cell => (cell === 0 ? null : currencyFormatter.format(cell)),
+    sort: true,
+    text: 'Commission',
+  },
+];
 
 class Transactions extends React.Component<Props, State> {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -25,13 +52,13 @@ class Transactions extends React.Component<Props, State> {
     // internal selected transactions `Set` to stay up-to-date.
     let hasChanges = false;
     const nextTransactions = new Set(nextProps.transactions);
-    const nextSelectedTransactions = new Set();
-    for (const transaction of prevState.selectedTransactions) {
-      if (nextTransactions.has(transaction)) nextSelectedTransactions.add(transaction);
+    const nextSelectedTransactionIds = new Set();
+    for (const transaction of prevState.selectedTransactionIds) {
+      if (nextTransactions.has(transaction)) nextSelectedTransactionIds.add(transaction.id);
       else hasChanges = true;
     }
 
-    if (hasChanges) return { selectedTransactions: nextSelectedTransactions };
+    if (hasChanges) return { selectedTransactionIds: nextSelectedTransactionIds };
     else return null;
   }
 
@@ -40,46 +67,46 @@ class Transactions extends React.Component<Props, State> {
     this.state = {
       // This is *not* treated as immutable. Object identity will not always correctly indicate
       // when changes are made.
-      selectedTransactions: new Set(),
+      selectedTransactionIds: new Set(),
     };
   }
 
   handleDeleteSelectedTransactions = () => {
-    this.props.dispatch(deleteTransactions(Array.from(this.state.selectedTransactions)));
+    const transactionsToDelete = this.props.transactions.filter(transaction =>
+      this.state.selectedTransactionIds.has(transaction.id)
+    );
+    this.props.dispatch(deleteTransactions(transactionsToDelete));
   };
 
-  handleToggleAllTransactions = () => {
-    if (this.state.selectedTransactions.size < this.props.transactions.length) {
-      this.setState({ selectedTransactions: new Set(this.props.transactions) });
+  handleToggleAllTransactions = (isSelected: boolean) => {
+    if (isSelected) {
+      this.setState({
+        selectedTransactionIds: new Set(this.props.transactions.map(transaction => transaction.id)),
+      });
     } else {
-      this.setState({ selectedTransactions: new Set() });
+      this.setState({ selectedTransactionIds: new Set() });
     }
   };
 
-  handleToggleTransactionSelected = (transaction: Transaction) => {
-    if (this.state.selectedTransactions.has(transaction)) {
-      this.state.selectedTransactions.delete(transaction);
-      this.forceUpdate();
+  handleToggleTransactionSelected = (transaction: Transaction, isSelected: boolean) => {
+    if (isSelected) {
+      this.state.selectedTransactionIds.add(transaction.id);
     } else {
-      this.state.selectedTransactions.add(transaction);
-      this.forceUpdate();
+      this.state.selectedTransactionIds.delete(transaction.id);
     }
+    this.forceUpdate();
   };
 
   render() {
-    let allTransactionsSelected = this.props.transactions.length > 0;
-    const transactionsBySymbol = {};
-    this.props.transactions.forEach(transaction => {
-      if (transactionsBySymbol[transaction.symbol] == null) {
-        transactionsBySymbol[transaction.symbol] = [];
-      }
-      transactionsBySymbol[transaction.symbol].push(transaction);
-      allTransactionsSelected =
-        allTransactionsSelected && this.state.selectedTransactions.has(transaction);
+    const tableData = this.props.transactions.map(transaction => {
+      const quote = this.props.quotes[transaction.symbol];
+      return {
+        ...transaction,
+        companyName: quote == null ? '...' : quote.companyName,
+      };
     });
-
     const deleteDisabled =
-      this.props.transactions.length === 0 || this.state.selectedTransactions.size === 0;
+      this.props.transactions.length === 0 || this.state.selectedTransactionIds.size === 0;
     return (
       <React.Fragment>
         <Row className="mb-3 mt-3">
@@ -97,52 +124,20 @@ class Transactions extends React.Component<Props, State> {
         </Row>
         <Row>
           <Col>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th style={{ width: 1 }}>
-                    <input
-                      checked={allTransactionsSelected}
-                      disabled={this.props.transactions.length === 0}
-                      onChange={this.handleToggleAllTransactions}
-                      type="checkbox"
-                    />
-                  </th>
-                  <th>Name</th>
-                  <th>Symbol</th>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Shares</th>
-                  <th>Price</th>
-                  <th>Commission</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.transactions.length === 0 ? (
-                  <tr>
-                    <td className="text-center" colSpan="8">
-                      No transactions yet. Add one using the form below.
-                    </td>
-                  </tr>
-                ) : (
-                  Object.keys(transactionsBySymbol).map(symbol => {
-                    const symbolTransactions = transactionsBySymbol[symbol];
-                    return symbolTransactions == null ? null : (
-                      <React.Fragment key={symbol}>
-                        {symbolTransactions.map((transaction, i) => (
-                          <TransactionRow
-                            key={i}
-                            onToggleSelected={this.handleToggleTransactionSelected}
-                            selected={this.state.selectedTransactions.has(transaction)}
-                            transaction={transaction}
-                          />
-                        ))}
-                      </React.Fragment>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+            <BootstrapTable
+              bordered={false}
+              columns={TABLE_COLUMNS}
+              data={tableData}
+              defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
+              keyField="id"
+              noDataIndication={() => 'No transactions yet. Add one using the form below.'}
+              selectRow={{
+                mode: 'checkbox',
+                onSelect: this.handleToggleTransactionSelected,
+                onSelectAll: this.handleToggleAllTransactions,
+                selected: Array.from(this.state.selectedTransactionIds),
+              }}
+            />
           </Col>
         </Row>
       </React.Fragment>
@@ -151,5 +146,6 @@ class Transactions extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  quotes: state.quotes,
   transactions: state.transactions,
 }))(Transactions);
