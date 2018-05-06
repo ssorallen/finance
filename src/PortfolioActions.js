@@ -39,7 +39,8 @@ class PortfolioActions extends React.Component<Props, State> {
   };
 
   handleImportTransactions = (event: SyntheticEvent<HTMLInputElement>) => {
-    const files = event.currentTarget.files;
+    const currentTarget = event.currentTarget;
+    const files = currentTarget.files;
     if (files == null || files.length === 0) return;
 
     const file = files[0];
@@ -50,6 +51,11 @@ class PortfolioActions extends React.Component<Props, State> {
         this.props.dispatch(addTransactions(transformGfToStocks(parsedCsv)));
         this.props.dispatch(fetchQuotes());
         this.setState({ isReadingFile: false });
+
+        // Reset the input so the same file can be uploaded multiple times in a row (without
+        // resetting the `onchange` would not fire). Why upload multiple times? Testing testing
+        // testing. ABT: Always Be Testing.
+        currentTarget.value = '';
       };
       fileReader.readAsText(file);
     });
