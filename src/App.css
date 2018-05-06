@@ -29,3 +29,13 @@
   border-top: 0;
   content: '';
 }
+
+/* Prevent excessive (and unnecessary) margin from react-table from increasing the height of the
+ * `<thead>`
+ */
+.react-bootstrap-table th > .react-bootstrap-table-sort-order > .caret,
+.react-bootstrap-table th .order > .dropdown > .caret,
+.react-bootstrap-table th .order > .dropup > .caret {
+  margin-bottom: 0;
+  margin-top: 0;
+}
