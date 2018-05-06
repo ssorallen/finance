@@ -61,7 +61,7 @@ const TABLE_COLUMNS = [
   },
   {
     dataField: 'shares',
-    formatter: cell => (cell === '...' ? cell : numberFormatter.format(cell)),
+    formatter: cell => (cell === 0 ? '...' : numberFormatter.format(cell)),
     sort: true,
     text: 'Shares',
   },
