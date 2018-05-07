@@ -51,12 +51,15 @@ const TABLE_COLUMNS = [
   { dataField: 'companyName', sort: true, text: 'Name' },
   { dataField: 'symbol', sort: true, text: 'Symbol' },
   {
+    align: 'right',
     dataField: 'latestPrice',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Last Price',
   },
   {
+    align: 'right',
     classes(cell) {
       return classes(cell.change);
     },
@@ -67,6 +70,7 @@ const TABLE_COLUMNS = [
         : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
             cell.changePercent >= 0 ? '+' : ''
           }${percentFormatter.format(cell.changePercent)})`,
+    headerAlign: 'right',
     sort: true,
     sortFunc(a, b, order) {
       const asc = order === 'asc';
@@ -79,20 +83,26 @@ const TABLE_COLUMNS = [
     text: 'Change',
   },
   {
+    align: 'right',
     dataField: 'marketCap',
     formatter: cell => (cell == null ? '...' : abbreviateNumber(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Mkt. Cap',
   },
   {
+    align: 'right',
     dataField: 'open',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Open',
   },
   {
+    align: 'right',
     dataField: 'close',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Close',
   },

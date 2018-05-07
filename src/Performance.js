@@ -7,6 +7,7 @@ import { currencyFormatter, numberFormatter, percentFormatter } from './formatte
 import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 import { deleteSymbols } from './actions';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
@@ -29,21 +30,25 @@ const pagination = paginationFactory({
 });
 
 function classes(cell) {
-  if (cell == null) return '';
-  else if (cell >= 0) return 'text-success';
-  else return 'text-danger';
+  return cx({
+    'text-danger': cell != null && cell < 0,
+    'text-success': cell != null && cell >= 0,
+  });
 }
 
 const TABLE_COLUMNS = [
   { dataField: 'companyName', sort: true, text: 'Name' },
   { dataField: 'symbol', sort: true, text: 'Symbol' },
   {
+    align: 'right',
     dataField: 'latestPrice',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Last Price',
   },
   {
+    align: 'right',
     classes(cell) {
       return classes(cell.change);
     },
@@ -54,6 +59,7 @@ const TABLE_COLUMNS = [
         : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
             cell.changePercent >= 0 ? '+' : ''
           }${percentFormatter.format(cell.changePercent)})`,
+    headerAlign: 'right',
     sort: true,
     sortFunc(a, b, order) {
       const asc = order === 'asc';
@@ -66,36 +72,46 @@ const TABLE_COLUMNS = [
     text: 'Change',
   },
   {
+    align: 'right',
     dataField: 'shares',
     formatter: cell => (cell === 0 ? '...' : numberFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Shares',
   },
   {
+    align: 'right',
     dataField: 'costBasis',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Cost Basis',
   },
   {
+    align: 'right',
     dataField: 'marketValue',
     formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    headerAlign: 'right',
     sort: true,
     text: 'Mkt Value',
   },
   {
+    align: 'right',
     classes,
     dataField: 'gain',
     formatter: cell =>
       cell == null ? '...' : `${cell >= 0 ? '+' : ''}${currencyFormatter.format(cell)}`,
+    headerAlign: 'right',
     sort: true,
     text: 'Gain',
   },
   {
+    align: 'right',
     classes,
     dataField: 'gainPercent',
     formatter: cell =>
       cell == null ? '...' : `${cell >= 0 ? '+' : ''}${percentFormatter.format(cell)}`,
+    headerAlign: 'right',
     sort: true,
     text: 'Gain %',
   },
