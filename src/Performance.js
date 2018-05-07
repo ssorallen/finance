@@ -23,7 +23,7 @@ type State = {
 };
 
 function classes(cell) {
-  if (cell === '...') return '';
+  if (cell == null) return '';
   else if (cell >= 0) return 'text-success';
   else return 'text-danger';
 }
@@ -33,7 +33,7 @@ const TABLE_COLUMNS = [
   { dataField: 'symbol', sort: true, text: 'Symbol' },
   {
     dataField: 'latestPrice',
-    formatter: cell => (cell === '...' ? cell : currencyFormatter.format(cell)),
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
     sort: true,
     text: 'Last Price',
   },
@@ -43,17 +43,17 @@ const TABLE_COLUMNS = [
     },
     dataField: 'change',
     formatter: cell =>
-      cell.change === '...'
-        ? cell.change
+      cell.change == null
+        ? '...'
         : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
             cell.changePercent >= 0 ? '+' : ''
           }${percentFormatter.format(cell.changePercent)})`,
     sort: true,
     sortFunc(a, b, order) {
       const asc = order === 'asc';
-      if (a.change === '...' && b.change === '...') return 0;
-      else if (a.change === '...') return asc ? -1 : 1;
-      else if (b.change === '...') return asc ? 1 : -1;
+      if (a.change == null && b.change == null) return 0;
+      else if (a.change == null) return asc ? -1 : 1;
+      else if (b.change == null) return asc ? 1 : -1;
       else if (asc) return a.change - b.change;
       else return b.change - a.change;
     },
@@ -67,13 +67,13 @@ const TABLE_COLUMNS = [
   },
   {
     dataField: 'costBasis',
-    formatter: cell => (cell === '...' ? cell : currencyFormatter.format(cell)),
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
     sort: true,
     text: 'Cost Basis',
   },
   {
     dataField: 'marketValue',
-    formatter: cell => (cell === '...' ? cell : currencyFormatter.format(cell)),
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
     sort: true,
     text: 'Mkt Value',
   },
@@ -81,7 +81,7 @@ const TABLE_COLUMNS = [
     classes,
     dataField: 'gain',
     formatter: cell =>
-      cell === '...' ? cell : `${cell >= 0 ? '+' : ''}${currencyFormatter.format(cell)}`,
+      cell == null ? '...' : `${cell >= 0 ? '+' : ''}${currencyFormatter.format(cell)}`,
     sort: true,
     text: 'Gain',
   },
@@ -89,7 +89,7 @@ const TABLE_COLUMNS = [
     classes,
     dataField: 'gainPercent',
     formatter: cell =>
-      cell === '...' ? cell : `${cell >= 0 ? '+' : ''}${percentFormatter.format(cell)}`,
+      cell == null ? '...' : `${cell >= 0 ? '+' : ''}${percentFormatter.format(cell)}`,
     sort: true,
     text: 'Gain %',
   },
@@ -114,15 +114,14 @@ class Performance extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      // This is *not* treated as immutable. Object identity will not always correctly indicate
+      // when changes are made.
       selectedSymbols: new Set(),
     };
   }
 
   handleDeleteSelectedSymbols = () => {
-    const symbolsToDelete = this.props.symbols.filter(symbol =>
-      this.state.selectedSymbols.has(symbol)
-    );
-    this.props.dispatch(deleteSymbols(symbolsToDelete));
+    this.props.dispatch(deleteSymbols(Array.from(this.state.selectedSymbols)));
   };
 
   handleToggleAllSymbols = (isSelected: boolean) => {
@@ -173,15 +172,15 @@ class Performance extends React.Component<Props, State> {
       const showReturns = shares > 0 && quote != null;
       return {
         change: {
-          change: quote == null ? '...' : quote.change,
-          changePercent: quote == null ? '...' : quote.changePercent,
+          change: quote == null ? null : quote.change,
+          changePercent: quote == null ? null : quote.changePercent,
         },
-        companyName: quote == null ? '...' : quote.companyName,
-        costBasis: showReturns ? costBasis : '...',
-        gain: showReturns ? gain : '...',
-        gainPercent: showReturns ? gainPercent : '...',
-        latestPrice: quote == null ? '...' : quote.latestPrice,
-        marketValue: showReturns ? marketValue : '...',
+        companyName: quote == null ? null : quote.companyName,
+        costBasis: showReturns ? costBasis : null,
+        gain: showReturns ? gain : null,
+        gainPercent: showReturns ? gainPercent : null,
+        latestPrice: quote == null ? null : quote.latestPrice,
+        marketValue: showReturns ? marketValue : null,
         shares,
         symbol,
       };

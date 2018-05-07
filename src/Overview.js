@@ -2,13 +2,16 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import OverviewRow from './OverviewRow';
+import { currencyFormatter, percentFormatter } from './formatters';
+import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
+import type { Quote } from './reducers';
 import { connect } from 'react-redux';
 import { deleteSymbols } from './actions';
 
 type StateProps = {
   dispatch: Function,
+  quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
 };
 
@@ -17,6 +20,77 @@ type Props = StateProps;
 type State = {
   selectedSymbols: Set<string>,
 };
+
+const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
+function abbreviateNumber(num: number, fixed) {
+  if (num === null) return null; // terminate early
+  if (num === 0) return '0'; // terminate early
+
+  fixed = !fixed || fixed < 0 ? 0 : fixed; // number of decimal places to show
+  const b = num.toPrecision(2).split('e'); // get power
+  const k = b.length === 1 ? 0 : Math.floor(Math.min(parseInt(b[1].slice(1), 10), 14) / 3); // floor at decimals, ceiling at trillions
+  const d = k < 0 ? k : Math.abs(k); // enforce -0 is 0
+  const c = d < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3)).toFixed(1 + fixed); // divide by power
+  return `${bigNumberFormatter.format(c)}${POWER_SUFFIXES[k]}`; // append power
+}
+
+function classes(cell) {
+  if (cell == null) return '';
+  else if (cell >= 0) return 'text-success';
+  else return 'text-danger';
+}
+
+const TABLE_COLUMNS = [
+  { dataField: 'companyName', sort: true, text: 'Name' },
+  { dataField: 'symbol', sort: true, text: 'Symbol' },
+  {
+    dataField: 'latestPrice',
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    sort: true,
+    text: 'Last Price',
+  },
+  {
+    classes(cell) {
+      return classes(cell.change);
+    },
+    dataField: 'change',
+    formatter: cell =>
+      cell.change === null
+        ? '...'
+        : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
+            cell.changePercent >= 0 ? '+' : ''
+          }${percentFormatter.format(cell.changePercent)})`,
+    sort: true,
+    sortFunc(a, b, order) {
+      const asc = order === 'asc';
+      if (a.change == null && b.change == null) return 0;
+      else if (a.change == null) return asc ? -1 : 1;
+      else if (b.change == null) return asc ? 1 : -1;
+      else if (asc) return a.change - b.change;
+      else return b.change - a.change;
+    },
+    text: 'Change',
+  },
+  {
+    dataField: 'marketCap',
+    formatter: cell => (cell == null ? '...' : abbreviateNumber(cell)),
+    sort: true,
+    text: 'Mkt. Cap',
+  },
+  {
+    dataField: 'open',
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    sort: true,
+    text: 'Open',
+  },
+  {
+    dataField: 'close',
+    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
+    sort: true,
+    text: 'Close',
+  },
+];
 
 class Performance extends React.Component<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -47,28 +121,42 @@ class Performance extends React.Component<Props, State> {
     this.props.dispatch(deleteSymbols(Array.from(this.state.selectedSymbols)));
   };
 
-  handleToggleAllSymbols = () => {
-    if (this.state.selectedSymbols.size < this.props.symbols.length) {
-      this.setState({ selectedSymbols: new Set(this.props.symbols) });
+  handleToggleAllSymbols = (isSelected: boolean) => {
+    if (isSelected) {
+      this.setState({
+        selectedSymbols: new Set(this.props.symbols),
+      });
     } else {
       this.setState({ selectedSymbols: new Set() });
     }
   };
 
-  handleToggleSymbolSelected = (symbol: string) => {
-    if (this.state.selectedSymbols.has(symbol)) {
-      this.state.selectedSymbols.delete(symbol);
-      this.forceUpdate();
+  handleToggleSymbolSelected = (overviewRow: Object, isSelected: boolean) => {
+    if (isSelected) {
+      this.state.selectedSymbols.add(overviewRow.symbol);
     } else {
-      this.state.selectedSymbols.add(symbol);
-      this.forceUpdate();
+      this.state.selectedSymbols.delete(overviewRow.symbol);
     }
+    this.forceUpdate();
   };
 
   render() {
-    const allSymbolsSelected =
-      this.props.symbols.length > 0 && // They can only all be selected if there's at least 1.
-      this.props.symbols.length === this.state.selectedSymbols.size;
+    const tableData = this.props.symbols.map(symbol => {
+      const quote = this.props.quotes[symbol];
+      return {
+        change: {
+          change: quote == null ? null : quote.change,
+          changePercent: quote == null ? null : quote.changePercent,
+        },
+        close: quote == null ? null : quote.close,
+        companyName: quote == null ? null : quote.companyName,
+        latestPrice: quote == null ? null : quote.latestPrice,
+        marketCap: quote == null ? null : quote.marketCap,
+        open: quote == null ? null : quote.open,
+        symbol,
+      };
+    });
+
     const deleteDisabled = this.props.symbols.length === 0 || this.state.selectedSymbols.size === 0;
     return (
       <React.Fragment>
@@ -87,45 +175,20 @@ class Performance extends React.Component<Props, State> {
         </Row>
         <Row>
           <Col>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th style={{ width: 1 }}>
-                    <input
-                      checked={allSymbolsSelected}
-                      disabled={this.props.symbols.length === 0}
-                      onChange={this.handleToggleAllSymbols}
-                      type="checkbox"
-                    />
-                  </th>
-                  <th>Name</th>
-                  <th>Symbol</th>
-                  <th>Last Price</th>
-                  <th>Change</th>
-                  <th>Market Cap</th>
-                  <th>Open</th>
-                  <th>Close</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.symbols.length === 0 ? (
-                  <tr>
-                    <td className="text-center" colSpan="8">
-                      No symbols yet. Add one using the form below.
-                    </td>
-                  </tr>
-                ) : (
-                  this.props.symbols.map(symbol => (
-                    <OverviewRow
-                      key={symbol}
-                      onToggleSelected={this.handleToggleSymbolSelected}
-                      selected={this.state.selectedSymbols.has(symbol)}
-                      symbol={symbol}
-                    />
-                  ))
-                )}
-              </tbody>
-            </table>
+            <BootstrapTable
+              bordered={false}
+              columns={TABLE_COLUMNS}
+              data={tableData}
+              defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
+              keyField="symbol"
+              noDataIndication={() => 'No symbols yet. Add one using the form below.'}
+              selectRow={{
+                mode: 'checkbox',
+                onSelect: this.handleToggleSymbolSelected,
+                onSelectAll: this.handleToggleAllSymbols,
+                selected: Array.from(this.state.selectedSymbols),
+              }}
+            />
           </Col>
         </Row>
       </React.Fragment>
@@ -134,5 +197,6 @@ class Performance extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  quotes: state.quotes,
   symbols: state.symbols,
 }))(Performance);
