@@ -56,10 +56,6 @@
   font-size: 0.875rem;
 }
 
-.ReactTable .rt-thead.-header {
-  box-shadow: none;
-}
-
 .ReactTable .rt-thead .rt-th {
   border-bottom: 2px solid #dee2e6;
   border-top: 1px solid #dee2e6;
@@ -67,7 +63,8 @@
 }
 
 .ReactTable .rt-thead .rt-th,
-.ReactTable .rt-tbody .rt-td {
+.ReactTable .rt-tbody .rt-td,
+.ReactTable .rt-tfoot .rt-td {
   border-right: none;
   line-height: 1.5; /* Match Bootstrap default */
   padding: 0.3rem;
@@ -77,8 +74,18 @@
   border-bottom-color: #dee2e6;
 }
 
+.ReactTable .rt-thead.-header,
+.ReactTable .rt-tfoot,
 .ReactTable .-pagination {
   box-shadow: none;
+}
+
+.ReactTable .rt-tfoot {
+  border-top: 2px solid #dee2e6;
+}
+
+.ReactTable .-pagination {
+  border-top-width: 1px;
 }
 
 .ReactTable .-pagination .-previous {

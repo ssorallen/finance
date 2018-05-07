@@ -48,7 +48,7 @@ class AddSymbolForm extends React.Component<Props, State> {
       price: parseFloat(formData.price) || 0,
       shares: parseFloat(formData.shares) || 0,
       symbol: formData.symbol.toUpperCase(),
-      type: formData.type,
+      type: formData.type || 'Buy', // Match the behavior of Google Finance; 0 value is a 'Buy'.
     };
 
     this.props.dispatch(addTransaction(transaction));

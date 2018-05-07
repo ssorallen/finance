@@ -34,7 +34,12 @@ function classes(cell) {
 }
 
 const TABLE_COLUMNS = [
-  { accessor: 'companyName', Header: 'Name', headerClassName: 'text-left' },
+  {
+    accessor: 'companyName',
+    Footer: <strong>Portfolio value:</strong>,
+    Header: 'Name',
+    headerClassName: 'text-left',
+  },
   { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
   {
     accessor: 'latestPrice',
@@ -82,6 +87,13 @@ const TABLE_COLUMNS = [
     ),
     Header: 'Cost Basis',
     headerClassName: 'text-right',
+    Footer: props => (
+      <div className="text-right">
+        {currencyFormatter.format(
+          props.data.reduce((total, current) => total + current.costBasis, 0)
+        )}
+      </div>
+    ),
   },
   {
     accessor: 'marketValue',
@@ -92,6 +104,13 @@ const TABLE_COLUMNS = [
     ),
     Header: 'Mkt Value',
     headerClassName: 'text-right',
+    Footer: props => (
+      <div className="text-right">
+        {currencyFormatter.format(
+          props.data.reduce((total, current) => total + current.marketValue, 0)
+        )}
+      </div>
+    ),
   },
   {
     accessor: 'gain',
@@ -104,6 +123,15 @@ const TABLE_COLUMNS = [
     ),
     Header: 'Gain',
     headerClassName: 'text-right',
+    Footer: props => {
+      const totalCostBasis = props.data.reduce((total, current) => total + current.costBasis, 0);
+      return (
+        <div className={classes(totalCostBasis)}>
+          {totalCostBasis >= 0 ? '+' : ''}
+          {currencyFormatter.format(totalCostBasis)}
+        </div>
+      );
+    },
   },
   {
     accessor: 'gainPercent',
@@ -116,6 +144,21 @@ const TABLE_COLUMNS = [
     ),
     Header: 'Gain %',
     headerClassName: 'text-right',
+    Footer: props => {
+      const totalCostBasis = props.data.reduce((total, current) => total + current.costBasis, 0);
+      const totalMarketValue = props.data.reduce(
+        (total, current) => total + current.marketValue,
+        0
+      );
+      const totalGainPercent =
+        totalMarketValue === 0 ? 0 : (totalMarketValue - totalCostBasis) / totalCostBasis;
+      return (
+        <div className={classes(totalGainPercent)}>
+          {totalCostBasis >= 0 ? '+' : ''}
+          {percentFormatter.format(totalGainPercent)}
+        </div>
+      );
+    },
   },
 ];
 
