@@ -95,3 +95,20 @@
 .ReactTable .-pagination .-next {
   text-align: left;
 }
+
+.ReactTable .-pagination .-pageSizeOptions {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.ReactTable .-pagination select {
+  font-size: .875rem;
+  height: calc(1.8125rem + 2px);
+  line-height: 1.5;
+  padding: .25rem .5rem;
+}
+
+.ReactTable .-pagination select:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
