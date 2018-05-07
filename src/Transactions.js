@@ -132,6 +132,7 @@ class Transactions extends React.Component<Props, State> {
           <Col>
             <BootstrapTable
               bordered={false}
+              classes="table-sm"
               columns={TABLE_COLUMNS}
               data={tableData}
               defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
