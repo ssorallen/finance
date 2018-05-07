@@ -68,7 +68,9 @@
 
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-tbody .rt-td {
-  border-right-color: transparent;
+  border-right: none;
+  line-height: 1.5; /* Match Bootstrap default */
+  padding: 0.3rem;
 }
 
 .ReactTable .rt-tbody .rt-tr-group {
