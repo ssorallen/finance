@@ -49,3 +49,40 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* react-table */
+.ReactTable {
+  border: none;
+  font-size: 0.875rem;
+}
+
+.ReactTable .rt-thead.-header {
+  box-shadow: none;
+}
+
+.ReactTable .rt-thead .rt-th {
+  border-bottom: 2px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+  font-weight: bold;
+}
+
+.ReactTable .rt-thead .rt-th,
+.ReactTable .rt-tbody .rt-td {
+  border-right-color: transparent;
+}
+
+.ReactTable .rt-tbody .rt-tr-group {
+  border-bottom-color: #dee2e6;
+}
+
+.ReactTable .-pagination {
+  box-shadow: none;
+}
+
+.ReactTable .-pagination .-previous {
+  text-align: right;
+}
+
+.ReactTable .-pagination .-next {
+  text-align: left;
+}

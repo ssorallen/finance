@@ -4,12 +4,11 @@ import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import type { Quote, Transaction } from './reducers';
 import { currencyFormatter, numberFormatter, percentFormatter } from './formatters';
-import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
+import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import { deleteSymbols } from './actions';
-import paginationFactory from 'react-bootstrap-table2-paginator';
 
 type StateProps = {
   dispatch: Function,
@@ -24,96 +23,96 @@ type State = {
   selectedSymbols: Set<string>,
 };
 
-const pagination = paginationFactory({
-  hideSizePerPage: true, // This seems to use some broken Bootstrap 3 controls.
-  sizePerPage: 50,
-});
-
 function classes(cell) {
-  return cx({
+  return cx('text-right', {
     'text-danger': cell != null && cell < 0,
     'text-success': cell != null && cell >= 0,
   });
 }
 
 const TABLE_COLUMNS = [
-  { dataField: 'companyName', sort: true, text: 'Name' },
-  { dataField: 'symbol', sort: true, text: 'Symbol' },
+  { accessor: 'companyName', Header: 'Name', headerClassName: 'text-left' },
+  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
   {
-    align: 'right',
-    dataField: 'latestPrice',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Last Price',
+    accessor: 'latestPrice',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Last Price',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    classes(cell) {
-      return classes(cell.change);
+    accessor: 'change.change',
+    Cell: props => {
+      const cell = props.original.change;
+      return (
+        <div className={classes(props.value)}>
+          {cell.change == null
+            ? '...'
+            : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
+                cell.changePercent >= 0 ? '+' : ''
+              }${percentFormatter.format(cell.changePercent)})`}
+        </div>
+      );
     },
-    dataField: 'change',
-    formatter: cell =>
-      cell.change == null
-        ? '...'
-        : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
-            cell.changePercent >= 0 ? '+' : ''
-          }${percentFormatter.format(cell.changePercent)})`,
-    headerAlign: 'right',
-    sort: true,
-    sortFunc(a, b, order) {
-      const asc = order === 'asc';
-      if (a.change == null && b.change == null) return 0;
-      else if (a.change == null) return asc ? -1 : 1;
-      else if (b.change == null) return asc ? 1 : -1;
-      else if (asc) return a.change - b.change;
-      else return b.change - a.change;
-    },
-    text: 'Change',
+    Header: 'Change',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    dataField: 'shares',
-    formatter: cell => (cell === 0 ? '...' : numberFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Shares',
+    accessor: 'shares',
+    Cell: props => (
+      <div className="text-right">
+        {props.value === 0 ? '...' : numberFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Shares',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    dataField: 'costBasis',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Cost Basis',
+    accessor: 'costBasis',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Cost Basis',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    dataField: 'marketValue',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Mkt Value',
+    accessor: 'marketValue',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Mkt Value',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    classes,
-    dataField: 'gain',
-    formatter: cell =>
-      cell == null ? '...' : `${cell >= 0 ? '+' : ''}${currencyFormatter.format(cell)}`,
-    headerAlign: 'right',
-    sort: true,
-    text: 'Gain',
+    accessor: 'gain',
+    Cell: props => (
+      <div className={classes(props.value)}>
+        {props.value == null
+          ? '...'
+          : `${props.value >= 0 ? '+' : ''}${currencyFormatter.format(props.value)}`}
+      </div>
+    ),
+    Header: 'Gain',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    classes,
-    dataField: 'gainPercent',
-    formatter: cell =>
-      cell == null ? '...' : `${cell >= 0 ? '+' : ''}${percentFormatter.format(cell)}`,
-    headerAlign: 'right',
-    sort: true,
-    text: 'Gain %',
+    accessor: 'gainPercent',
+    Cell: props => (
+      <div className={classes(props.value)}>
+        {props.value == null
+          ? '...'
+          : `${props.value >= 0 ? '+' : ''}${percentFormatter.format(props.value)}`}
+      </div>
+    ),
+    Header: 'Gain %',
+    headerClassName: 'text-right',
   },
 ];
 
@@ -224,23 +223,19 @@ class Performance extends React.Component<Props, State> {
           </Col>
           <PortfolioActions />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <Col>
-            <BootstrapTable
-              bordered={false}
-              classes="table-sm"
+            <ReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
-              defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
-              keyField="symbol"
-              noDataIndication={() => 'No symbols yet. Add one using the form below.'}
-              pagination={pagination}
-              selectRow={{
-                mode: 'checkbox',
-                onSelect: this.handleToggleSymbolSelected,
-                onSelectAll: this.handleToggleAllSymbols,
-                selected: Array.from(this.state.selectedSymbols),
-              }}
+              defaultSorted={[{ desc: false, id: 'symbol' }]}
+              getPaginationProps={() => ({
+                className: 'pt-2',
+                NextComponent: props => <Button className="btn-sm" outline {...props} />,
+                PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                showPageJump: false,
+              })}
+              noDataText="No symbols yet. Add one using the form below."
             />
           </Col>
         </Row>
