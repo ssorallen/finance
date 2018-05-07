@@ -8,6 +8,7 @@ import PortfolioActions from './PortfolioActions';
 import type { Quote } from './reducers';
 import { connect } from 'react-redux';
 import { deleteSymbols } from './actions';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 type StateProps = {
   dispatch: Function,
@@ -20,6 +21,11 @@ type Props = StateProps;
 type State = {
   selectedSymbols: Set<string>,
 };
+
+const pagination = paginationFactory({
+  hideSizePerPage: true, // This seems to use some broken Bootstrap 3 controls.
+  sizePerPage: 50,
+});
 
 const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
@@ -182,6 +188,7 @@ class Performance extends React.Component<Props, State> {
               defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
               keyField="symbol"
               noDataIndication={() => 'No symbols yet. Add one using the form below.'}
+              pagination={pagination}
               selectRow={{
                 mode: 'checkbox',
                 onSelect: this.handleToggleSymbolSelected,
