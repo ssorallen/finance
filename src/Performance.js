@@ -9,6 +9,7 @@ import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import { deleteSymbols } from './actions';
+import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
   dispatch: Function,
@@ -22,6 +23,8 @@ type Props = StateProps;
 type State = {
   selectedSymbols: Set<string>,
 };
+
+const SelectReactTable = selectTableHOC(ReactTable);
 
 function classes(cell) {
   return cx('text-right', {
@@ -146,22 +149,30 @@ class Performance extends React.Component<Props, State> {
   };
 
   handleToggleAllSymbols = (isSelected: boolean) => {
-    if (isSelected) {
+    if (this.isAllSymbolsSelected()) {
+      this.setState({ selectedSymbols: new Set() });
+    } else {
       this.setState({
         selectedSymbols: new Set(this.props.symbols),
       });
-    } else {
-      this.setState({ selectedSymbols: new Set() });
     }
   };
 
-  handleToggleSymbolSelected = (performanceRow: Object, isSelected: boolean) => {
-    if (isSelected) {
-      this.state.selectedSymbols.add(performanceRow.symbol);
+  handleToggleSymbolSelected = (symbol: string) => {
+    if (this.isSymbolSelected(symbol)) {
+      this.state.selectedSymbols.delete(symbol);
     } else {
-      this.state.selectedSymbols.delete(performanceRow.symbol);
+      this.state.selectedSymbols.add(symbol);
     }
     this.forceUpdate();
+  };
+
+  isAllSymbolsSelected = () => {
+    return this.state.selectedSymbols.size === this.props.symbols.length;
+  };
+
+  isSymbolSelected = (symbol: string) => {
+    return this.state.selectedSymbols.has(symbol);
   };
 
   render() {
@@ -225,7 +236,7 @@ class Performance extends React.Component<Props, State> {
         </Row>
         <Row className="mb-4">
           <Col>
-            <ReactTable
+            <SelectReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
               defaultSorted={[{ desc: false, id: 'symbol' }]}
@@ -235,7 +246,13 @@ class Performance extends React.Component<Props, State> {
                 PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
                 showPageJump: false,
               })}
+              isSelected={this.isSymbolSelected}
+              keyField="symbol"
               noDataText="No symbols yet. Add one using the form below."
+              selectAll={this.isAllSymbolsSelected()}
+              selectType="checkbox"
+              toggleAll={this.handleToggleAllSymbols}
+              toggleSelection={this.handleToggleSymbolSelected}
             />
           </Col>
         </Row>
