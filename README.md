@@ -53,7 +53,7 @@ to [Importing Your Portfolio](#importing-your-portfolio) and follow the steps.
 
 1. Click the "Download to spreadsheet" button in the upper right-ish area of any page.
 2. The file will be called _"My Portfolio.csv"_ and be in the data format described in the
-   [Importing Your Portfolio][#importing-your-portfolio] section.
+   [Importing Your Portfolio](#importing-your-portfolio) section.
 
 ## Data Privacy
 
