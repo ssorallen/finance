@@ -115,7 +115,7 @@ updates on when that data might become available.
 2. Use [Yarn][7] to install dependencies
 
        $ yarn install
-3. (Optional) To develop and make changes, use `watch`
+3. (Optional) To develop and make changes, use `start`
 
        $ yarn start
 4. Build the app for deployment
