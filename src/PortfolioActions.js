@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Button, Col, Input, Label } from 'reactstrap';
 import { addTransactions, deletePortfolio, downloadPortfolio, fetchQuotes } from './actions';
 import { connect } from 'react-redux';
-import csvParse from 'csv-parse/lib/sync';
+import csvParse from 'csv-parse/lib/es5/sync';
 import { transformGfToStocks } from './transformers';
 
 type StateProps = {

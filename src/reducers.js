@@ -1,6 +1,6 @@
 /* @flow */
 
-import csvStringify from 'csv-stringify/lib/sync';
+import csvStringify from 'csv-stringify/lib/es5/sync';
 import { transformStocksToGf } from './transformers';
 
 type AddSymbolAction = {
