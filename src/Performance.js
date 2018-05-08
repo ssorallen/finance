@@ -102,7 +102,7 @@ const TABLE_COLUMNS = [
         {props.value == null ? '...' : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Mkt Value',
+    Header: 'Mkt. Value',
     headerClassName: 'text-right',
     Footer: props => (
       <div className="text-right">
@@ -159,6 +159,27 @@ const TABLE_COLUMNS = [
         </div>
       );
     },
+  },
+  {
+    accessor: 'daysGain',
+    Cell: props => (
+      <div className={classes(props.value)}>
+        {props.value == null
+          ? '...'
+          : `${props.value >= 0 ? '+' : ''}${currencyFormatter.format(props.value)}`}
+      </div>
+    ),
+    Footer: props => {
+      const totalDaysGain = props.data.reduce((total, current) => total + current.daysGain, 0);
+      return (
+        <div className={classes(totalDaysGain)}>
+          {totalDaysGain >= 0 ? '+' : ''}
+          {currencyFormatter.format(totalDaysGain)}
+        </div>
+      );
+    },
+    Header: "Day's gain",
+    headerClassName: 'text-right',
   },
 ];
 
@@ -227,14 +248,14 @@ class Performance extends React.Component<Props, State> {
 
       let costBasis = 0;
       let marketValue = 0;
-      let shares = 0;
+      let totalShares = 0;
       transactions.forEach(transaction => {
         // Only summing 'Buy' transactions.
         if (transaction.type !== 'Buy') return;
 
         costBasis += transaction.price * transaction.shares;
         costBasis += transaction.commission;
-        shares += transaction.shares;
+        totalShares += transaction.shares;
         if (quote != null) marketValue += quote.latestPrice * transaction.shares;
       });
 
@@ -244,7 +265,7 @@ class Performance extends React.Component<Props, State> {
 
       // Show returns only if the user owns shares and the quote has been returned from the API call.
       // Showing any earlier will look like some erroneous and funky data.
-      const showReturns = shares > 0 && quote != null;
+      const showReturns = totalShares > 0 && quote != null;
       return {
         change: {
           change: quote == null ? null : quote.change,
@@ -252,11 +273,12 @@ class Performance extends React.Component<Props, State> {
         },
         companyName: quote == null ? null : quote.companyName,
         costBasis: showReturns ? costBasis : null,
+        daysGain: quote == null || totalShares === 0 ? null : quote.change * totalShares,
         gain: showReturns ? gain : null,
         gainPercent: showReturns ? gainPercent : null,
         latestPrice: quote == null ? null : quote.latestPrice,
         marketValue: showReturns ? marketValue : null,
-        shares,
+        shares: totalShares,
         symbol,
       };
     });
