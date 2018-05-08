@@ -82,8 +82,8 @@ class Navbar extends React.Component<Props, State> {
               </span>
             </abbr>
           )}
-          <span>
-            <span className="text-white-50">Last updated: </span>
+          <small>
+            <span className="text-white-50">Quotes last fetched: </span>
             {updatedAt == null ? (
               <span className="text-white">never</span>
             ) : (
@@ -91,7 +91,7 @@ class Navbar extends React.Component<Props, State> {
                 {updatedAtFormatter.format(updatedAt)}
               </time>
             )}
-          </span>
+          </small>
         </Collapse>
       </ReactstrapNavbar>
     );
