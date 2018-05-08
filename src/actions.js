@@ -44,6 +44,25 @@ function clearFetchQuotesTimeout() {
 
 export function fetchQuotes() {
   return function(dispatch: Function, getState: GetState) {
+    function setFetchQuotesTimeout() {
+      // Because more `fetchQuote` actions might be in flight, ensure the timer is empty and
+      // synchronously create the next one (even though it was cleared once when this action was
+      // first dispatched). This ensures no more than one timeout at a time is pending.
+      clearFetchQuotesTimeout();
+      setTimeout(() => {
+        dispatch(fetchQuotes());
+      }, 300000); // Fetch quotes minimally every 5 minutes. (5 * 60 * 1000)
+    }
+
+    const { symbols } = getState();
+    if (symbols.length === 0) {
+      // No need to do anything if there are no symbols to fetch. Restart the timer and bomb out
+      // early.
+      clearFetchQuotesTimeout();
+      setFetchQuotesTimeout();
+      return;
+    }
+
     clearFetchQuotesTimeout();
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
     fetch(
@@ -73,13 +92,7 @@ export function fetchQuotes() {
         dispatch({ error, type: 'FETCH_QUOTES_FAILURE' });
       })
       .finally(() => {
-        // Because more `fetchQuote` actions might be in flight, ensure the timer is empty and
-        // synchronously create the next one (even though it was cleared once when this action was
-        // first dispatched). This ensures no more than one timeout at a time is pending.
-        clearFetchQuotesTimeout();
-        setTimeout(() => {
-          dispatch(fetchQuotes());
-        }, 300000); // Fetch quotes minimally every 5 minutes. (5 * 60 * 1000)
+        setFetchQuotesTimeout();
       });
   };
 }
