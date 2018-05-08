@@ -2,18 +2,20 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
+import type { Quote, Transaction } from './reducers';
 import { currencyFormatter, percentFormatter } from './formatters';
-import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
-import type { Quote } from './reducers';
+import ReactTable from 'react-table';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 import { deleteSymbols } from './actions';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
   dispatch: Function,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
+  transactions: Array<Transaction>,
 };
 
 type Props = StateProps;
@@ -22,10 +24,7 @@ type State = {
   selectedSymbols: Set<string>,
 };
 
-const pagination = paginationFactory({
-  hideSizePerPage: true, // This seems to use some broken Bootstrap 3 controls.
-  sizePerPage: 50,
-});
+const SelectReactTable = selectTableHOC(ReactTable);
 
 const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
@@ -42,73 +41,91 @@ function abbreviateNumber(num: number, fixed) {
 }
 
 function classes(cell) {
-  if (cell == null) return '';
-  else if (cell >= 0) return 'text-success';
-  else return 'text-danger';
+  return cx('text-right', {
+    'text-danger': cell != null && cell < 0,
+    'text-success': cell != null && cell >= 0,
+  });
 }
 
 const TABLE_COLUMNS = [
-  { dataField: 'companyName', sort: true, text: 'Name' },
-  { dataField: 'symbol', sort: true, text: 'Symbol' },
   {
-    align: 'right',
-    dataField: 'latestPrice',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Last Price',
+    accessor: 'companyName',
+    Footer: <strong>Portfolio value:</strong>,
+    Header: 'Name',
+    headerClassName: 'text-left',
+  },
+  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
+  {
+    accessor: 'latestPrice',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Last Price',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    classes(cell) {
-      return classes(cell.change);
+    accessor: 'change.change',
+    Cell: props => {
+      const cell = props.original.change;
+      return (
+        <div className={classes(props.value)}>
+          {cell.change == null
+            ? '...'
+            : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
+                cell.changePercent >= 0 ? '+' : ''
+              }${percentFormatter.format(cell.changePercent)})`}
+        </div>
+      );
     },
-    dataField: 'change',
-    formatter: cell =>
-      cell.change === null
-        ? '...'
-        : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
-            cell.changePercent >= 0 ? '+' : ''
-          }${percentFormatter.format(cell.changePercent)})`,
-    headerAlign: 'right',
-    sort: true,
-    sortFunc(a, b, order) {
-      const asc = order === 'asc';
-      if (a.change == null && b.change == null) return 0;
-      else if (a.change == null) return asc ? -1 : 1;
-      else if (b.change == null) return asc ? 1 : -1;
-      else if (asc) return a.change - b.change;
-      else return b.change - a.change;
+    Header: 'Change',
+    headerClassName: 'text-right',
+  },
+  {
+    accessor: 'marketCap',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : abbreviateNumber(props.value)}
+      </div>
+    ),
+    Header: 'Mkt. Cap',
+    headerClassName: 'text-right',
+  },
+  {
+    accessor: 'open',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Open',
+    headerClassName: 'text-right',
+  },
+  {
+    accessor: 'daysGain',
+    Cell: props => (
+      <div className={classes(props.value)}>
+        {props.value == null
+          ? '...'
+          : `${props.value >= 0 ? '+' : ''}${currencyFormatter.format(props.value)}`}
+      </div>
+    ),
+    Footer: props => {
+      const totalDaysGain = props.data.reduce((total, current) => total + current.daysGain, 0);
+      return (
+        <div className={classes(totalDaysGain)}>
+          {totalDaysGain >= 0 ? '+' : ''}
+          {currencyFormatter.format(totalDaysGain)}
+        </div>
+      );
     },
-    text: 'Change',
-  },
-  {
-    align: 'right',
-    dataField: 'marketCap',
-    formatter: cell => (cell == null ? '...' : abbreviateNumber(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Mkt. Cap',
-  },
-  {
-    align: 'right',
-    dataField: 'open',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Open',
-  },
-  {
-    align: 'right',
-    dataField: 'close',
-    formatter: cell => (cell == null ? '...' : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Close',
+    Header: "Day's gain",
+    headerClassName: 'text-right',
   },
 ];
 
-class Performance extends React.Component<Props, State> {
+class Overview extends React.Component<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     // If any currently selected symbols are not in the next props update, remove them from the
     // internal selected symbols `Set` to stay up-to-date.
@@ -138,34 +155,47 @@ class Performance extends React.Component<Props, State> {
   };
 
   handleToggleAllSymbols = (isSelected: boolean) => {
-    if (isSelected) {
+    if (this.isAllSymbolsSelected()) {
+      this.setState({ selectedSymbols: new Set() });
+    } else {
       this.setState({
         selectedSymbols: new Set(this.props.symbols),
       });
-    } else {
-      this.setState({ selectedSymbols: new Set() });
     }
   };
 
-  handleToggleSymbolSelected = (overviewRow: Object, isSelected: boolean) => {
-    if (isSelected) {
-      this.state.selectedSymbols.add(overviewRow.symbol);
+  handleToggleSymbolSelected = (symbol: string) => {
+    if (this.isSymbolSelected(symbol)) {
+      this.state.selectedSymbols.delete(symbol);
     } else {
-      this.state.selectedSymbols.delete(overviewRow.symbol);
+      this.state.selectedSymbols.add(symbol);
     }
     this.forceUpdate();
+  };
+
+  isAllSymbolsSelected = () => {
+    return this.state.selectedSymbols.size === this.props.symbols.length;
+  };
+
+  isSymbolSelected = (symbol: string) => {
+    return this.state.selectedSymbols.has(symbol);
   };
 
   render() {
     const tableData = this.props.symbols.map(symbol => {
       const quote = this.props.quotes[symbol];
+      const transactions = this.props.transactions.filter(
+        transaction => transaction.symbol === symbol
+      );
+      const totalShares = transactions.reduce((prev, curr) => prev + curr.shares, 0);
+
       return {
         change: {
           change: quote == null ? null : quote.change,
           changePercent: quote == null ? null : quote.changePercent,
         },
-        close: quote == null ? null : quote.close,
         companyName: quote == null ? null : quote.companyName,
+        daysGain: quote == null || totalShares === 0 ? null : quote.change * totalShares,
         latestPrice: quote == null ? null : quote.latestPrice,
         marketCap: quote == null ? null : quote.marketCap,
         open: quote == null ? null : quote.open,
@@ -189,23 +219,25 @@ class Performance extends React.Component<Props, State> {
           </Col>
           <PortfolioActions />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <Col>
-            <BootstrapTable
-              bordered={false}
-              classes="table-sm"
+            <SelectReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
-              defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
+              defaultSorted={[{ desc: false, id: 'symbol' }]}
+              getPaginationProps={() => ({
+                className: 'pt-2',
+                NextComponent: props => <Button className="btn-sm" outline {...props} />,
+                PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                showPageJump: false,
+              })}
+              isSelected={this.isSymbolSelected}
               keyField="symbol"
-              noDataIndication={() => 'No symbols yet. Add one using the form below.'}
-              pagination={pagination}
-              selectRow={{
-                mode: 'checkbox',
-                onSelect: this.handleToggleSymbolSelected,
-                onSelectAll: this.handleToggleAllSymbols,
-                selected: Array.from(this.state.selectedSymbols),
-              }}
+              noDataText="No symbols yet. Add one using the form below."
+              selectAll={this.isAllSymbolsSelected()}
+              selectType="checkbox"
+              toggleAll={this.handleToggleAllSymbols}
+              toggleSelection={this.handleToggleSymbolSelected}
             />
           </Col>
         </Row>
@@ -217,4 +249,5 @@ class Performance extends React.Component<Props, State> {
 export default connect(state => ({
   quotes: state.quotes,
   symbols: state.symbols,
-}))(Performance);
+  transactions: state.transactions,
+}))(Overview);
