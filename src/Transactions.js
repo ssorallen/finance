@@ -28,7 +28,6 @@ const TABLE_COLUMNS = [
   { accessor: 'companyName', Header: 'Name', headerClassName: 'text-left' },
   { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
   { accessor: 'type', Header: 'Type', headerClassName: 'text-left' },
-  { accessor: 'date', Header: 'Date', headerClassname: 'text-left' },
   {
     accessor: 'shares',
     Cell: props => (
