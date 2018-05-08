@@ -4,11 +4,11 @@ import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import type { Quote, Transaction } from './reducers';
 import { currencyFormatter, numberFormatter } from './formatters';
-import BootstrapTable from 'react-bootstrap-table-next';
 import PortfolioActions from './PortfolioActions';
+import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import { deleteTransactions } from './actions';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
   dispatch: Function,
@@ -22,39 +22,42 @@ type State = {
   selectedTransactionIds: Set<number>,
 };
 
-const pagination = paginationFactory({
-  hideSizePerPage: true, // This seems to use some broken Bootstrap 3 controls.
-  sizePerPage: 50,
-});
+const SelectReactTable = selectTableHOC(ReactTable);
 
 const TABLE_COLUMNS = [
-  { dataField: 'companyName', sort: true, text: 'Name' },
-  { dataField: 'symbol', sort: true, text: 'Symbol' },
-  { dataField: 'type', sort: true, text: 'Type' },
-  { dataField: 'date', sort: true, text: 'Date' },
+  { accessor: 'companyName', Header: 'Name', headerClassName: 'text-left' },
+  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
+  { accessor: 'type', Header: 'Type', headerClassName: 'text-left' },
+  { accessor: 'date', Header: 'Date', headerClassname: 'text-left' },
   {
-    align: 'right',
-    dataField: 'shares',
-    formatter: cell => (cell === 0 ? null : numberFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Shares',
+    accessor: 'shares',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : numberFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Shares',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    dataField: 'price',
-    formatter: cell => (cell === 0 ? null : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Price',
+    accessor: 'price',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Price',
+    headerClassName: 'text-right',
   },
   {
-    align: 'right',
-    dataField: 'commission',
-    formatter: cell => (cell === 0 ? null : currencyFormatter.format(cell)),
-    headerAlign: 'right',
-    sort: true,
-    text: 'Commission',
+    accessor: 'commission',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Commission',
+    headerClassName: 'text-right',
   },
 ];
 
@@ -90,23 +93,31 @@ class Transactions extends React.Component<Props, State> {
     this.props.dispatch(deleteTransactions(transactionsToDelete));
   };
 
-  handleToggleAllTransactions = (isSelected: boolean) => {
-    if (isSelected) {
+  handleToggleAllTransactionIds = (isSelected: boolean) => {
+    if (this.isAllTransactionIdsSelected()) {
+      this.setState({ selectedTransactionIds: new Set() });
+    } else {
       this.setState({
         selectedTransactionIds: new Set(this.props.transactions.map(transaction => transaction.id)),
       });
-    } else {
-      this.setState({ selectedTransactionIds: new Set() });
     }
   };
 
-  handleToggleTransactionSelected = (transaction: Transaction, isSelected: boolean) => {
-    if (isSelected) {
-      this.state.selectedTransactionIds.add(transaction.id);
+  handleToggleTransactionIdSelected = (transactionId: number) => {
+    if (this.isTransactionIdSelected(transactionId)) {
+      this.state.selectedTransactionIds.delete(transactionId);
     } else {
-      this.state.selectedTransactionIds.delete(transaction.id);
+      this.state.selectedTransactionIds.add(transactionId);
     }
     this.forceUpdate();
+  };
+
+  isAllTransactionIdsSelected = () => {
+    return this.state.selectedTransactionIds.size === this.props.transactions.length;
+  };
+
+  isTransactionIdSelected = (transactionId: number) => {
+    return this.state.selectedTransactionIds.has(transactionId);
   };
 
   render() {
@@ -136,21 +147,23 @@ class Transactions extends React.Component<Props, State> {
         </Row>
         <Row className="mb-3">
           <Col>
-            <BootstrapTable
-              bordered={false}
-              classes="table-sm"
+            <SelectReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
-              defaultSorted={[{ dataField: 'symbol', order: 'asc' }]}
+              defaultSorted={[{ desc: false, id: 'symbol' }]}
+              getPaginationProps={() => ({
+                className: 'pt-2',
+                NextComponent: props => <Button className="btn-sm" outline {...props} />,
+                PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                showPageJump: false,
+              })}
+              isSelected={this.isTransactionIdSelected}
               keyField="id"
-              noDataIndication={() => 'No transactions yet. Add one using the form below.'}
-              pagination={pagination}
-              selectRow={{
-                mode: 'checkbox',
-                onSelect: this.handleToggleTransactionSelected,
-                onSelectAll: this.handleToggleAllTransactions,
-                selected: Array.from(this.state.selectedTransactionIds),
-              }}
+              noDataText="No transactions yet. Add one using the form below."
+              selectAll={this.isAllTransactionIdsSelected()}
+              selectType="checkbox"
+              toggleAll={this.handleToggleAllTransactionIds}
+              toggleSelection={this.handleToggleTransactionIdSelected}
             />
           </Col>
         </Row>
