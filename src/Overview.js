@@ -93,6 +93,16 @@ const TABLE_COLUMNS = [
     headerClassName: 'text-right',
   },
   {
+    accessor: 'latestVolume',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : abbreviateNumber(props.value)}
+      </div>
+    ),
+    Header: 'Volume',
+    headerClassName: 'text-right',
+  },
+  {
     accessor: 'open',
     Cell: props => (
       <div className="text-right">
@@ -100,6 +110,26 @@ const TABLE_COLUMNS = [
       </div>
     ),
     Header: 'Open',
+    headerClassName: 'text-right',
+  },
+  {
+    accessor: 'high',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'High',
+    headerClassName: 'text-right',
+  },
+  {
+    accessor: 'low',
+    Cell: props => (
+      <div className="text-right">
+        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+      </div>
+    ),
+    Header: 'Low',
     headerClassName: 'text-right',
   },
   {
@@ -196,7 +226,10 @@ class Overview extends React.Component<Props, State> {
         },
         companyName: quote == null ? null : quote.companyName,
         daysGain: quote == null || totalShares === 0 ? null : quote.change * totalShares,
+        high: quote == null ? null : quote.high,
         latestPrice: quote == null ? null : quote.latestPrice,
+        latestVolume: quote == null ? null : quote.latestVolume,
+        low: quote == null ? null : quote.low,
         marketCap: quote == null ? null : quote.marketCap,
         open: quote == null ? null : quote.open,
         symbol,
