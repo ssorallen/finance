@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Ross Allen (https://github.com/ssorallen)",
-  "homepage": "https://ssorallen.github.io/myapp",
+  "homepage": "https://ssorallen.github.io/stocks/",
   "dependencies": {
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.5",
