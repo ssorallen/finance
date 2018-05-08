@@ -29,6 +29,12 @@ const TABLE_COLUMNS = [
   { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
   { accessor: 'type', Header: 'Type', headerClassName: 'text-left' },
   {
+    accessor: 'date',
+    Cell: props => <time>{props.value}</time>,
+    Header: 'Date',
+    headerClassName: 'text-left',
+  },
+  {
     accessor: 'shares',
     Cell: props => (
       <div className="text-right">
