@@ -28,7 +28,7 @@ class App extends React.Component<Props> {
 
   render() {
     return (
-      <Router>
+      <Router basename="/stocks">
         <div>
           {/* Wrap the `Navbar` in a pathless route to ensure it is always rendered and always
               updates on navigation. Updates are blocked because internally the `Navbar` is wrapped
