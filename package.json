@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Ross Allen (https://github.com/ssorallen)",
-  "homepage" : "https://ssorallen.github.io/myapp",
+  "homepage": "https://ssorallen.github.io/myapp",
   "dependencies": {
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.5",
@@ -22,6 +22,7 @@
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
+    "deploy": "gh-pages -d dist",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.71.0",
+    "gh-pages": "^1.1.0",
     "prettier": "^1.12.1"
   }
 }
