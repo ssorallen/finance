@@ -142,6 +142,14 @@ If you want to do this all on GitHub and deploy with [GitHub Pages][6], follow t
        $ yarn deploy
 6. ✨✨ Your version of stocks will be available at https://YOURNAME.github.io/stocks/ ✨✨
 
+## Inspiration
+
+As an unsophisticated investor, I liked Google Finance and missed the simple interface for managing
+a stock portfolio. Alternatives offer more than I need, so I built only the functionality I wanted.
+
+The idea to run this all in a browser was sparked by seeing Todd Schneider's
+[toddwschneider/stocks](https://github.com/toddwschneider/stocks) project.
+
 [0]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [1]: https://iextrading.com/
 [2]: https://iextrading.com/developer/
