@@ -32,8 +32,19 @@ export function downloadPortfolio() {
   return { type: 'DOWNLOAD_PORTFOLIO' };
 }
 
+// A timeout to periodically fetch new quotes.
+let fetchQuotesTimeout;
+
+function clearFetchQuotesTimeout() {
+  if (fetchQuotesTimeout != null) {
+    clearTimeout(fetchQuotesTimeout);
+    fetchQuotesTimeout = null;
+  }
+}
+
 export function fetchQuotes() {
   return function(dispatch: Function, getState: GetState) {
+    clearFetchQuotesTimeout();
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
     fetch(
       `${IEX_ROOT}/stock/market/batch?types=quote&symbols=${encodeURIComponent(
@@ -60,6 +71,15 @@ export function fetchQuotes() {
       })
       .catch(error => {
         dispatch({ error, type: 'FETCH_QUOTES_FAILURE' });
+      })
+      .finally(() => {
+        // Because more `fetchQuote` actions might be in flight, ensure the timer is empty and
+        // synchronously create the next one (even though it was cleared once when this action was
+        // first dispatched). This ensures no more than one timeout at a time is pending.
+        clearFetchQuotesTimeout();
+        setTimeout(() => {
+          dispatch(fetchQuotes());
+        }, 300000); // Fetch quotes minimally every 5 minutes. (5 * 60 * 1000)
       });
   };
 }

@@ -9,8 +9,23 @@ import Navbar from './Navbar';
 import Overview from './Overview';
 import Performance from './Performance';
 import Transactions from './Transactions';
+import { connect } from 'react-redux';
+import { fetchQuotes } from './actions';
 
-export default class App extends React.Component<{}> {
+type StateProps = {
+  dispatch: Function,
+};
+
+type Props = StateProps;
+
+class App extends React.Component<Props> {
+  componentDidMount() {
+    // Fetch quotes when the app first launches. Fetching quotes automatically resets a time, and
+    // the app from here on out will periodicaly fetch quotes to stay updated. This also enables the
+    // user to refresh quotes by using browser refresh.
+    this.props.dispatch(fetchQuotes());
+  }
+
   render() {
     return (
       <Router>
@@ -67,5 +82,7 @@ export default class App extends React.Component<{}> {
     );
   }
 }
+
+export default connect()(App);
 
 // [0]: https://github.com/ReactTraining/react-router/blob/4b61484ec9eea4bc3a2eb36028c47934414542ae/packages/react-router/docs/guides/blocked-updates.md
