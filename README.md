@@ -134,11 +134,13 @@ If you want to do this all on GitHub and deploy with [GitHub Pages][6], follow t
 
 1. Fork this repo with the "Fork" button in the upper right
 2. Clone your new repo to your computer
-3. Build the app for release using the [How to Build](#how-to-build) instructions
-4. Using the [gh-pages package][8] that's already installed, deploy to your very own page
+3. Change the `"homepage"` in package.json to your site's new home,
+   https://YOURNAME.github.io/stocks/
+4. Build the app for release using the [How to Build](#how-to-build) instructions
+5. Using the [gh-pages package][8] that's already installed, deploy to your very own page
 
        $ yarn deploy
-5. ✨✨ Your version of stocks will be available at https://YOURNAME.github.io/stocks/ ✨✨
+6. ✨✨ Your version of stocks will be available at https://YOURNAME.github.io/stocks/ ✨✨
 
 [0]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [1]: https://iextrading.com/
