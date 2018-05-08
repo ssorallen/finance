@@ -117,7 +117,7 @@ updates on when that data might become available.
        $ yarn install
 3. (Optional) To develop and make changes, use `watch`
 
-       $ yarn watch
+       $ yarn start
 4. Build the app for deployment
 
        $ yarn build
