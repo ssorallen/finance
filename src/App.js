@@ -28,7 +28,7 @@ class App extends React.Component<Props> {
 
   render() {
     return (
-      <Router basename="/stocks">
+      <Router basename="/finance">
         <div>
           {/* Wrap the `Navbar` in a pathless route to ensure it is always rendered and always
               updates on navigation. Updates are blocked because internally the `Navbar` is wrapped
@@ -53,8 +53,8 @@ class App extends React.Component<Props> {
                     ssorallen
                   </a>{' '}
                   &middot; Source available at{' '}
-                  <a className="link-secondary" href="https://github.com/ssorallen/stocks">
-                    ssorallen/stocks
+                  <a className="link-secondary" href="https://github.com/ssorallen/finance">
+                    ssorallen/finance
                   </a>{' '}
                   <span aria-label="" role="img">
                     🦉

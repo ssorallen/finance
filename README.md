@@ -1,12 +1,12 @@
-# stocks!!!
+# Finance!
 
 An in-browser stock portfolio manager that you can deploy anywhere. You can use the version
-deployed at https://ssorallen.github.io/stocks/ or [deploy your own](#deploy-your-own).
+deployed at https://ssorallen.github.io/finance/ or [deploy your own](#deploy-your-own).
 
 ## Importing Your Portfolio
 
 If you have a spreadsheet (.csv) file containting transactions in your portfolio, you can import the
-entire file at once in stocks!!!.
+entire file at once in Finance!.
 
 1. Click the "Import Portfolio" link in the upper right-ish area of any page
 2. Select your portfolio file
@@ -40,13 +40,13 @@ the values should be of the following types:
 }
 ```
 
-Other formats are currently not supported, and stocks!!! might fall apart if you try to use another
+Other formats are currently not supported, and Finance! might fall apart if you try to use another
 format.
 
 #### Google Finance Portfolios
 
 If you exported your Google Finance portfolio to a spreadsheet (.csv) file before the site shut
-down, you can easily import that file into stocks!!! The data format is fully supported, so jump up
+down, you can easily import that file into Finance! The data format is fully supported, so jump up
 to [Importing Your Portfolio](#importing-your-portfolio) and follow the steps.
 
 ## Exporting your portfolio
@@ -57,10 +57,10 @@ to [Importing Your Portfolio](#importing-your-portfolio) and follow the steps.
 
 ## Data Privacy
 
-stocks!!! doesn't collect or store any of your data. Actually, stocks!!! has no server of any kind,
+Finance! doesn't collect or store any of your data. Actually, Finance! has no server of any kind,
 the entire app runs inside your browser.
 
-### What does stocks!!! do with my transaction data?
+### What does Finance! do with my transaction data?
 
 Transaction data and which symbols you're watching is stored entirely in your browser (using
 [local storage][0]). Transaction data is never sent anywhere; it never leaves your computer.
@@ -124,7 +124,7 @@ updates on when that data might become available.
 
 ### Deploy Your Own
 
-All the code necessary to run stocks!!! is in this repository. There's no database required, no
+All the code necessary to run Finance! is in this repository. There's no database required, no
 other application server. Once you [build](#how-to-build) the app, you can copy the static files to
 any webserver you like.
 
@@ -135,12 +135,12 @@ If you want to do this all on GitHub and deploy with [GitHub Pages][6], follow t
 1. Fork this repo with the "Fork" button in the upper right
 2. Clone your new repo to your computer
 3. Change the `"homepage"` in package.json to your site's new home,
-   https://YOURNAME.github.io/stocks/
+   https://YOURNAME.github.io/finance/
 4. Build the app for release using the [How to Build](#how-to-build) instructions
 5. Using the [gh-pages package][8] that's already installed, deploy to your very own page
 
        $ yarn deploy
-6. ✨✨ Your version of stocks will be available at https://YOURNAME.github.io/stocks/ ✨✨
+6. ✨✨ Your version of Finance! will be available at https://YOURNAME.github.io/finance/ ✨✨
 
 ## Inspiration
 
