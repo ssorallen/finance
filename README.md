@@ -1,6 +1,6 @@
 # Finance!
 
-An in-browser stock portfolio manager that you can deploy anywhere. You can use the version
+A fast, free, in-browser stock portfolio manager that you can deploy anywhere. You can use the version
 deployed at https://ssorallen.github.io/finance/ or [deploy your own](#deploy-your-own).
 
 ## Importing Your Portfolio
