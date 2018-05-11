@@ -8,6 +8,21 @@ type AddSymbolAction = {
   type: 'ADD_SYMBOL',
 };
 
+export type Chart = Array<{
+  change: number,
+  changeOverTime: number,
+  changePercent: number,
+  close: number,
+  date: string,
+  high: number,
+  label: string,
+  low: number,
+  open: number,
+  unadjustedVolume: number,
+  volume: number,
+  vwap: number,
+}>;
+
 export type Transaction = {
   cashValue: ?number,
   commission: number,
@@ -48,6 +63,22 @@ type DownloadPortfolioAction = {
   type: 'DOWNLOAD_PORTFOLIO',
 };
 
+type FetchChartFailureAction = {
+  error: TypeError,
+  type: 'FETCH_CHART_FAILURE',
+};
+
+type FetchChartRequestAction = {
+  error: TypeError,
+  type: 'FETCH_CHART_REQUEST',
+};
+
+type FetchChartSuccessAction = {
+  chartData: Chart,
+  symbol: string,
+  type: 'FETCH_CHART_SUCCESS',
+};
+
 type FetchQuotesFailureAction = {
   error: TypeError,
   type: 'FETCH_QUOTES_FAILURE',
@@ -70,11 +101,15 @@ export type Action =
   | DeleteSymbolsAction
   | DeleteTransactionsAction
   | DownloadPortfolioAction
+  | FetchChartFailureAction
+  | FetchChartRequestAction
+  | FetchChartSuccessAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
   | FetchQuotesSuccessAction;
 
 export type Quote = {
+  avgTotalVolume: number,
   change: number,
   changePercent: number,
   close: number,
@@ -85,13 +120,18 @@ export type Quote = {
   low: number,
   marketCap: number,
   open: number,
+  peRatio: ?number,
+  previousClose: number,
   price: number,
   symbol: string,
+  week52High: number,
+  week52Low: number,
 };
 
 type State = {
+  charts: { [symbol: string]: Chart },
   fetchErrorMessage: ?string,
-  isFetchingQuotes: boolean,
+  isFetchingCount: number,
   nextTransactionId: number,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
@@ -207,22 +247,38 @@ export default function(state: State, action: Action): State {
 
       return state;
     }
+    case 'FETCH_CHART_REQUEST':
+      return {
+        ...state,
+        isFetchingCount: state.isFetchingCount + 1,
+      };
+    case 'FETCH_CHART_FAILURE':
+      return {
+        ...state,
+        isFetchingCount: state.isFetchingCount - 1,
+      };
+    case 'FETCH_CHART_SUCCESS':
+      return {
+        ...state,
+        charts: { ...state.charts, [action.symbol]: action.chartData },
+        isFetchingCount: state.isFetchingCount - 1,
+      };
     case 'FETCH_QUOTES_FAILURE':
       return {
         ...state,
         fetchErrorMessage: action.error.message,
-        isFetchingQuotes: false,
+        isFetchingCount: state.isFetchingCount - 1,
       };
     case 'FETCH_QUOTES_REQUEST':
       return {
         ...state,
         fetchErrorMessage: null,
-        isFetchingQuotes: true,
+        isFetchingCount: state.isFetchingCount + 1,
       };
     case 'FETCH_QUOTES_SUCCESS':
       return {
         ...state,
-        isFetchingQuotes: false,
+        isFetchingCount: state.isFetchingCount - 1,
         quotes: action.quotes,
         updatedAt: Date.now(),
       };

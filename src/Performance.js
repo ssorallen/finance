@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import type { Quote, Transaction } from './reducers';
 import { currencyFormatter, numberFormatter, percentFormatter } from './formatters';
+import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
@@ -36,11 +37,17 @@ function classes(cell) {
 const TABLE_COLUMNS = [
   {
     accessor: 'companyName',
+    Cell: props => (props.value == null ? '...' : props.value),
     Footer: <strong>Portfolio value:</strong>,
     Header: 'Name',
     headerClassName: 'text-left',
   },
-  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
+  {
+    accessor: 'symbol',
+    Cell: props => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
+    Header: 'Symbol',
+    headerClassName: 'text-left',
+  },
   {
     accessor: 'latestPrice',
     Cell: props => (

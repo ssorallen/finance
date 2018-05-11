@@ -100,6 +100,6 @@ class Navbar extends React.Component<Props, State> {
 
 export default connect(state => ({
   fetchErrorMessage: state.fetchErrorMessage,
-  isLoading: state.isFetchingQuotes,
+  isLoading: state.isFetchingCount > 0,
   updatedAt: state.updatedAt,
 }))(Navbar);

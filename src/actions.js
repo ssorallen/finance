@@ -42,6 +42,42 @@ function clearFetchQuotesTimeout() {
   }
 }
 
+// Example data:
+//
+// {
+//   date: '2018-04-09',
+//   open: 169.88,
+//   high: 173.09,
+//   low: 169.845,
+//   close: 170.05,
+//   volume: 29017718,
+//   unadjustedVolume: 29017718,
+//   change: 1.67,
+//   changePercent: 0.992,
+//   vwap: 171.555,
+//   label: 'Apr 9',
+//   changeOverTime: 0,
+// }
+export function fetchChart(symbol: string) {
+  return function(dispatch: Function) {
+    dispatch({ type: 'FETCH_CHART_REQUEST' });
+    fetch(`${IEX_ROOT}/stock/${symbol}/chart/1y`)
+      .then(response => {
+        response
+          .json()
+          .then(chartData => {
+            dispatch({ chartData, symbol, type: 'FETCH_CHART_SUCCESS' });
+          })
+          .catch(error => {
+            dispatch({ error, type: 'FETCH_CHART_FAILURE' });
+          });
+      })
+      .catch(error => {
+        dispatch({ error, type: 'FETCH_CHART_FAILURE' });
+      });
+  };
+}
+
 export function fetchQuotes() {
   return function(dispatch: Function, getState: GetState) {
     function setFetchQuotesTimeout() {

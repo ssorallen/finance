@@ -3,6 +3,10 @@
   text-decoration: underline;
 }
 
+.border-top-lg {
+  border-top-width: 3px !important;
+}
+
 .label-button {
   cursor: pointer;
   margin-bottom: 0;
@@ -102,13 +106,13 @@
 }
 
 .ReactTable .-pagination select {
-  font-size: .875rem;
+  font-size: 0.875rem;
   height: calc(1.8125rem + 2px);
   line-height: 1.5;
-  padding: .25rem .5rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .ReactTable .-pagination select:focus {
   border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }

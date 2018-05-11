@@ -173,5 +173,5 @@ class AddSymbolForm extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
-  isLoading: state.isFetchingQuotes,
+  isLoading: state.isFetchingCount > 0,
 }))(AddSymbolForm);

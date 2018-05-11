@@ -3,7 +3,8 @@
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import type { Quote, Transaction } from './reducers';
-import { currencyFormatter, percentFormatter } from './formatters';
+import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from './formatters';
+import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
@@ -26,20 +27,6 @@ type State = {
 
 const SelectReactTable = selectTableHOC(ReactTable);
 
-const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
-const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
-function abbreviateNumber(num: number, fixed) {
-  if (num === null) return null; // terminate early
-  if (num === 0) return '0'; // terminate early
-
-  fixed = !fixed || fixed < 0 ? 0 : fixed; // number of decimal places to show
-  const b = num.toPrecision(2).split('e'); // get power
-  const k = b.length === 1 ? 0 : Math.floor(Math.min(parseInt(b[1].slice(1), 10), 14) / 3); // floor at decimals, ceiling at trillions
-  const d = k < 0 ? k : Math.abs(k); // enforce -0 is 0
-  const c = d < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3)).toFixed(1 + fixed); // divide by power
-  return `${bigNumberFormatter.format(c)}${POWER_SUFFIXES[k]}`; // append power
-}
-
 function classes(cell) {
   return cx('text-right', {
     'text-danger': cell != null && cell < 0,
@@ -50,11 +37,17 @@ function classes(cell) {
 const TABLE_COLUMNS = [
   {
     accessor: 'companyName',
+    Cell: props => (props.value == null ? '...' : props.value),
     Footer: <strong>Portfolio value:</strong>,
     Header: 'Name',
     headerClassName: 'text-left',
   },
-  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
+  {
+    accessor: 'symbol',
+    Cell: props => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
+    Header: 'Symbol',
+    headerClassName: 'text-left',
+  },
   {
     accessor: 'latestPrice',
     Cell: props => (
@@ -86,7 +79,7 @@ const TABLE_COLUMNS = [
     accessor: 'marketCap',
     Cell: props => (
       <div className="text-right">
-        {props.value == null ? '...' : abbreviateNumber(props.value)}
+        {props.value == null ? '...' : abbreviatedNumberFormatter.format(props.value)}
       </div>
     ),
     Header: 'Mkt. Cap',
@@ -96,7 +89,7 @@ const TABLE_COLUMNS = [
     accessor: 'latestVolume',
     Cell: props => (
       <div className="text-right">
-        {props.value == null ? '...' : abbreviateNumber(props.value)}
+        {props.value == null ? '...' : abbreviatedNumberFormatter.format(props.value)}
       </div>
     ),
     Header: 'Volume',

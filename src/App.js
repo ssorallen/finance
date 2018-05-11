@@ -8,6 +8,7 @@ import AddSymbolForm from './AddSymbolForm';
 import Navbar from './Navbar';
 import Overview from './Overview';
 import Performance from './Performance';
+import Stock from './Stock';
 import Transactions from './Transactions';
 import { connect } from 'react-redux';
 import { fetchQuotes } from './actions';
@@ -39,6 +40,7 @@ class App extends React.Component<Props> {
           <Container className="mb-4">
             <Route exact path="/" component={Overview} />
             <Route path="/performance" component={Performance} />
+            <Route path="/stocks/:symbol" component={Stock} />
             <Route path="/transactions" component={Transactions} />
             <Row>
               <Col md="6">

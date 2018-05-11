@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import type { Quote, Transaction } from './reducers';
 import { currencyFormatter, numberFormatter } from './formatters';
+import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
@@ -25,8 +26,18 @@ type State = {
 const SelectReactTable = selectTableHOC(ReactTable);
 
 const TABLE_COLUMNS = [
-  { accessor: 'companyName', Header: 'Name', headerClassName: 'text-left' },
-  { accessor: 'symbol', Header: 'Symbol', headerClassName: 'text-left' },
+  {
+    accessor: 'companyName',
+    Cell: props => (props.value == null ? '...' : props.value),
+    Header: 'Name',
+    headerClassName: 'text-left',
+  },
+  {
+    accessor: 'symbol',
+    Cell: props => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
+    Header: 'Symbol',
+    headerClassName: 'text-left',
+  },
   { accessor: 'type', Header: 'Type', headerClassName: 'text-left' },
   {
     accessor: 'date',
@@ -130,7 +141,7 @@ class Transactions extends React.Component<Props, State> {
       const quote = this.props.quotes[transaction.symbol];
       return {
         ...transaction,
-        companyName: quote == null ? '...' : quote.companyName,
+        companyName: quote == null ? null : quote.companyName,
       };
     });
     const deleteDisabled =

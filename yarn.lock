@@ -2,6 +2,66 @@
 # yarn lockfile v1
 
 
+"@vx/axis@^0.0.162":
+  version "0.0.162"
+  resolved "https://registry.yarnpkg.com/@vx/axis/-/axis-0.0.162.tgz#188261054c6d2beb4482746cda9f7534b5c77a10"
+  dependencies:
+    "@vx/group" "0.0.161"
+    "@vx/point" "0.0.161"
+    "@vx/shape" "0.0.162"
+    "@vx/text" "0.0.161"
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+
+"@vx/curve@0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/curve/-/curve-0.0.161.tgz#b02c4311cad712adaa16500abc05e48d82e3fee3"
+  dependencies:
+    d3-shape "^1.0.6"
+
+"@vx/gradient@^0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/gradient/-/gradient-0.0.161.tgz#299a8b022e1355023053849997cfb6e1a4afba91"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.7"
+
+"@vx/group@0.0.161", "@vx/group@^0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/group/-/group-0.0.161.tgz#497a19c2a458dd5ff6fd59e3cd79933dbf184156"
+  dependencies:
+    classnames "^2.2.5"
+
+"@vx/point@0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.161.tgz#fb8f37a4be0f95581daf3f963adf2f99b64a4a2d"
+
+"@vx/scale@^0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/scale/-/scale-0.0.161.tgz#5243ab8853cf95dd74044f67dd5452b3478d9af7"
+  dependencies:
+    d3-scale "^2.0.0"
+
+"@vx/shape@0.0.162", "@vx/shape@^0.0.162":
+  version "0.0.162"
+  resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.162.tgz#adf7728eb3dba559005bb7f29c3d1ffa9a4d56a2"
+  dependencies:
+    "@vx/curve" "0.0.161"
+    "@vx/group" "0.0.161"
+    "@vx/point" "0.0.161"
+    classnames "^2.2.5"
+    d3-path "^1.0.5"
+    d3-shape "^1.2.0"
+    prop-types "^15.5.10"
+
+"@vx/text@0.0.161":
+  version "0.0.161"
+  resolved "https://registry.yarnpkg.com/@vx/text/-/text-0.0.161.tgz#e4024a543bb5031c10f14ffd762c6d5c2b0b9cef"
+  dependencies:
+    classnames "^2.2.5"
+    lodash "^4.17.4"
+    reduce-css-calc "^1.3.0"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -1873,6 +1933,59 @@ currently-unhandled@^0.4.1:
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
   dependencies:
     array-find-index "^1.0.1"
+
+d3-array@^1.2.0, d3-array@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.1.tgz#d1ca33de2f6ac31efadb8e050a021d7e2396d5dc"
+
+d3-collection@1:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
+
+d3-color@1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.2.0.tgz#d1ea19db5859c86854586276ec892cf93148459a"
+
+d3-format@1:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.3.0.tgz#a3ac44269a2011cdb87c7b5693040c18cddfff11"
+
+d3-interpolate@1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.2.0.tgz#40d81bd8e959ff021c5ea7545bc79b8d22331c41"
+  dependencies:
+    d3-color "1"
+
+d3-path@1, d3-path@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.5.tgz#241eb1849bd9e9e8021c0d0a799f8a0e8e441764"
+
+d3-scale@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.0.0.tgz#fd8ac78381bc2ed741d8c71770437a5e0549a5a5"
+  dependencies:
+    d3-array "^1.2.0"
+    d3-collection "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
+d3-shape@^1.0.6, d3-shape@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
+  dependencies:
+    d3-path "1"
+
+d3-time-format@2:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.1.1.tgz#85b7cdfbc9ffca187f14d3c456ffda268081bb31"
+  dependencies:
+    d3-time "1"
+
+d3-time@1:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.0.8.tgz#dbd2d6007bf416fe67a76d17947b784bffea1e84"
 
 d@1:
   version "1.0.0"
@@ -5508,7 +5621,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -5862,7 +5975,7 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-reduce-css-calc@^1.2.6:
+reduce-css-calc@^1.2.6, reduce-css-calc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/reduce-css-calc/-/reduce-css-calc-1.3.0.tgz#747c914e049614a4c9cfbba629871ad1d2927716"
   dependencies:
