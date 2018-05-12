@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import type { Quote, Transaction } from './reducers';
+import type { Dispatch, Quote, Transaction } from './types';
 import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from './formatters';
 import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
@@ -13,7 +13,7 @@ import { deleteSymbols } from './actions';
 import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
-  dispatch: Function,
+  dispatch: Dispatch,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
   transactions: Array<Transaction>,

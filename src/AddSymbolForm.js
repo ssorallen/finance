@@ -3,11 +3,12 @@
 import * as React from 'react';
 import { Button, Collapse, Form, FormGroup, Input, Label } from 'reactstrap';
 import { addTransaction, fetchQuotes } from './actions';
+import type { Dispatch } from './types';
 import { connect } from 'react-redux';
 import formSerialize from 'form-serialize';
 
 type Props = {
-  dispatch: Function,
+  dispatch: Dispatch,
   isLoading: boolean,
   onSubmit?: (formData: Object) => void,
 };

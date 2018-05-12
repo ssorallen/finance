@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { AxisLeft, AxisBottom } from '@vx/axis';
-import type { Chart, Quote } from './reducers';
+import type { Chart, Quote } from './types';
 import { Col, Row } from 'reactstrap';
 import {
   abbreviatedNumberFormatter,

@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { GetState, Transaction } from './reducers';
+import type { GetState, Transaction } from './types';
 
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 

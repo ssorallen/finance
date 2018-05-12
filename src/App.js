@@ -5,6 +5,7 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import AddSymbolForm from './AddSymbolForm';
+import type { Dispatch } from './types';
 import Navbar from './Navbar';
 import Overview from './Overview';
 import Performance from './Performance';
@@ -14,7 +15,7 @@ import { connect } from 'react-redux';
 import { fetchQuotes } from './actions';
 
 type StateProps = {
-  dispatch: Function,
+  dispatch: Dispatch,
 };
 
 type Props = StateProps;

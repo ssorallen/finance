@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { Quote, Transaction } from './reducers';
+import type { Quote, Transaction } from './types';
 
 type GfTransaction = {
   'Cash value': string,
