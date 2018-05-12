@@ -22,7 +22,7 @@ type Props = StateProps;
 
 class App extends React.Component<Props> {
   componentDidMount() {
-    // Fetch quotes when the app first launches. Fetching quotes automatically resets a time, and
+    // Fetch quotes when the app first launches. Fetching quotes automatically resets a timer, and
     // the app from here on out will periodicaly fetch quotes to stay updated. This also enables the
     // user to refresh quotes by using browser refresh.
     this.props.dispatch(fetchQuotes());

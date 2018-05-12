@@ -16,6 +16,10 @@ export function addTransactions(transactions: Array<Transaction>) {
   return { transactions, type: 'ADD_TRANSACTIONS' };
 }
 
+export function changePageSize(nextPageSize: number) {
+  return { pageSize: nextPageSize, type: 'CHANGE_PAGE_SIZE' };
+}
+
 export function deletePortfolio() {
   return { type: 'DELETE_PORTFOLIO' };
 }

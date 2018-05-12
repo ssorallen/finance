@@ -2,16 +2,17 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import type { Dispatch, Quote, Transaction } from './types';
+import type { AppSettings, Dispatch, Quote, Transaction } from './types';
+import { changePageSize, deleteTransactions } from './actions';
 import { currencyFormatter, numberFormatter } from './formatters';
 import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
-import { deleteTransactions } from './actions';
 import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
+  appSettings: AppSettings,
   dispatch: Dispatch,
   quotes: { [symbol: string]: Quote },
   transactions: Array<Transaction>,
@@ -109,6 +110,10 @@ class Transactions extends React.Component<Props, State> {
     this.props.dispatch(deleteTransactions(transactionsToDelete));
   };
 
+  handlePageSizeChange = (nextPageSize: number) => {
+    this.props.dispatch(changePageSize(nextPageSize));
+  };
+
   handleToggleAllTransactionIds = (isSelected: boolean) => {
     if (this.isAllTransactionIdsSelected()) {
       this.setState({ selectedTransactionIds: new Set() });
@@ -176,6 +181,8 @@ class Transactions extends React.Component<Props, State> {
               isSelected={this.isTransactionIdSelected}
               keyField="id"
               noDataText="No transactions yet. Add one using the form below."
+              onPageSizeChange={this.handlePageSizeChange}
+              pageSize={this.props.appSettings.pageSize}
               selectAll={this.isAllTransactionIdsSelected()}
               selectType="checkbox"
               toggleAll={this.handleToggleAllTransactionIds}
@@ -189,6 +196,7 @@ class Transactions extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  appSettings: state.appSettings,
   quotes: state.quotes,
   transactions: state.transactions,
 }))(Transactions);

@@ -2,17 +2,18 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import type { Dispatch, Quote, Transaction } from './types';
+import type { AppSettings, Dispatch, Quote, Transaction } from './types';
+import { changePageSize, deleteSymbols } from './actions';
 import { currencyFormatter, numberFormatter, percentFormatter } from './formatters';
 import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import { deleteSymbols } from './actions';
 import selectTableHOC from 'react-table/lib/hoc/selectTable';
 
 type StateProps = {
+  appSettings: AppSettings,
   dispatch: Dispatch,
   quotes: { [symbol: string]: Quote },
   symbols: Array<string>,
@@ -219,6 +220,10 @@ class Performance extends React.Component<Props, State> {
     this.props.dispatch(deleteSymbols(Array.from(this.state.selectedSymbols)));
   };
 
+  handlePageSizeChange = (nextPageSize: number) => {
+    this.props.dispatch(changePageSize(nextPageSize));
+  };
+
   handleToggleAllSymbols = (isSelected: boolean) => {
     if (this.isAllSymbolsSelected()) {
       this.setState({ selectedSymbols: new Set() });
@@ -313,14 +318,16 @@ class Performance extends React.Component<Props, State> {
               data={tableData}
               defaultSorted={[{ desc: false, id: 'symbol' }]}
               getPaginationProps={() => ({
-                className: 'pt-2',
                 NextComponent: props => <Button className="btn-sm" outline {...props} />,
                 PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                className: 'pt-2',
                 showPageJump: false,
               })}
               isSelected={this.isSymbolSelected}
               keyField="symbol"
               noDataText="No symbols yet. Add one using the form below."
+              onPageSizeChange={this.handlePageSizeChange}
+              pageSize={this.props.appSettings.pageSize}
               selectAll={this.isAllSymbolsSelected()}
               selectType="checkbox"
               toggleAll={this.handleToggleAllSymbols}
@@ -334,6 +341,7 @@ class Performance extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  appSettings: state.appSettings,
   quotes: state.quotes,
   symbols: state.symbols,
   transactions: state.transactions,

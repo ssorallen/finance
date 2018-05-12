@@ -131,10 +131,12 @@ export type Quote = {|
   +week52Low: number,
 |};
 
+export type AppSettings = {|
+  +pageSize: number,
+|};
+
 export type AppState = {|
-  +appSettings: {
-    +pageSize: number,
-  },
+  +appSettings: AppSettings,
   +charts: { [symbol: string]: Chart },
   +fetchErrorMessage: ?string,
   +isFetchingCount: number,

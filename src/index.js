@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-table/react-table.css';
 import { applyMiddleware, compose, createStore } from 'redux';
 import App from './App';
+import type { AppState } from './types';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -20,7 +21,10 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // Pass an initial state to `createStore` rather than use a default argument in the reducer to
 // enable 'redux-localstorage' to merge its persisted state with this initial state.
-const initialState = {
+const initialState: AppState = {
+  appSettings: {
+    pageSize: 10,
+  },
   charts: {},
   fetchErrorMessage: null,
   isFetchingCount: 0,
@@ -36,9 +40,12 @@ const store = createStore(
   initialState,
   composeEnhancers(
     applyMiddleware(thunk),
-    persistState(['nextTransactionId', 'quotes', 'symbols', 'transactions', 'updatedAt'], {
-      key: 'default',
-    })
+    persistState(
+      ['appSettings', 'nextTransactionId', 'quotes', 'symbols', 'transactions', 'updatedAt'],
+      {
+        key: 'default',
+      }
+    )
   )
 );
 

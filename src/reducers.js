@@ -52,6 +52,14 @@ export default function(state: AppState, action: Action): AppState {
         transactions: state.transactions.concat(newTransactions),
       };
     }
+    case 'CHANGE_PAGE_SIZE':
+      return {
+        ...state,
+        appSettings: {
+          ...state.appSettings,
+          pageSize: action.pageSize,
+        },
+      };
     case 'DELETE_PORTFOLIO':
       return {
         ...state,
