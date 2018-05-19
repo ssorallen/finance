@@ -22,11 +22,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // Pass an initial state to `createStore` rather than use a default argument in the reducer to
 // enable 'redux-localstorage' to merge its persisted state with this initial state.
 const initialState: AppState = {
+  allIexSymbols: null,
   appSettings: {
     pageSize: 10,
   },
   charts: {},
   fetchErrorMessage: null,
+  isFetchingAllIexSymbols: false,
   isFetchingCount: 0,
   nextTransactionId: 1,
   quotes: {},
@@ -41,7 +43,17 @@ const store = createStore(
   composeEnhancers(
     applyMiddleware(thunk),
     persistState(
-      ['appSettings', 'nextTransactionId', 'quotes', 'symbols', 'transactions', 'updatedAt'],
+      // Any keys in the following Array will be persisted from the store to local storage and
+      // re-hydrated when the app re-loads.
+      [
+        'allIexSymbols',
+        'appSettings',
+        'nextTransactionId',
+        'quotes',
+        'symbols',
+        'transactions',
+        'updatedAt',
+      ],
       {
         key: 'default',
       }

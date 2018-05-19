@@ -12,7 +12,7 @@ import Performance from './Performance';
 import Stock from './Stock';
 import Transactions from './Transactions';
 import { connect } from 'react-redux';
-import { fetchQuotes } from './actions';
+import { fetchAllQuotes } from './actions';
 
 type StateProps = {
   dispatch: Dispatch,
@@ -25,7 +25,7 @@ class App extends React.Component<Props> {
     // Fetch quotes when the app first launches. Fetching quotes automatically resets a timer, and
     // the app from here on out will periodicaly fetch quotes to stay updated. This also enables the
     // user to refresh quotes by using browser refresh.
-    this.props.dispatch(fetchQuotes());
+    this.props.dispatch(fetchAllQuotes());
   }
 
   render() {

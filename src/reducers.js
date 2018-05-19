@@ -118,21 +118,38 @@ export default function(state: AppState, action: Action): AppState {
 
       return state;
     }
-    case 'FETCH_CHART_REQUEST':
+    case 'FETCH_ALL_IEX_SYMBOLS_FAILURE':
+      return {
+        ...state,
+        isFetchingAllIexSymbols: false,
+      };
+    case 'FETCH_ALL_IEX_SYMBOLS_REQUEST':
+      return {
+        ...state,
+        isFetchingAllIexSymbols: true,
+      };
+    case 'FETCH_ALL_IEX_SYMBOLS_SUCCESS':
+      return {
+        ...state,
+        allIexSymbols: action.allIexSymbols,
+        isFetchingAllIexSymbols: false,
+      };
+    case 'FETCH_SYMBOL_DATA_REQUEST':
       return {
         ...state,
         isFetchingCount: state.isFetchingCount + 1,
       };
-    case 'FETCH_CHART_FAILURE':
+    case 'FETCH_SYMBOL_DATA_FAILURE':
       return {
         ...state,
         isFetchingCount: state.isFetchingCount - 1,
       };
-    case 'FETCH_CHART_SUCCESS':
+    case 'FETCH_SYMBOL_DATA_SUCCESS':
       return {
         ...state,
-        charts: { ...state.charts, [action.symbol]: action.chartData },
+        charts: { ...state.charts, [action.symbol]: action.symbolData.chart },
         isFetchingCount: state.isFetchingCount - 1,
+        quotes: { ...state.quotes, [action.symbol]: action.symbolData.quote },
       };
     case 'FETCH_QUOTES_FAILURE':
       return {

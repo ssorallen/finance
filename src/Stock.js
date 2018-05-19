@@ -17,7 +17,7 @@ import { Group } from '@vx/group';
 import { LinearGradient } from '@vx/gradient';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import { fetchChart } from './actions';
+import { fetchSymbolData } from './actions';
 
 type OwnProps = {
   match: Object,
@@ -59,7 +59,17 @@ const yMax = height - margin.top - margin.bottom;
 
 class Stock extends React.Component<Props> {
   componentDidMount() {
-    this.props.dispatch(fetchChart(this.props.match.params.symbol));
+    this.fetchSymbolData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.symbol !== prevProps.match.params.symbol) {
+      this.fetchSymbolData();
+    }
+  }
+
+  fetchSymbolData() {
+    this.props.dispatch(fetchSymbolData(this.props.match.params.symbol));
   }
 
   render() {

@@ -15,6 +15,35 @@ export type Chart = Array<{|
   +vwap: number,
 |}>;
 
+export type IEXSymbol = {|
+  +date: string,
+  +iexId: number,
+  +isEnabled: boolean,
+  +name: string,
+  +symbol: string,
+  +type: string,
+|};
+
+export type Quote = {|
+  +avgTotalVolume: number,
+  +change: number,
+  +changePercent: number,
+  +close: number,
+  +companyName: string,
+  +high: number,
+  +latestPrice: number,
+  +latestVolume: number,
+  +low: number,
+  +marketCap: number,
+  +open: number,
+  +peRatio: ?number,
+  +previousClose: number,
+  +price: number,
+  +symbol: string,
+  +week52High: number,
+  +week52Low: number,
+|};
+
 export type Transaction = {|
   +cashValue: ?number,
   +commission: number,
@@ -65,20 +94,36 @@ type DownloadPortfolioAction = {|
   +type: 'DOWNLOAD_PORTFOLIO',
 |};
 
-type FetchChartFailureAction = {|
+type FetchAllIexSymbolsFailureAction = {|
   +error: TypeError,
-  +type: 'FETCH_CHART_FAILURE',
+  +type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE',
 |};
 
-type FetchChartRequestAction = {|
-  +error: TypeError,
-  +type: 'FETCH_CHART_REQUEST',
+type FetchAllIexSymbolsRequestAction = {|
+  +type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST',
 |};
 
-type FetchChartSuccessAction = {|
-  +chartData: Chart,
+type FetchAllIexSymbolsSuccessAction = {|
+  allIexSymbols: Array<IEXSymbol>,
+  +type: 'FETCH_ALL_IEX_SYMBOLS_SUCCESS',
+|};
+
+type FetchSymbolDataFailureAction = {|
+  +error: TypeError,
+  +type: 'FETCH_SYMBOL_DATA_FAILURE',
+|};
+
+type FetchSymbolDataRequestAction = {|
+  +type: 'FETCH_SYMBOL_DATA_REQUEST',
+|};
+
+type FetchSymbolDataSuccessAction = {|
+  +symbolData: {
+    chart: Chart,
+    quote: Quote,
+  },
   +symbol: string,
-  +type: 'FETCH_CHART_SUCCESS',
+  +type: 'FETCH_SYMBOL_DATA_SUCCESS',
 |};
 
 type FetchQuotesFailureAction = {|
@@ -104,41 +149,26 @@ export type Action =
   | DeleteSymbolsAction
   | DeleteTransactionsAction
   | DownloadPortfolioAction
-  | FetchChartFailureAction
-  | FetchChartRequestAction
-  | FetchChartSuccessAction
+  | FetchAllIexSymbolsFailureAction
+  | FetchAllIexSymbolsRequestAction
+  | FetchAllIexSymbolsSuccessAction
+  | FetchSymbolDataFailureAction
+  | FetchSymbolDataRequestAction
+  | FetchSymbolDataSuccessAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
   | FetchQuotesSuccessAction;
-
-export type Quote = {|
-  +avgTotalVolume: number,
-  +change: number,
-  +changePercent: number,
-  +close: number,
-  +companyName: string,
-  +high: number,
-  +latestPrice: number,
-  +latestVolume: number,
-  +low: number,
-  +marketCap: number,
-  +open: number,
-  +peRatio: ?number,
-  +previousClose: number,
-  +price: number,
-  +symbol: string,
-  +week52High: number,
-  +week52Low: number,
-|};
 
 export type AppSettings = {|
   +pageSize: number,
 |};
 
 export type AppState = {|
+  +allIexSymbols: ?Array<IEXSymbol>,
   +appSettings: AppSettings,
   +charts: { [symbol: string]: Chart },
   +fetchErrorMessage: ?string,
+  +isFetchingAllIexSymbols: boolean,
   +isFetchingCount: number,
   +nextTransactionId: number,
   +quotes: { [symbol: string]: Quote },

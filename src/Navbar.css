@@ -1,0 +1,7 @@
+.dark-transition {
+  transition: color 250ms, background-color 250ms;
+}
+
+.bg-dark::placeholder {
+  color: var(--light);
+}

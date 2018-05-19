@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Collapse, Form, FormGroup, Input, Label } from 'reactstrap';
-import { addTransaction, fetchQuotes } from './actions';
+import { addTransaction, fetchAllQuotes } from './actions';
 import type { Dispatch } from './types';
 import { connect } from 'react-redux';
 import formSerialize from 'form-serialize';
@@ -53,7 +53,7 @@ class AddSymbolForm extends React.Component<Props, State> {
     };
 
     this.props.dispatch(addTransaction(transaction));
-    this.props.dispatch(fetchQuotes());
+    this.props.dispatch(fetchAllQuotes());
     if (this.props.onSubmit) this.props.onSubmit(transaction);
     if (this.formRef != null) this.formRef.reset();
   };

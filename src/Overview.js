@@ -7,6 +7,7 @@ import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from 
 import { changePageSize, deleteSymbols } from './actions';
 import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
+import PortfolioNav from './PortfolioNav';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import cx from 'classnames';
@@ -237,6 +238,7 @@ class Overview extends React.Component<Props, State> {
     const deleteDisabled = this.props.symbols.length === 0 || this.state.selectedSymbols.size === 0;
     return (
       <React.Fragment>
+        <PortfolioNav />
         <Row className="mb-3 mt-3">
           <Col>
             <Button

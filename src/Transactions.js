@@ -7,6 +7,7 @@ import { changePageSize, deleteTransactions } from './actions';
 import { currencyFormatter, numberFormatter } from './formatters';
 import { Link } from 'react-router-dom';
 import PortfolioActions from './PortfolioActions';
+import PortfolioNav from './PortfolioNav';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import selectTableHOC from 'react-table/lib/hoc/selectTable';
@@ -153,6 +154,7 @@ class Transactions extends React.Component<Props, State> {
       this.props.transactions.length === 0 || this.state.selectedTransactionIds.size === 0;
     return (
       <React.Fragment>
+        <PortfolioNav />
         <Row className="mb-3 mt-3">
           <Col>
             <Button

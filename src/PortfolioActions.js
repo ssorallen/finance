@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Button, Col, Input, Label } from 'reactstrap';
 import type { Dispatch } from './types';
-import { addTransactions, deletePortfolio, downloadPortfolio, fetchQuotes } from './actions';
+import { addTransactions, deletePortfolio, downloadPortfolio, fetchAllQuotes } from './actions';
 import { connect } from 'react-redux';
 import csvParse from 'csv-parse/lib/es5/sync';
 import { transformGfToStocks } from './transformers';
@@ -50,7 +50,7 @@ class PortfolioActions extends React.Component<Props, State> {
       fileReader.onload = () => {
         const parsedCsv = csvParse(fileReader.result, { columns: true });
         this.props.dispatch(addTransactions(transformGfToStocks(parsedCsv)));
-        this.props.dispatch(fetchQuotes());
+        this.props.dispatch(fetchAllQuotes());
         this.setState({ isReadingFile: false });
 
         // Reset the input so the same file can be uploaded multiple times in a row (without

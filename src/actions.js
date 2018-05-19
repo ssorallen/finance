@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { GetState, Transaction } from './types';
+import type { Dispatch, GetState, Transaction } from './types';
 
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 
@@ -37,12 +37,12 @@ export function downloadPortfolio() {
 }
 
 // A timeout to periodically fetch new quotes.
-let fetchQuotesTimeout;
+let fetchAllQuotesTimeout;
 
 function clearFetchQuotesTimeout() {
-  if (fetchQuotesTimeout != null) {
-    clearTimeout(fetchQuotesTimeout);
-    fetchQuotesTimeout = null;
+  if (fetchAllQuotesTimeout != null) {
+    clearTimeout(fetchAllQuotesTimeout);
+    fetchAllQuotesTimeout = null;
   }
 }
 
@@ -62,35 +62,35 @@ function clearFetchQuotesTimeout() {
 //   label: 'Apr 9',
 //   changeOverTime: 0,
 // }
-export function fetchChart(symbol: string) {
-  return function(dispatch: Function) {
-    dispatch({ type: 'FETCH_CHART_REQUEST' });
-    fetch(`${IEX_ROOT}/stock/${symbol}/chart/1y`)
+export function fetchSymbolData(symbol: string) {
+  return function(dispatch: Dispatch) {
+    dispatch({ type: 'FETCH_SYMBOL_DATA_REQUEST' });
+    fetch(`${IEX_ROOT}/stock/${symbol}/batch?types=chart,quote&range=1y`)
       .then(response => {
         response
           .json()
-          .then(chartData => {
-            dispatch({ chartData, symbol, type: 'FETCH_CHART_SUCCESS' });
+          .then(symbolData => {
+            dispatch({ symbol, symbolData, type: 'FETCH_SYMBOL_DATA_SUCCESS' });
           })
           .catch(error => {
-            dispatch({ error, type: 'FETCH_CHART_FAILURE' });
+            dispatch({ error, type: 'FETCH_SYMBOL_DATA_FAILURE' });
           });
       })
       .catch(error => {
-        dispatch({ error, type: 'FETCH_CHART_FAILURE' });
+        dispatch({ error, type: 'FETCH_SYMBOL_DATA_FAILURE' });
       });
   };
 }
 
-export function fetchQuotes() {
-  return function(dispatch: Function, getState: GetState) {
+export function fetchAllQuotes() {
+  return function(dispatch: Dispatch, getState: GetState) {
     function setFetchQuotesTimeout() {
       // Because more `fetchQuote` actions might be in flight, ensure the timer is empty and
       // synchronously create the next one (even though it was cleared once when this action was
       // first dispatched). This ensures no more than one timeout at a time is pending.
       clearFetchQuotesTimeout();
       setTimeout(() => {
-        dispatch(fetchQuotes());
+        dispatch(fetchAllQuotes());
       }, 300000); // Fetch quotes minimally every 5 minutes. (5 * 60 * 1000)
     }
 
@@ -124,8 +124,8 @@ export function fetchQuotes() {
             });
             dispatch({ quotes: nextQuotes, type: 'FETCH_QUOTES_SUCCESS' });
           })
-          .catch(() => {
-            dispatch({ type: 'FETCH_QUOTES_FAILURE' });
+          .catch(error => {
+            dispatch({ error, type: 'FETCH_QUOTES_FAILURE' });
           });
       })
       .catch(error => {
@@ -133,6 +133,26 @@ export function fetchQuotes() {
       })
       .finally(() => {
         setFetchQuotesTimeout();
+      });
+  };
+}
+
+export function fetchAllIexSymbols() {
+  return function(dispatch: Dispatch) {
+    dispatch({ type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST' });
+    fetch(`${IEX_ROOT}/ref-data/symbols`)
+      .then(response => {
+        response
+          .json()
+          .then(data => {
+            dispatch({ allIexSymbols: data, type: 'FETCH_ALL_IEX_SYMBOLS_SUCCESS' });
+          })
+          .catch(error => {
+            dispatch({ error, type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE' });
+          });
+      })
+      .catch(error => {
+        dispatch({ error, type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE' });
       });
   };
 }
