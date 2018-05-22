@@ -41,38 +41,47 @@ class App extends React.Component<Props> {
           <Route path="/performance" component={Performance} />
           <Route path="/stocks/:symbol" component={Stock} />
           <Route path="/transactions" component={Transactions} />
-          <Container className="mb-4">
-            <Row className="mt-3">
-              <Col>
-                <small className="text-secondary">
-                  Created by Ross Allen &lt;
-                  <a className="link-secondary" href="https://github.com/ssorallen">
-                    ssorallen
-                  </a>&gt; &middot; Source available at{' '}
-                  <a className="link-secondary" href="https://github.com/ssorallen/finance">
-                    ssorallen/finance
-                  </a>{' '}
-                  <span aria-label="" role="img">
-                    🦉
-                  </span>
-                </small>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <small className="text-secondary">
-                  Data provided for free by{' '}
-                  <a className="link-secondary" href="https://iextrading.com/developer/">
-                    IEX
-                  </a>{' '}
-                  &middot; Use is subject to{' '}
-                  <a className="link-secondary" href="https://iextrading.com/api-exhibit-a/">
-                    IEX Exhibit A
-                  </a>
-                </small>
-              </Col>
-            </Row>
-          </Container>
+          <footer className="bg-light py-4">
+            <Container>
+              <Row>
+                <Col>
+                  <small className="text-secondary">
+                    Created by Ross Allen &lt;
+                    <a className="link-secondary" href="https://github.com/ssorallen">
+                      ssorallen
+                    </a>&gt;{' '}
+                    <span aria-label="" role="img">
+                      🦉
+                    </span>
+                  </small>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <small className="text-secondary">
+                    Source available at{' '}
+                    <a className="link-secondary" href="https://github.com/ssorallen/finance">
+                      ssorallen/finance
+                    </a>
+                  </small>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <small className="text-secondary">
+                    Data provided for free by{' '}
+                    <a className="link-secondary" href="https://iextrading.com/developer/">
+                      IEX
+                    </a>{' '}
+                    &middot; Use is subject to{' '}
+                    <a className="link-secondary" href="https://iextrading.com/api-exhibit-a/">
+                      IEX Exhibit A
+                    </a>
+                  </small>
+                </Col>
+              </Row>
+            </Container>
+          </footer>
         </div>
       </Router>
     );
