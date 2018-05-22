@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import type { Chart, Quote } from './types';
-import { Col, Row } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import {
   abbreviatedNumberFormatter,
   currencyFormatter,
@@ -88,7 +88,7 @@ class Stock extends React.Component<Props> {
       });
     }
     return (
-      <div className="mb-3 mt-3">
+      <Container className="mb-3 mt-3">
         <h2>
           {quote == null ? '...' : quote.companyName} ({this.props.match.params.symbol})
         </h2>
@@ -212,7 +212,7 @@ class Stock extends React.Component<Props> {
             )}
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 }
