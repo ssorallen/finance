@@ -1,13 +1,14 @@
 /* @flow */
 
+import './PortfolioNav.css';
 import * as React from 'react';
 import { Nav, NavItem } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
-export default class PortfolioNav extends React.Component<{}> {
-  render() {
-    return (
-      <Nav className="mt-3" role="navigation" tabs>
+export default function PortfolioNav() {
+  return (
+    <div className="bg-light shadow-sm nav-scroller">
+      <Nav className="nav-portfolio" role="navigation">
         <NavItem>
           <NavLink className="nav-link" exact to="/">
             Overview
@@ -24,6 +25,6 @@ export default class PortfolioNav extends React.Component<{}> {
           </NavLink>
         </NavItem>
       </Nav>
-    );
-  }
+    </div>
+  );
 }

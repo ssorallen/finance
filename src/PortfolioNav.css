@@ -1,0 +1,27 @@
+.nav-scroller {
+  height: 2.75rem;
+  overflow-y: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-scroller .nav {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.nav-portfolio .nav-link {
+  color: var(--gray);
+  font-size: 0.875rem;
+  padding-bottom: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.nav-portfolio .nav-link:hover {
+  color: var(--blue);
+}
+
+.nav-portfolio .active {
+  color: #212529;
+  font-weight: bold;
+}

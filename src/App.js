@@ -4,7 +4,6 @@ import './App.css';
 import * as React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
-import AddSymbolForm from './AddSymbolForm';
 import type { Dispatch } from './types';
 import Navbar from './Navbar';
 import Overview from './Overview';
@@ -38,24 +37,18 @@ class App extends React.Component<Props> {
 
               See: React Router's ["Dealing With Update Blocking"][0] */}
           <Route component={Navbar} />
+          <Route exact path="/" component={Overview} />
+          <Route path="/performance" component={Performance} />
+          <Route path="/stocks/:symbol" component={Stock} />
+          <Route path="/transactions" component={Transactions} />
           <Container className="mb-4">
-            <Route exact path="/" component={Overview} />
-            <Route path="/performance" component={Performance} />
-            <Route path="/stocks/:symbol" component={Stock} />
-            <Route path="/transactions" component={Transactions} />
-            <Row>
-              <Col md="6">
-                <AddSymbolForm />
-              </Col>
-            </Row>
             <Row className="mt-3">
               <Col>
                 <small className="text-secondary">
-                  Created by{' '}
+                  Created by Ross Allen &lt;
                   <a className="link-secondary" href="https://github.com/ssorallen">
                     ssorallen
-                  </a>{' '}
-                  &middot; Source available at{' '}
+                  </a>&gt; &middot; Source available at{' '}
                   <a className="link-secondary" href="https://github.com/ssorallen/finance">
                     ssorallen/finance
                   </a>{' '}
