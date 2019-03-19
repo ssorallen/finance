@@ -17,13 +17,14 @@ type RouterProps = {
 
 type StateProps = {
   allIexSymbols: ?Array<IEXSymbol>,
-  dispatch: Dispatch,
   fetchErrorMessage: ?string,
   isLoading: boolean,
   updatedAt: ?number,
 };
 
-type Props = RouterProps & StateProps;
+type ConnectProps = StateProps & { dispatch: Dispatch };
+
+type Props = RouterProps & ConnectProps;
 
 type State = {
   isOpen: boolean,
@@ -199,8 +200,8 @@ class Navbar extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(
-  connect(state => ({
+export default withRouter<Navbar>(
+  connect<ConnectProps, {}, _, _, _, _>(state => ({
     allIexSymbols: state.allIexSymbols,
     fetchErrorMessage: state.fetchErrorMessage,
     isLoading: state.isFetchingCount > 0,

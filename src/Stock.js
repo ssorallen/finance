@@ -62,7 +62,7 @@ class Stock extends React.Component<Props> {
     this.fetchSymbolData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.match.params.symbol !== prevProps.match.params.symbol) {
       this.fetchSymbolData();
     }
@@ -217,7 +217,7 @@ class Stock extends React.Component<Props> {
   }
 }
 
-export default connect((state, ownProps: OwnProps) => ({
+export default connect<Props, OwnProps, _, _, _, _>((state, ownProps: OwnProps) => ({
   chart: state.charts[ownProps.match.params.symbol],
   quote: state.quotes[ownProps.match.params.symbol],
 }))(Stock);

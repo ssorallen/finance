@@ -198,7 +198,7 @@ class Performance extends React.Component<Props, State> {
     // internal selected symbols `Set` to stay up-to-date.
     let hasChanges = false;
     const nextSymbols = new Set(nextProps.symbols);
-    const nextSelectedSymbols = new Set();
+    const nextSelectedSymbols = new Set<string>();
     for (const symbol of prevState.selectedSymbols) {
       if (nextSymbols.has(symbol)) nextSelectedSymbols.add(symbol);
       else hasChanges = true;
@@ -208,7 +208,7 @@ class Performance extends React.Component<Props, State> {
     else return null;
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       // This is *not* treated as immutable. Object identity will not always correctly indicate
@@ -341,7 +341,7 @@ class Performance extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => ({
+export default connect<Props, {}, _, _, _, _>(state => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   symbols: state.symbols,

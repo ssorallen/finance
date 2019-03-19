@@ -13,11 +13,7 @@ import Transactions from './Transactions';
 import { connect } from 'react-redux';
 import { fetchAllQuotes } from './actions';
 
-type StateProps = {
-  dispatch: Dispatch,
-};
-
-type Props = StateProps;
+type Props = { dispatch: Dispatch };
 
 class App extends React.Component<Props> {
   componentDidMount() {
@@ -49,7 +45,8 @@ class App extends React.Component<Props> {
                     Created by Ross Allen &lt;
                     <a className="link-secondary" href="https://github.com/ssorallen">
                       ssorallen
-                    </a>&gt;{' '}
+                    </a>
+                    &gt;{' '}
                     <span aria-label="" role="img">
                       🦉
                     </span>
@@ -88,6 +85,6 @@ class App extends React.Component<Props> {
   }
 }
 
-export default connect()(App);
+export default connect<Props, {}, _, _, _, _>()(App);
 
 // [0]: https://github.com/ReactTraining/react-router/blob/4b61484ec9eea4bc3a2eb36028c47934414542ae/packages/react-router/docs/guides/blocked-updates.md

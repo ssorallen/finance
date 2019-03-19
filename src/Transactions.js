@@ -85,7 +85,7 @@ class Transactions extends React.Component<Props, State> {
     // internal selected transactions `Set` to stay up-to-date.
     let hasChanges = false;
     const nextTransactions = new Set(nextProps.transactions);
-    const nextSelectedTransactionIds = new Set();
+    const nextSelectedTransactionIds = new Set<number>();
     for (const transactionId of prevState.selectedTransactionIds) {
       if (nextTransactions.has(transactionId)) nextSelectedTransactionIds.add(transactionId);
       else hasChanges = true;
@@ -95,7 +95,7 @@ class Transactions extends React.Component<Props, State> {
     else return null;
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       // This is *not* treated as immutable. Object identity will not always correctly indicate
@@ -196,7 +196,7 @@ class Transactions extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => ({
+export default connect<Props, {}, _, _, _, _>(state => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   transactions: state.transactions,

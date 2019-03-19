@@ -8,11 +8,7 @@ import { connect } from 'react-redux';
 import csvParse from 'csv-parse/lib/es5/sync';
 import { transformGfToStocks } from './transformers';
 
-type StateProps = {
-  dispatch: Dispatch,
-};
-
-type Props = StateProps;
+type Props = { dispatch: Dispatch };
 
 type State = {
   isReadingFile: boolean,
@@ -21,7 +17,7 @@ type State = {
 class PortfolioActions extends React.Component<Props, State> {
   fileReader: ?FileReader;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { isReadingFile: false };
   }
@@ -84,4 +80,4 @@ class PortfolioActions extends React.Component<Props, State> {
   }
 }
 
-export default connect()(PortfolioActions);
+export default connect<Props, {}, _, _, _, _>()(PortfolioActions);
