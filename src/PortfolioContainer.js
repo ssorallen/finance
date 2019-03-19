@@ -1,10 +1,10 @@
 /* @flow */
 
 import * as React from 'react';
+import type { AppState, Dispatch } from './types';
 import { Col, Container, Row } from 'reactstrap';
 import { addTransaction, fetchAllQuotes } from './actions';
 import AddSymbolForm from './AddSymbolForm';
-import type { Dispatch } from './types';
 import PortfolioNav from './PortfolioNav';
 import { connect } from 'react-redux';
 
@@ -61,6 +61,6 @@ class PortfolioContainer extends React.Component<Props> {
   }
 }
 
-export default connect<Props, OwnProps, _, _, _, _>(state => ({
+export default connect<Props, OwnProps, _, _, _, _>((state: AppState) => ({
   isLoading: state.isFetchingCount > 0,
 }))(PortfolioContainer);
