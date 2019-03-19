@@ -7,19 +7,12 @@ import type { Dispatch } from './types';
 import { connect } from 'react-redux';
 import formSerialize from 'form-serialize';
 
-type OwnProps = {|
-  onSubmit?: (formData: Object) => void,
-|};
-
-type StateProps = {|
+type OwnProps = {
   isLoading: boolean,
-|};
+  onSubmit?: (formData: Object) => void,
+};
 
-type Props = {|
-  ...OwnProps,
-  ...StateProps,
-  dispatch: Dispatch,
-|};
+type Props = OwnProps & { dispatch: Dispatch };
 
 type State = {
   showTransactionData: boolean,
@@ -181,6 +174,4 @@ class AddSymbolForm extends React.Component<Props, State> {
   }
 }
 
-export default connect<Props, OwnProps, _, _, _, _>(state => ({
-  isLoading: state.isFetchingCount > 0,
-}))(AddSymbolForm);
+export default connect<Props, OwnProps, _, _, _, _>()(AddSymbolForm);
