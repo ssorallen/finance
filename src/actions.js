@@ -1,6 +1,8 @@
 /* @flow */
 
 import type { Dispatch, GetState, Transaction } from './types';
+import csvParse from 'csv-parse/lib/es5/sync';
+import { transformGfToStocks } from './transformers';
 
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 
@@ -37,7 +39,7 @@ export function downloadPortfolio() {
 }
 
 // A timeout to periodically fetch new quotes.
-let fetchAllQuotesTimeout;
+let fetchAllQuotesTimeout: ?TimeoutID;
 
 function clearFetchQuotesTimeout() {
   if (fetchAllQuotesTimeout != null) {
@@ -154,5 +156,22 @@ export function fetchAllIexSymbols() {
       .catch(error => {
         dispatch({ error, type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE' });
       });
+  };
+}
+
+export function importTransactionsFile(file: Blob) {
+  return function(dispatch: Dispatch) {
+    dispatch({ type: 'IMPORT_TRANSACTIONS_FILE_REQUEST' });
+    const fileReader = new FileReader();
+    fileReader.onerror = () => {
+      dispatch({ type: 'IMPORT_TRANSACTIONS_FILE_FAILURE' });
+    };
+    fileReader.onload = () => {
+      const parsedCsv = csvParse(fileReader.result, { columns: true });
+      dispatch(addTransactions(transformGfToStocks(parsedCsv)));
+      dispatch(fetchAllQuotes());
+      dispatch({ type: 'IMPORT_TRANSACTIONS_FILE_SUCCESS' });
+    };
+    fileReader.readAsText(file);
   };
 }

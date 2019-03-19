@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import type { AppSettings, Dispatch, Quote, Transaction } from './types';
+import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './types';
 import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from './formatters';
 import { changePageSize, deleteSymbols } from './actions';
 import { Link } from 'react-router-dom';
@@ -279,7 +279,7 @@ class Overview extends React.Component<Props, State> {
   }
 }
 
-export default connect<Props, {}, _, _, _, _>(state => ({
+export default connect<Props, {}, _, _, _, _>((state: AppState) => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   symbols: state.symbols,

@@ -140,6 +140,18 @@ type FetchQuotesSuccessAction = {|
   +type: 'FETCH_QUOTES_SUCCESS',
 |};
 
+type ImportTransactionsFileFailureAction = {|
+  +type: 'IMPORT_TRANSACTIONS_FILE_FAILURE',
+|};
+
+type ImportTransactionsFileRequestAction = {|
+  +type: 'IMPORT_TRANSACTIONS_FILE_REQUEST',
+|};
+
+type ImportTransactionsFileSuccessAction = {|
+  +type: 'IMPORT_TRANSACTIONS_FILE_SUCCESS',
+|};
+
 export type Action =
   | AddSymbolAction
   | AddTransactionAction
@@ -157,7 +169,10 @@ export type Action =
   | FetchSymbolDataSuccessAction
   | FetchQuotesFailureAction
   | FetchQuotesRequestAction
-  | FetchQuotesSuccessAction;
+  | FetchQuotesSuccessAction
+  | ImportTransactionsFileFailureAction
+  | ImportTransactionsFileRequestAction
+  | ImportTransactionsFileSuccessAction;
 
 export type AppSettings = {|
   +pageSize: number,

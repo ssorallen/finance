@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import type { AppSettings, Dispatch, Quote, Transaction } from './types';
+import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './types';
 import { changePageSize, deleteTransactions } from './actions';
 import { currencyFormatter, numberFormatter } from './formatters';
 import { Link } from 'react-router-dom';
@@ -196,7 +196,7 @@ class Transactions extends React.Component<Props, State> {
   }
 }
 
-export default connect<Props, {}, _, _, _, _>(state => ({
+export default connect<Props, {}, _, _, _, _>((state: AppState) => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   transactions: state.transactions,
