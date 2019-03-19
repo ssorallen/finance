@@ -6,7 +6,6 @@ import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './type
 import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from './formatters';
 import { changePageSize, deleteSymbols } from './actions';
 import { Link } from 'react-router-dom';
-import PortfolioActions from './PortfolioActions';
 import PortfolioContainer from './PortfolioContainer';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
@@ -236,20 +235,9 @@ class Overview extends React.Component<Props, State> {
 
     const deleteDisabled = this.props.symbols.length === 0 || this.state.selectedSymbols.size === 0;
     return (
-      <PortfolioContainer>
-        <Row className="mb-3 mt-3">
-          <Col>
-            <Button
-              color={deleteDisabled ? 'secondary' : 'danger'}
-              disabled={deleteDisabled}
-              onClick={this.handleDeleteSelectedSymbols}
-              outline
-              size="sm">
-              Delete
-            </Button>
-          </Col>
-          <PortfolioActions />
-        </Row>
+      <PortfolioContainer
+        deleteDisabled={deleteDisabled}
+        onDelete={this.handleDeleteSelectedSymbols}>
         <Row className="mb-4">
           <Col>
             <SelectReactTable

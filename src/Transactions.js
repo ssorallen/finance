@@ -6,7 +6,6 @@ import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './type
 import { changePageSize, deleteTransactions } from './actions';
 import { currencyFormatter, numberFormatter } from './formatters';
 import { Link } from 'react-router-dom';
-import PortfolioActions from './PortfolioActions';
 import PortfolioContainer from './PortfolioContainer';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
@@ -153,20 +152,9 @@ class Transactions extends React.Component<Props, State> {
     const deleteDisabled =
       this.props.transactions.length === 0 || this.state.selectedTransactionIds.size === 0;
     return (
-      <PortfolioContainer>
-        <Row className="mb-3 mt-3">
-          <Col>
-            <Button
-              color={deleteDisabled ? 'secondary' : 'danger'}
-              disabled={deleteDisabled}
-              onClick={this.handleDeleteSelectedTransactions}
-              outline
-              size="sm">
-              Delete
-            </Button>
-          </Col>
-          <PortfolioActions />
-        </Row>
+      <PortfolioContainer
+        deleteDisabled={deleteDisabled}
+        onDelete={this.handleDeleteSelectedTransactions}>
         <Row className="mb-3">
           <Col>
             <SelectReactTable

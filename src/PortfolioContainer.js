@@ -2,14 +2,23 @@
 
 import * as React from 'react';
 import type { AppState, Dispatch } from './types';
-import { Col, Container, Row } from 'reactstrap';
-import { addTransaction, fetchAllQuotes } from './actions';
+import { Button, Col, Container, Row } from 'reactstrap';
+import {
+  addTransaction,
+  deletePortfolio,
+  downloadPortfolio,
+  fetchAllQuotes,
+  importTransactionsFile,
+} from './actions';
 import AddSymbolForm from './AddSymbolForm';
+import PortfolioActions from './PortfolioActions';
 import PortfolioNav from './PortfolioNav';
 import { connect } from 'react-redux';
 
 type OwnProps = {
   children?: React.Node,
+  deleteDisabled: boolean,
+  onDelete: () => void,
 };
 
 type StateProps = {
@@ -44,11 +53,44 @@ class PortfolioContainer extends React.Component<Props> {
     this.props.dispatch(fetchAllQuotes());
   };
 
+  handleDeletePortfolio = () => {
+    if (
+      window.confirm('Are you sure you want to delete the entire portfolio? This is irreversible.')
+    ) {
+      this.props.dispatch(deletePortfolio());
+    }
+  };
+
+  handleDownloadPortfolio = () => {
+    this.props.dispatch(downloadPortfolio());
+  };
+
+  handleImportPortfolio = (file: Blob) => {
+    this.props.dispatch(importTransactionsFile(file));
+  };
+
   render() {
     return (
       <>
         <PortfolioNav />
         <Container className="mb-4">
+          <Row className="mb-3 mt-3">
+            <Col>
+              <Button
+                color={this.props.deleteDisabled ? 'secondary' : 'danger'}
+                disabled={this.props.deleteDisabled}
+                onClick={this.props.onDelete}
+                outline
+                size="sm">
+                Delete
+              </Button>
+            </Col>
+            <PortfolioActions
+              onDeletePortfolio={this.handleDeletePortfolio}
+              onDownloadPortfolio={this.handleDownloadPortfolio}
+              onImportPortfolio={this.handleImportPortfolio}
+            />
+          </Row>
           {this.props.children}
           <Row>
             <Col md="6">
