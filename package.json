@@ -12,7 +12,7 @@
     "@vx/shape": "^0.0.162",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.5",
-    "csv-parse": "^2.4.0",
+    "csv-parse": "^4.4.6",
     "csv-stringify": "^3.0.0",
     "d3-array": "^1.2.1",
     "form-serialize": "^0.7.2",
