@@ -111,7 +111,7 @@ class Navbar extends React.Component<Props, State> {
     event.preventDefault();
   };
 
-  handleSuggestionSelected = (event, { suggestionValue }) => {
+  handleSuggestionSelected = (event: Event, { suggestionValue }: { suggestionValue: string }) => {
     this.props.history.push(`/stocks/${suggestionValue}`);
   };
 
