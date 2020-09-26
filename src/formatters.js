@@ -3,7 +3,7 @@
 const bigNumberFormatter = new window.Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 const POWER_SUFFIXES = ['', 'K', 'M', 'B', 'T'];
 export const abbreviatedNumberFormatter = {
-  format(num: number, fixed?: number) {
+  format(num: number, fixed?: number): string {
     if (num === null || num === 0) return '0'; // terminate early
 
     fixed = !fixed || fixed < 0 ? 0 : fixed; // number of decimal places to show
@@ -17,17 +17,17 @@ export const abbreviatedNumberFormatter = {
 
 // Don't use style `currency` because it always prints a currency symbol. Match Google Finance
 // exactly (until supporting other currencies) and don't print the symbol.
-export const currencyFormatter = new window.Intl.NumberFormat(undefined, {
+export const currencyFormatter: Intl$NumberFormat = new window.Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
 });
 
-export const numberFormatter = new window.Intl.NumberFormat(undefined, {
+export const numberFormatter: Intl$NumberFormat = new window.Intl.NumberFormat(undefined, {
   maximumFractionDigits: 3,
   minimumFractionDigits: 3,
 });
 
-export const percentFormatter = new window.Intl.NumberFormat(undefined, {
+export const percentFormatter: Intl$NumberFormat = new window.Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
   style: 'percent',

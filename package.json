@@ -37,7 +37,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "flow-bin": "^0.95.1",
+    "flow-bin": "^0.134.0",
     "gh-pages": "^1.1.0",
     "prettier": "^1.16.4"
   },

@@ -217,7 +217,7 @@ class Stock extends React.Component<Props> {
   }
 }
 
-export default connect<Props, OwnProps, _, _, _, _>((state, ownProps: OwnProps) => ({
+export default (connect<Props, OwnProps, _, _, _, _>((state, ownProps: OwnProps) => ({
   chart: state.charts[ownProps.match.params.symbol],
   quote: state.quotes[ownProps.match.params.symbol],
-}))(Stock);
+}))(Stock): React.ComponentType<*>);

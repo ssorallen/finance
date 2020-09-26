@@ -1,40 +1,53 @@
 /* @flow */
 
-import type { Dispatch, GetState, Transaction } from './types';
+import type {
+  AddSymbolAction,
+  AddTransactionAction,
+  AddTransactionsAction,
+  ChangePageSizeAction,
+  DeletePortfolioAction,
+  DeleteSymbolsAction,
+  DeleteTransactionsAction,
+  Dispatch,
+  DownloadPortfolioAction,
+  GetState,
+  ThunkAction,
+  Transaction,
+} from './types';
 import csvParse from 'csv-parse/lib/es5/sync';
 import { transformGfToStocks } from './transformers';
 
 const IEX_ROOT = 'https://api.iextrading.com/1.0';
 
-export function addSymbol(symbol: string) {
+export function addSymbol(symbol: string): AddSymbolAction {
   return { symbol, type: 'ADD_SYMBOL' };
 }
 
-export function addTransaction(transaction: Transaction) {
+export function addTransaction(transaction: Transaction): AddTransactionAction {
   return { transaction, type: 'ADD_TRANSACTION' };
 }
 
-export function addTransactions(transactions: Array<Transaction>) {
+export function addTransactions(transactions: Array<Transaction>): AddTransactionsAction {
   return { transactions, type: 'ADD_TRANSACTIONS' };
 }
 
-export function changePageSize(nextPageSize: number) {
+export function changePageSize(nextPageSize: number): ChangePageSizeAction {
   return { pageSize: nextPageSize, type: 'CHANGE_PAGE_SIZE' };
 }
 
-export function deletePortfolio() {
+export function deletePortfolio(): DeletePortfolioAction {
   return { type: 'DELETE_PORTFOLIO' };
 }
 
-export function deleteSymbols(symbols: Array<string>) {
+export function deleteSymbols(symbols: Array<string>): DeleteSymbolsAction {
   return { symbols, type: 'DELETE_SYMBOLS' };
 }
 
-export function deleteTransactions(transactions: Array<Transaction>) {
+export function deleteTransactions(transactions: Array<Transaction>): DeleteTransactionsAction {
   return { transactions, type: 'DELETE_TRANSACTIONS' };
 }
 
-export function downloadPortfolio() {
+export function downloadPortfolio(): DownloadPortfolioAction {
   return { type: 'DOWNLOAD_PORTFOLIO' };
 }
 
@@ -64,7 +77,7 @@ function clearFetchQuotesTimeout() {
 //   label: 'Apr 9',
 //   changeOverTime: 0,
 // }
-export function fetchSymbolData(symbol: string) {
+export function fetchSymbolData(symbol: string): ThunkAction {
   return function(dispatch: Dispatch) {
     dispatch({ type: 'FETCH_SYMBOL_DATA_REQUEST' });
     fetch(`${IEX_ROOT}/stock/${symbol}/batch?types=chart,quote&range=1y`)
@@ -84,7 +97,7 @@ export function fetchSymbolData(symbol: string) {
   };
 }
 
-export function fetchAllQuotes() {
+export function fetchAllQuotes(): ThunkAction {
   return function(dispatch: Dispatch, getState: GetState) {
     function setFetchQuotesTimeout() {
       // Because more `fetchQuote` actions might be in flight, ensure the timer is empty and
@@ -139,7 +152,7 @@ export function fetchAllQuotes() {
   };
 }
 
-export function fetchAllIexSymbols() {
+export function fetchAllIexSymbols(): ThunkAction {
   return function(dispatch: Dispatch) {
     dispatch({ type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST' });
     fetch(`${IEX_ROOT}/ref-data/symbols`)
@@ -159,7 +172,7 @@ export function fetchAllIexSymbols() {
   };
 }
 
-export function importTransactionsFile(file: Blob) {
+export function importTransactionsFile(file: Blob): ThunkAction {
   return function(dispatch: Dispatch) {
     dispatch({ type: 'IMPORT_TRANSACTIONS_FILE_REQUEST' });
     const fileReader = new FileReader();

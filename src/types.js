@@ -56,68 +56,68 @@ export type Transaction = {|
   +type: 'Buy' | 'Sell',
 |};
 
-type AddSymbolAction = {|
+export type AddSymbolAction = {|
   +symbol: string,
   +type: 'ADD_SYMBOL',
 |};
 
-type AddTransactionAction = {|
+export type AddTransactionAction = {|
   +transaction: Transaction,
   +type: 'ADD_TRANSACTION',
 |};
 
-type AddTransactionsAction = {|
+export type AddTransactionsAction = {|
   +transactions: Array<Transaction>,
   +type: 'ADD_TRANSACTIONS',
 |};
 
-type ChangePageSizeAction = {|
+export type ChangePageSizeAction = {|
   +pageSize: number,
   +type: 'CHANGE_PAGE_SIZE',
 |};
 
-type DeletePortfolioAction = {|
+export type DeletePortfolioAction = {|
   +type: 'DELETE_PORTFOLIO',
 |};
 
-type DeleteSymbolsAction = {|
+export type DeleteSymbolsAction = {|
   +symbols: Array<string>,
   +type: 'DELETE_SYMBOLS',
 |};
 
-type DeleteTransactionsAction = {|
+export type DeleteTransactionsAction = {|
   +transactions: Array<Transaction>,
   +type: 'DELETE_TRANSACTIONS',
 |};
 
-type DownloadPortfolioAction = {|
+export type DownloadPortfolioAction = {|
   +type: 'DOWNLOAD_PORTFOLIO',
 |};
 
-type FetchAllIexSymbolsFailureAction = {|
+export type FetchAllIexSymbolsFailureAction = {|
   +error: TypeError,
   +type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE',
 |};
 
-type FetchAllIexSymbolsRequestAction = {|
+export type FetchAllIexSymbolsRequestAction = {|
   +type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST',
 |};
 
-type FetchAllIexSymbolsSuccessAction = {|
+export type FetchAllIexSymbolsSuccessAction = {|
   allIexSymbols: Array<IEXSymbol>,
   +type: 'FETCH_ALL_IEX_SYMBOLS_SUCCESS',
 |};
 
-type FetchSymbolDataFailureAction = {|
+export type FetchSymbolDataFailureAction = {|
   +error: TypeError,
   +type: 'FETCH_SYMBOL_DATA_FAILURE',
 |};
 
-type FetchSymbolDataRequestAction = {|
+export type FetchSymbolDataRequestAction = {|
   +type: 'FETCH_SYMBOL_DATA_REQUEST',
 |};
 
-type FetchSymbolDataSuccessAction = {|
+export type FetchSymbolDataSuccessAction = {|
   +symbolData: {
     chart: Chart,
     quote: Quote,
@@ -126,29 +126,29 @@ type FetchSymbolDataSuccessAction = {|
   +type: 'FETCH_SYMBOL_DATA_SUCCESS',
 |};
 
-type FetchQuotesFailureAction = {|
+export type FetchQuotesFailureAction = {|
   +error: TypeError,
   +type: 'FETCH_QUOTES_FAILURE',
 |};
 
-type FetchQuotesRequestAction = {|
+export type FetchQuotesRequestAction = {|
   +type: 'FETCH_QUOTES_REQUEST',
 |};
 
-type FetchQuotesSuccessAction = {|
+export type FetchQuotesSuccessAction = {|
   +quotes: { [symbol: string]: Object },
   +type: 'FETCH_QUOTES_SUCCESS',
 |};
 
-type ImportTransactionsFileFailureAction = {|
+export type ImportTransactionsFileFailureAction = {|
   +type: 'IMPORT_TRANSACTIONS_FILE_FAILURE',
 |};
 
-type ImportTransactionsFileRequestAction = {|
+export type ImportTransactionsFileRequestAction = {|
   +type: 'IMPORT_TRANSACTIONS_FILE_REQUEST',
 |};
 
-type ImportTransactionsFileSuccessAction = {|
+export type ImportTransactionsFileSuccessAction = {|
   +type: 'IMPORT_TRANSACTIONS_FILE_SUCCESS',
 |};
 
@@ -193,6 +193,6 @@ export type AppState = {|
 |};
 
 export type GetState = () => AppState;
-type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
+export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
 type PromiseAction = Promise<Action>;
 export type Dispatch = (action: Action | ThunkAction | PromiseAction) => any;

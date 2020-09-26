@@ -184,8 +184,8 @@ class Transactions extends React.Component<Props, State> {
   }
 }
 
-export default connect<Props, {}, _, _, _, _>((state: AppState) => ({
+export default (connect<Props, {}, _, _, _, _>((state: AppState) => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   transactions: state.transactions,
-}))(Transactions);
+}))(Transactions): React.ComponentType<*>);

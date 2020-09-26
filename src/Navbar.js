@@ -200,11 +200,11 @@ class Navbar extends React.Component<Props, State> {
   }
 }
 
-export default withRouter<Navbar>(
+export default (withRouter<Navbar>(
   connect<ConnectProps, {}, _, _, _, _>(state => ({
     allIexSymbols: state.allIexSymbols,
     fetchErrorMessage: state.fetchErrorMessage,
     isLoading: state.isFetchingCount > 0,
     updatedAt: state.updatedAt,
   }))(Navbar)
-);
+): React.ComponentType<*>);

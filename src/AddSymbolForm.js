@@ -9,7 +9,7 @@ type Props = {
   onAddSymbol?: (formData: Object) => void,
 };
 
-export default function AddSymbolForm(props: Props) {
+export default function AddSymbolForm(props: Props): React.Node {
   const [showTransactionData, setShowTransactionData] = React.useState(false);
   const formEl = React.useRef(null);
 

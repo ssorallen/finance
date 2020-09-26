@@ -85,6 +85,6 @@ class App extends React.Component<Props> {
   }
 }
 
-export default connect<Props, {}, _, _, _, _>()(App);
+export default (connect<Props, {}, _, _, _, _>()(App): React.ComponentType<*>);
 
 // [0]: https://github.com/ReactTraining/react-router/blob/4b61484ec9eea4bc3a2eb36028c47934414542ae/packages/react-router/docs/guides/blocked-updates.md

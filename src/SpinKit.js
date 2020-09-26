@@ -8,7 +8,7 @@ type Props = {
   type: 'folding-cube',
 };
 
-export default function SpinKit(props: Props) {
+export default function SpinKit(props: Props): React.Node {
   return (
     <div className="sk-folding-cube mr-3" title={props.title}>
       <div className="sk-cube1 sk-cube" />

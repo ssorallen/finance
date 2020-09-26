@@ -9,7 +9,7 @@ type Props = {
   onImportPortfolio: (file: Blob) => void,
 };
 
-export default function PortfolioActions(props: Props) {
+export default function PortfolioActions(props: Props): React.Node {
   const handleImportTransactions = (event: SyntheticEvent<HTMLInputElement>) => {
     const currentTarget = event.currentTarget;
     const files = currentTarget.files;

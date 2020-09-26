@@ -103,6 +103,6 @@ class PortfolioContainer extends React.Component<Props> {
   }
 }
 
-export default connect<Props, OwnProps, _, _, _, _>((state: AppState) => ({
+export default (connect<Props, OwnProps, _, _, _, _>((state: AppState) => ({
   isLoading: state.isFetchingCount > 0,
-}))(PortfolioContainer);
+}))(PortfolioContainer): React.ComponentType<*>);

@@ -267,9 +267,9 @@ class Overview extends React.Component<Props, State> {
   }
 }
 
-export default connect<Props, {}, _, _, _, _>((state: AppState) => ({
+export default (connect<Props, {}, _, _, _, _>((state: AppState) => ({
   appSettings: state.appSettings,
   quotes: state.quotes,
   symbols: state.symbols,
   transactions: state.transactions,
-}))(Overview);
+}))(Overview): React.ComponentType<*>);
