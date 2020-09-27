@@ -13,10 +13,8 @@ import Transactions from './Transactions';
 import { fetchAllQuotes } from './actions';
 import { useDispatch } from 'react-redux';
 
-type Props = { dispatch: Dispatch };
-
 export default function App(): React.Node {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   React.useEffect(() => {
     dispatch(fetchAllQuotes());
   }, []);
