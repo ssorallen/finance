@@ -170,6 +170,11 @@ export default function(state: AppState, action: Action): AppState {
         quotes: action.quotes,
         updatedAt: Date.now(),
       };
+    case 'SET_IEX_API_KEY':
+      return {
+        ...state,
+        iexApiKey: action.iexApiKey,
+      };
     default:
       return state;
   }

@@ -152,6 +152,11 @@ export type ImportTransactionsFileSuccessAction = {|
   +type: 'IMPORT_TRANSACTIONS_FILE_SUCCESS',
 |};
 
+export type SetIexApiKeyAction = {|
+  +iexApiKey: string,
+  +type: 'SET_IEX_API_KEY',
+|};
+
 export type Action =
   | AddSymbolAction
   | AddTransactionAction
@@ -172,7 +177,8 @@ export type Action =
   | FetchQuotesSuccessAction
   | ImportTransactionsFileFailureAction
   | ImportTransactionsFileRequestAction
-  | ImportTransactionsFileSuccessAction;
+  | ImportTransactionsFileSuccessAction
+  | SetIexApiKeyAction;
 
 export type AppSettings = {|
   +pageSize: number,
@@ -183,6 +189,7 @@ export type AppState = {|
   +appSettings: AppSettings,
   +charts: { [symbol: string]: Chart },
   +fetchErrorMessage: ?string,
+  +iexApiKey: string,
   +isFetchingAllIexSymbols: boolean,
   +isFetchingCount: number,
   +nextTransactionId: number,

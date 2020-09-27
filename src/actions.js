@@ -11,13 +11,14 @@ import type {
   Dispatch,
   DownloadPortfolioAction,
   GetState,
+  SetIexApiKeyAction,
   ThunkAction,
   Transaction,
 } from './types';
 import csvParse from 'csv-parse/lib/es5/sync';
 import { transformGfToStocks } from './transformers';
 
-const IEX_ROOT = 'https://api.iextrading.com/1.0';
+const IEX_ROOT = 'https://cloud.iexapis.com/v1';
 
 export function addSymbol(symbol: string): AddSymbolAction {
   return { symbol, type: 'ADD_SYMBOL' };
@@ -51,6 +52,10 @@ export function downloadPortfolio(): DownloadPortfolioAction {
   return { type: 'DOWNLOAD_PORTFOLIO' };
 }
 
+export function setIexApiKey(iexApiKey: string): SetIexApiKeyAction {
+  return { iexApiKey, type: 'SET_IEX_API_KEY' };
+}
+
 // A timeout to periodically fetch new quotes.
 let fetchAllQuotesTimeout: ?TimeoutID;
 
@@ -78,9 +83,11 @@ function clearFetchQuotesTimeout() {
 //   changeOverTime: 0,
 // }
 export function fetchSymbolData(symbol: string): ThunkAction {
-  return function(dispatch: Dispatch) {
+  return function(dispatch: Dispatch, getState: GetState) {
     dispatch({ type: 'FETCH_SYMBOL_DATA_REQUEST' });
-    fetch(`${IEX_ROOT}/stock/${symbol}/batch?types=chart,quote&range=1y`)
+    fetch(
+      `${IEX_ROOT}/stock/${symbol}/batch?types=chart,quote&range=1y&token=${getState().iexApiKey}`
+    )
       .then(response => {
         response
           .json()
@@ -121,9 +128,9 @@ export function fetchAllQuotes(): ThunkAction {
     clearFetchQuotesTimeout();
     dispatch({ type: 'FETCH_QUOTES_REQUEST' });
     fetch(
-      `${IEX_ROOT}/stock/market/batch?types=quote&symbols=${encodeURIComponent(
-        getState().symbols.join(',')
-      )}`
+      `${IEX_ROOT}/stock/market/batch?types=quote&token=${
+        getState().iexApiKey
+      }&symbols=${encodeURIComponent(getState().symbols.join(','))}`
     )
       .then(response => {
         response
@@ -153,9 +160,9 @@ export function fetchAllQuotes(): ThunkAction {
 }
 
 export function fetchAllIexSymbols(): ThunkAction {
-  return function(dispatch: Dispatch) {
+  return function(dispatch: Dispatch, getState: GetState) {
     dispatch({ type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST' });
-    fetch(`${IEX_ROOT}/ref-data/symbols`)
+    fetch(`${IEX_ROOT}/ref-data/symbols?token=${getState().iexApiKey}`)
       .then(response => {
         response
           .json()

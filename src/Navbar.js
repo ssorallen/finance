@@ -2,14 +2,24 @@
 
 import './Navbar.css';
 import * as React from 'react';
-import { Collapse, Form, Navbar as ReactstrapNavbar, NavbarBrand, NavbarToggler } from 'reactstrap';
+import {
+  Button,
+  Collapse,
+  Form,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Navbar as ReactstrapNavbar,
+  NavbarBrand,
+  NavbarToggler,
+} from 'reactstrap';
 import type { Dispatch, IEXSymbol } from './Types';
 import { NavLink, type RouterHistory, withRouter } from 'react-router-dom';
+import { fetchAllIexSymbols, setIexApiKey } from './actions';
 import Autosuggest from 'react-autosuggest';
 import SpinKit from './SpinKit';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import { fetchAllIexSymbols } from './actions';
 
 type RouterProps = {
   history: RouterHistory,
@@ -18,6 +28,7 @@ type RouterProps = {
 type StateProps = {
   allIexSymbols: ?Array<IEXSymbol>,
   fetchErrorMessage: ?string,
+  iexApiKey: ?string,
   isLoading: boolean,
   updatedAt: ?number,
 };
@@ -27,7 +38,9 @@ type ConnectProps = StateProps & { dispatch: Dispatch };
 type Props = RouterProps & ConnectProps;
 
 type State = {
+  activeModal: ?{ type: 'settings' },
   isOpen: boolean,
+  nextIexApiKey: string,
   searchIsFocused: boolean,
   searchQuery: string,
   searchResults: Array<IEXSymbol>,
@@ -80,7 +93,9 @@ class Navbar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      activeModal: null,
       isOpen: false,
+      nextIexApiKey: '',
       searchIsFocused: false,
       searchQuery: '',
       searchResults: [],
@@ -111,6 +126,12 @@ class Navbar extends React.Component<Props, State> {
     event.preventDefault();
   };
 
+  handleSetIexApiKey = (event: SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.dispatch(setIexApiKey(this.state.nextIexApiKey));
+    this.closeActiveModal();
+  };
+
   handleSuggestionSelected = (event: Event, { suggestionValue }: { suggestionValue: string }) => {
     this.props.history.push(`/stocks/${suggestionValue}`);
   };
@@ -124,6 +145,21 @@ class Navbar extends React.Component<Props, State> {
           : findFirstNSymbols(5, this.props.allIexSymbols, nextSearchQuery),
     });
   }
+
+  closeActiveModal = () => {
+    this.setState({ activeModal: null });
+  };
+
+  openSettingsModal = () => {
+    this.setState({
+      activeModal: { type: 'settings' },
+      nextIexApiKey: this.props.iexApiKey == null ? '' : this.props.iexApiKey,
+    });
+  };
+
+  setNextIexApiKey = event => {
+    this.setState({ nextIexApiKey: event.target.value });
+  };
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -179,7 +215,7 @@ class Navbar extends React.Component<Props, State> {
           ) : null}
           {fetchErrorMessage == null ? null : (
             <abbr className="mr-1" title={`Error: ${fetchErrorMessage}`}>
-              <span aria-label="Connection error" role="img">
+              <span aria-label="Connection error" className="text-danger" role="img">
                 ⚠️
               </span>
             </abbr>
@@ -194,7 +230,38 @@ class Navbar extends React.Component<Props, State> {
               </time>
             )}
           </small>
+          <Button className="ml-2" onClick={this.openSettingsModal} size="sm">
+            Settings
+          </Button>
         </Collapse>
+        <Modal
+          isOpen={this.state.activeModal != null && this.state.activeModal.type === 'settings'}
+          toggle={this.closeActiveModal}>
+          <form onSubmit={this.handleSetIexApiKey}>
+            <ModalBody>
+              <div className="form-group">
+                <label htmlFor="apiKey">IEX Publishable API Key</label>
+                <input
+                  className="form-control"
+                  id="apiKey"
+                  name="apiKey"
+                  onChange={this.setNextIexApiKey}
+                  placeholder="pk_abc123…"
+                  value={this.state.nextIexApiKey}
+                  required
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.closeActiveModal} outline type="button">
+                Cancel
+              </Button>
+              <Button color="primary" type="submit">
+                Save
+              </Button>
+            </ModalFooter>
+          </form>
+        </Modal>
       </ReactstrapNavbar>
     );
   }
@@ -204,6 +271,7 @@ export default (withRouter<Navbar>(
   connect<ConnectProps, {}, _, _, _, _>(state => ({
     allIexSymbols: state.allIexSymbols,
     fetchErrorMessage: state.fetchErrorMessage,
+    iexApiKey: state.iexApiKey,
     isLoading: state.isFetchingCount > 0,
     updatedAt: state.updatedAt,
   }))(Navbar)

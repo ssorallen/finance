@@ -2,7 +2,7 @@
 
 import './App.css';
 import * as React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import type { Dispatch } from './types';
 import Navbar from './Navbar';
@@ -25,7 +25,7 @@ class App extends React.Component<Props> {
 
   render() {
     return (
-      <Router basename="/finance">
+      <Router>
         <div>
           {/* Wrap the `Navbar` in a pathless route to ensure it is always rendered and always
               updates on navigation. Updates are blocked because internally the `Navbar` is wrapped
@@ -66,13 +66,9 @@ class App extends React.Component<Props> {
               <Row>
                 <Col>
                   <small className="text-secondary">
-                    Data provided for free by{' '}
-                    <a className="link-secondary" href="https://iextrading.com/developer/">
-                      IEX
-                    </a>{' '}
-                    &middot; Use is subject to{' '}
-                    <a className="link-secondary" href="https://iextrading.com/api-exhibit-a/">
-                      IEX Exhibit A
+                    Data provided by{' '}
+                    <a className="link-secondary" href="https://iexcloud.io">
+                      IEX Cloud
                     </a>
                   </small>
                 </Col>

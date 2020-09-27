@@ -28,6 +28,7 @@ const initialState: AppState = {
   },
   charts: {},
   fetchErrorMessage: null,
+  iexApiKey: '',
   isFetchingAllIexSymbols: false,
   isFetchingCount: 0,
   nextTransactionId: 1,
@@ -48,6 +49,7 @@ const store = createStore(
       [
         'allIexSymbols',
         'appSettings',
+        'iexApiKey',
         'nextTransactionId',
         'quotes',
         'symbols',
