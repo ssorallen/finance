@@ -1,6 +1,25 @@
 {
-  "main.css": "static/css/main.ebe28aea.css",
-  "main.css.map": "static/css/main.ebe28aea.css.map",
-  "main.js": "static/js/main.de64f030.js",
-  "main.js.map": "static/js/main.de64f030.js.map"
+  "files": {
+    "main.css": "/finance/static/css/main.5c315a89.chunk.css",
+    "main.js": "/finance/static/js/main.27e68efe.chunk.js",
+    "main.js.map": "/finance/static/js/main.27e68efe.chunk.js.map",
+    "runtime-main.js": "/finance/static/js/runtime-main.1aeee481.js",
+    "runtime-main.js.map": "/finance/static/js/runtime-main.1aeee481.js.map",
+    "static/css/2.4b306f74.chunk.css": "/finance/static/css/2.4b306f74.chunk.css",
+    "static/js/2.b4d4f245.chunk.js": "/finance/static/js/2.b4d4f245.chunk.js",
+    "static/js/2.b4d4f245.chunk.js.map": "/finance/static/js/2.b4d4f245.chunk.js.map",
+    "index.html": "/finance/index.html",
+    "precache-manifest.d3561d61cfce7ee503d2dc4ee29e03c4.js": "/finance/precache-manifest.d3561d61cfce7ee503d2dc4ee29e03c4.js",
+    "service-worker.js": "/finance/service-worker.js",
+    "static/css/2.4b306f74.chunk.css.map": "/finance/static/css/2.4b306f74.chunk.css.map",
+    "static/css/main.5c315a89.chunk.css.map": "/finance/static/css/main.5c315a89.chunk.css.map",
+    "static/js/2.b4d4f245.chunk.js.LICENSE.txt": "/finance/static/js/2.b4d4f245.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1aeee481.js",
+    "static/css/2.4b306f74.chunk.css",
+    "static/js/2.b4d4f245.chunk.js",
+    "static/css/main.5c315a89.chunk.css",
+    "static/js/main.27e68efe.chunk.js"
+  ]
 }
