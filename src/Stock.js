@@ -1,23 +1,23 @@
 /* @flow */
 
-import * as React from 'react';
-import { AxisLeft, AxisBottom } from '@vx/axis';
-import { Col, Container, Row } from 'reactstrap';
+import * as React from "react";
+import { AxisLeft, AxisBottom } from "@vx/axis";
+import { Col, Container, Row } from "reactstrap";
 import {
   abbreviatedNumberFormatter,
   currencyFormatter,
   numberFormatter,
   percentFormatter,
-} from './formatters';
-import { deviation, extent, max, min } from 'd3-array';
-import { scaleTime, scaleLinear } from '@vx/scale';
-import { useDispatch, useSelector } from 'react-redux';
-import { AreaClosed } from '@vx/shape';
-import type { Dispatch } from './types';
-import { Group } from '@vx/group';
-import { LinearGradient } from '@vx/gradient';
-import cx from 'classnames';
-import { fetchSymbolData } from './actions';
+} from "./formatters";
+import { deviation, extent, max, min } from "d3-array";
+import { scaleTime, scaleLinear } from "@vx/scale";
+import { useDispatch, useSelector } from "react-redux";
+import { AreaClosed } from "@vx/shape";
+import type { Dispatch } from "./types";
+import { Group } from "@vx/group";
+import { LinearGradient } from "@vx/gradient";
+import cx from "classnames";
+import { fetchSymbolData } from "./actions";
 
 type Props = {
   match: Object,
@@ -36,8 +36,8 @@ function SummaryListItem({ title, value }: { title: string, value: string }) {
 
 const width = 635;
 const height = 400;
-const x = d => new Date(d.date);
-const y = d => d.close;
+const x = (d) => new Date(d.date);
+const y = (d) => d.close;
 
 // Bounds
 const margin = {
@@ -51,8 +51,8 @@ const yMax = height - margin.top - margin.bottom;
 
 export default function Stock({ match }: Props): React.Node {
   const dispatch = useDispatch<Dispatch>();
-  const chart = useSelector(state => state.charts[match.params.symbol]);
-  const quote = useSelector(state => state.quotes[match.params.symbol]);
+  const chart = useSelector((state) => state.charts[match.params.symbol]);
+  const quote = useSelector((state) => state.quotes[match.params.symbol]);
 
   React.useEffect(() => {
     dispatch(fetchSymbolData(match.params.symbol));
@@ -74,19 +74,20 @@ export default function Stock({ match }: Props): React.Node {
   return (
     <Container className="mb-3 mt-3">
       <h2>
-        {quote == null ? '...' : quote.companyName} ({match.params.symbol})
+        {quote == null ? "..." : quote.companyName} ({match.params.symbol})
       </h2>
       <h3>
-        <small>{quote == null ? '...' : quote.latestPrice}</small>{' '}
+        <small>{quote == null ? "..." : quote.latestPrice}</small>{" "}
         <span
           className={cx({
-            'text-danger': quote != null && quote.change < 0,
-            'text-success': quote != null && quote.change >= 0,
-          })}>
+            "text-danger": quote != null && quote.change < 0,
+            "text-success": quote != null && quote.change >= 0,
+          })}
+        >
           {quote == null
-            ? '...'
-            : `${quote.change >= 0 ? '+' : ''}${currencyFormatter.format(quote.change)} (${
-                quote.changePercent >= 0 ? '+' : ''
+            ? "..."
+            : `${quote.change >= 0 ? "+" : ""}${currencyFormatter.format(quote.change)} (${
+                quote.changePercent >= 0 ? "+" : ""
               }${percentFormatter.format(quote.changePercent)})`}
         </span>
       </h3>
@@ -96,21 +97,21 @@ export default function Stock({ match }: Props): React.Node {
           <ul className="list-unstyled">
             <SummaryListItem
               title="Volume"
-              value={quote == null ? '...' : wholeNumberFormatter.format(quote.latestVolume)}
+              value={quote == null ? "..." : wholeNumberFormatter.format(quote.latestVolume)}
             />
             <SummaryListItem
               title="Avg Daily Volume"
-              value={quote == null ? '...' : wholeNumberFormatter.format(quote.avgTotalVolume)}
+              value={quote == null ? "..." : wholeNumberFormatter.format(quote.avgTotalVolume)}
             />
             <SummaryListItem
               title="Previous Close"
-              value={quote == null ? '...' : currencyFormatter.format(quote.previousClose)}
+              value={quote == null ? "..." : currencyFormatter.format(quote.previousClose)}
             />
             <SummaryListItem
               title="52-week Range"
               value={
                 quote == null
-                  ? '...'
+                  ? "..."
                   : `${currencyFormatter.format(quote.week52Low)}–${currencyFormatter.format(
                       quote.week52High
                     )}`
@@ -118,13 +119,13 @@ export default function Stock({ match }: Props): React.Node {
             />
             <SummaryListItem
               title="Mkt. Cap"
-              value={quote == null ? '...' : abbreviatedNumberFormatter.format(quote.marketCap)}
+              value={quote == null ? "..." : abbreviatedNumberFormatter.format(quote.marketCap)}
             />
             <SummaryListItem
               title="P/E Ratio"
               value={
                 quote == null || quote.peRatio == null
-                  ? '...'
+                  ? "..."
                   : numberFormatter.format(quote.peRatio)
               }
             />
@@ -136,17 +137,18 @@ export default function Stock({ match }: Props): React.Node {
             <div
               className="text-center"
               style={{
-                backgroundColor: '#343a40',
-                borderRadius: '0.25rem',
-                color: '#fff',
+                backgroundColor: "#343a40",
+                borderRadius: "0.25rem",
+                color: "#fff",
                 height: `${height}px`,
                 lineHeight: `${height}px`,
-              }}>
+              }}
+            >
               Loading...
             </div>
           ) : (
             <svg width={width} height={height}>
-              <rect x={0} y={0} width={width} height={height} fill="#343a40" rx={'0.25rem'} />
+              <rect x={0} y={0} width={width} height={height} fill="#343a40" rx={"0.25rem"} />
               <LinearGradient id="gradient">
                 <stop offset="0%" stopColor="#ffc107" stopOpacity={1} />
                 <stop offset="100%" stopColor="#ffc107" stopOpacity={0.2} />
@@ -158,38 +160,38 @@ export default function Stock({ match }: Props): React.Node {
                   yScale={yScale}
                   x={x}
                   y={y}
-                  fill={'url(#gradient)'}
-                  stroke={''}
+                  fill={"url(#gradient)"}
+                  stroke={""}
                 />
                 <AxisLeft
                   left={0}
                   scale={yScale}
-                  stroke={'rgba(255,255,255,0.3)'}
+                  stroke={"rgba(255,255,255,0.3)"}
                   top={0}
                   tickLabelProps={(val, i) => ({
-                    dx: '-0.25em',
-                    dy: '0.25em',
-                    textAnchor: 'end',
-                    fontFamily: 'Arial',
+                    dx: "-0.25em",
+                    dy: "0.25em",
+                    textAnchor: "end",
+                    fontFamily: "Arial",
                     fontSize: 10,
-                    fill: 'rgba(255,255,255,0.9)',
+                    fill: "rgba(255,255,255,0.9)",
                   })}
-                  tickStroke={'rgba(255,255,255,0.3)'}
-                  tickTextFill={'rgba(255,255,255,0.3)'}
+                  tickStroke={"rgba(255,255,255,0.3)"}
+                  tickTextFill={"rgba(255,255,255,0.3)"}
                 />
                 <AxisBottom
                   scale={xScale}
-                  stroke={'rgba(255,255,255,0.3)'}
+                  stroke={"rgba(255,255,255,0.3)"}
                   top={yMax}
                   tickLabelProps={(val, i) => ({
-                    dy: '0.25em',
-                    textAnchor: 'middle',
-                    fontFamily: 'Arial',
+                    dy: "0.25em",
+                    textAnchor: "middle",
+                    fontFamily: "Arial",
                     fontSize: 10,
-                    fill: 'rgba(255,255,255,0.9)',
+                    fill: "rgba(255,255,255,0.9)",
                   })}
-                  tickStroke={'rgba(255,255,255,0.3)'}
-                  tickTextFill={'rgba(255,255,255,0.3)'}
+                  tickStroke={"rgba(255,255,255,0.3)"}
+                  tickTextFill={"rgba(255,255,255,0.3)"}
                 />
               </Group>
             </svg>

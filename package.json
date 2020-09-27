@@ -39,7 +39,7 @@
   "devDependencies": {
     "flow-bin": "^0.134.0",
     "gh-pages": "^1.1.0",
-    "prettier": "^1.16.4"
+    "prettier": "^2.1.2"
   },
   "browserslist": [
     ">0.2%",

@@ -53,68 +53,68 @@ export type Transaction = {|
   +price: number,
   +shares: number,
   +symbol: string,
-  +type: 'Buy' | 'Sell',
+  +type: "Buy" | "Sell",
 |};
 
 export type AddSymbolAction = {|
   +symbol: string,
-  +type: 'ADD_SYMBOL',
+  +type: "ADD_SYMBOL",
 |};
 
 export type AddTransactionAction = {|
   +transaction: Transaction,
-  +type: 'ADD_TRANSACTION',
+  +type: "ADD_TRANSACTION",
 |};
 
 export type AddTransactionsAction = {|
   +transactions: Array<Transaction>,
-  +type: 'ADD_TRANSACTIONS',
+  +type: "ADD_TRANSACTIONS",
 |};
 
 export type ChangePageSizeAction = {|
   +pageSize: number,
-  +type: 'CHANGE_PAGE_SIZE',
+  +type: "CHANGE_PAGE_SIZE",
 |};
 
 export type DeletePortfolioAction = {|
-  +type: 'DELETE_PORTFOLIO',
+  +type: "DELETE_PORTFOLIO",
 |};
 
 export type DeleteSymbolsAction = {|
   +symbols: Array<string>,
-  +type: 'DELETE_SYMBOLS',
+  +type: "DELETE_SYMBOLS",
 |};
 
 export type DeleteTransactionsAction = {|
   +transactions: Array<Transaction>,
-  +type: 'DELETE_TRANSACTIONS',
+  +type: "DELETE_TRANSACTIONS",
 |};
 
 export type DownloadPortfolioAction = {|
-  +type: 'DOWNLOAD_PORTFOLIO',
+  +type: "DOWNLOAD_PORTFOLIO",
 |};
 
 export type FetchAllIexSymbolsFailureAction = {|
   +error: TypeError,
-  +type: 'FETCH_ALL_IEX_SYMBOLS_FAILURE',
+  +type: "FETCH_ALL_IEX_SYMBOLS_FAILURE",
 |};
 
 export type FetchAllIexSymbolsRequestAction = {|
-  +type: 'FETCH_ALL_IEX_SYMBOLS_REQUEST',
+  +type: "FETCH_ALL_IEX_SYMBOLS_REQUEST",
 |};
 
 export type FetchAllIexSymbolsSuccessAction = {|
   allIexSymbols: Array<IEXSymbol>,
-  +type: 'FETCH_ALL_IEX_SYMBOLS_SUCCESS',
+  +type: "FETCH_ALL_IEX_SYMBOLS_SUCCESS",
 |};
 
 export type FetchSymbolDataFailureAction = {|
   +error: TypeError,
-  +type: 'FETCH_SYMBOL_DATA_FAILURE',
+  +type: "FETCH_SYMBOL_DATA_FAILURE",
 |};
 
 export type FetchSymbolDataRequestAction = {|
-  +type: 'FETCH_SYMBOL_DATA_REQUEST',
+  +type: "FETCH_SYMBOL_DATA_REQUEST",
 |};
 
 export type FetchSymbolDataSuccessAction = {|
@@ -123,38 +123,38 @@ export type FetchSymbolDataSuccessAction = {|
     quote: Quote,
   },
   +symbol: string,
-  +type: 'FETCH_SYMBOL_DATA_SUCCESS',
+  +type: "FETCH_SYMBOL_DATA_SUCCESS",
 |};
 
 export type FetchQuotesFailureAction = {|
   +error: TypeError,
-  +type: 'FETCH_QUOTES_FAILURE',
+  +type: "FETCH_QUOTES_FAILURE",
 |};
 
 export type FetchQuotesRequestAction = {|
-  +type: 'FETCH_QUOTES_REQUEST',
+  +type: "FETCH_QUOTES_REQUEST",
 |};
 
 export type FetchQuotesSuccessAction = {|
   +quotes: { [symbol: string]: Object },
-  +type: 'FETCH_QUOTES_SUCCESS',
+  +type: "FETCH_QUOTES_SUCCESS",
 |};
 
 export type ImportTransactionsFileFailureAction = {|
-  +type: 'IMPORT_TRANSACTIONS_FILE_FAILURE',
+  +type: "IMPORT_TRANSACTIONS_FILE_FAILURE",
 |};
 
 export type ImportTransactionsFileRequestAction = {|
-  +type: 'IMPORT_TRANSACTIONS_FILE_REQUEST',
+  +type: "IMPORT_TRANSACTIONS_FILE_REQUEST",
 |};
 
 export type ImportTransactionsFileSuccessAction = {|
-  +type: 'IMPORT_TRANSACTIONS_FILE_SUCCESS',
+  +type: "IMPORT_TRANSACTIONS_FILE_SUCCESS",
 |};
 
 export type SetIexApiKeyAction = {|
   +iexApiKey: string,
-  +type: 'SET_IEX_API_KEY',
+  +type: "SET_IEX_API_KEY",
 |};
 
 export type Action =

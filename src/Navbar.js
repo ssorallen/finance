@@ -1,7 +1,7 @@
 /* @flow */
 
-import './Navbar.css';
-import * as React from 'react';
+import "./Navbar.css";
+import * as React from "react";
 import {
   Button,
   Collapse,
@@ -12,14 +12,14 @@ import {
   Navbar as ReactstrapNavbar,
   NavbarBrand,
   NavbarToggler,
-} from 'reactstrap';
-import type { Dispatch, IEXSymbol } from './Types';
-import { NavLink, type RouterHistory, withRouter } from 'react-router-dom';
-import { fetchAllIexSymbols, setIexApiKey } from './actions';
-import Autosuggest from 'react-autosuggest';
-import SpinKit from './SpinKit';
-import { connect } from 'react-redux';
-import cx from 'classnames';
+} from "reactstrap";
+import type { Dispatch, IEXSymbol } from "./Types";
+import { NavLink, type RouterHistory, withRouter } from "react-router-dom";
+import { fetchAllIexSymbols, setIexApiKey } from "./actions";
+import Autosuggest from "react-autosuggest";
+import SpinKit from "./SpinKit";
+import { connect } from "react-redux";
+import cx from "classnames";
 
 type RouterProps = {
   history: RouterHistory,
@@ -38,7 +38,7 @@ type ConnectProps = StateProps & { dispatch: Dispatch };
 type Props = RouterProps & ConnectProps;
 
 type State = {
-  activeModal: ?{ type: 'settings' },
+  activeModal: ?{ type: "settings" },
   isOpen: boolean,
   nextIexApiKey: string,
   searchIsFocused: boolean,
@@ -47,20 +47,20 @@ type State = {
 };
 
 const updatedAtFormatter = new window.Intl.DateTimeFormat(undefined, {
-  day: 'numeric',
-  hour: 'numeric',
+  day: "numeric",
+  hour: "numeric",
   hour12: false,
-  minute: 'numeric',
-  month: 'numeric',
-  second: 'numeric',
-  year: 'numeric',
+  minute: "numeric",
+  month: "numeric",
+  second: "numeric",
+  year: "numeric",
 });
 
 function findFirstNSymbols(n: number, collection: Array<IEXSymbol>, search: string) {
   // Symbols are always uppercase, ensure uppercase to match.
   const uppercaseSearch = search.toUpperCase();
   const results: Array<IEXSymbol> = [];
-  collection.some(iexSymbol => {
+  collection.some((iexSymbol) => {
     if (iexSymbol.symbol.startsWith(uppercaseSearch)) {
       results.push(iexSymbol);
       if (results.length === n) return true;
@@ -95,9 +95,9 @@ class Navbar extends React.Component<Props, State> {
     this.state = {
       activeModal: null,
       isOpen: false,
-      nextIexApiKey: '',
+      nextIexApiKey: "",
       searchIsFocused: false,
-      searchQuery: '',
+      searchQuery: "",
       searchResults: [],
     };
   }
@@ -114,12 +114,12 @@ class Navbar extends React.Component<Props, State> {
   };
 
   handleSearchQueryChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    if (event.currentTarget.nodeName !== 'INPUT') return;
+    if (event.currentTarget.nodeName !== "INPUT") return;
     this.setSearchQuery(event.currentTarget.value);
   };
 
   handleSearchQueryClear = () => {
-    this.setSearchQuery('');
+    this.setSearchQuery("");
   };
 
   handleSearchSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -152,12 +152,12 @@ class Navbar extends React.Component<Props, State> {
 
   openSettingsModal = () => {
     this.setState({
-      activeModal: { type: 'settings' },
-      nextIexApiKey: this.props.iexApiKey == null ? '' : this.props.iexApiKey,
+      activeModal: { type: "settings" },
+      nextIexApiKey: this.props.iexApiKey == null ? "" : this.props.iexApiKey,
     });
   };
 
-  setNextIexApiKey = event => {
+  setNextIexApiKey = (event) => {
     this.setState({ nextIexApiKey: event.target.value });
   };
 
@@ -179,16 +179,17 @@ class Navbar extends React.Component<Props, State> {
             action="/finance/stocks"
             className="mr-auto"
             inline
-            onSubmit={this.handleSearchSubmit}>
+            onSubmit={this.handleSearchSubmit}
+          >
             <Autosuggest
               getSuggestionValue={SuggestionValue}
               highlightFirstSuggestion
               inputProps={{
-                name: 'symbol',
+                name: "symbol",
                 onBlur: this.handleSearchBlur,
                 onChange: this.handleSearchQueryChange,
                 onFocus: this.handleSearchFocus,
-                placeholder: 'Search...',
+                placeholder: "Search...",
                 value: this.state.searchQuery,
               }}
               onSuggestionsClearRequested={this.handleSearchQueryClear}
@@ -197,16 +198,16 @@ class Navbar extends React.Component<Props, State> {
               renderSuggestion={Suggestion}
               suggestions={this.state.searchResults}
               theme={{
-                container: 'autosuggest',
-                input: cx('dark-transition form-control', {
-                  'bg-dark': !this.state.searchIsFocused,
+                container: "autosuggest",
+                input: cx("dark-transition form-control", {
+                  "bg-dark": !this.state.searchIsFocused,
                 }),
-                suggestionsContainer: 'dropdown',
+                suggestionsContainer: "dropdown",
                 suggestionsList: `dropdown-menu ${
-                  this.state.searchResults.length > 0 ? 'show' : ''
+                  this.state.searchResults.length > 0 ? "show" : ""
                 }`,
-                suggestion: 'dropdown-item',
-                suggestionHighlighted: 'active',
+                suggestion: "dropdown-item",
+                suggestionHighlighted: "active",
               }}
             />
           </Form>
@@ -235,8 +236,9 @@ class Navbar extends React.Component<Props, State> {
           </Button>
         </Collapse>
         <Modal
-          isOpen={this.state.activeModal != null && this.state.activeModal.type === 'settings'}
-          toggle={this.closeActiveModal}>
+          isOpen={this.state.activeModal != null && this.state.activeModal.type === "settings"}
+          toggle={this.closeActiveModal}
+        >
           <form onSubmit={this.handleSetIexApiKey}>
             <ModalBody>
               <div className="form-group">
@@ -269,7 +271,7 @@ class Navbar extends React.Component<Props, State> {
 
 // $FlowFixMe: stop using these HOC, switch to hooks
 export default (withRouter<Navbar>(
-  connect<ConnectProps, {}, _, _, _, _>(state => ({
+  connect<ConnectProps, {}, _, _, _, _>((state) => ({
     allIexSymbols: state.allIexSymbols,
     fetchErrorMessage: state.fetchErrorMessage,
     iexApiKey: state.iexApiKey,

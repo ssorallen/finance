@@ -1,16 +1,16 @@
 /* @flow */
 
-import * as React from 'react';
-import { Button, Col, Row } from 'reactstrap';
-import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './types';
-import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from './formatters';
-import { changePageSize, deleteSymbols } from './actions';
-import { Link } from 'react-router-dom';
-import PortfolioContainer from './PortfolioContainer';
-import ReactTable from 'react-table';
-import { connect } from 'react-redux';
-import cx from 'classnames';
-import selectTableHOC from 'react-table/lib/hoc/selectTable';
+import * as React from "react";
+import { Button, Col, Row } from "reactstrap";
+import type { AppSettings, AppState, Dispatch, Quote, Transaction } from "./types";
+import { abbreviatedNumberFormatter, currencyFormatter, percentFormatter } from "./formatters";
+import { changePageSize, deleteSymbols } from "./actions";
+import { Link } from "react-router-dom";
+import PortfolioContainer from "./PortfolioContainer";
+import ReactTable from "react-table";
+import { connect } from "react-redux";
+import cx from "classnames";
+import selectTableHOC from "react-table/lib/hoc/selectTable";
 
 type StateProps = {
   appSettings: AppSettings,
@@ -28,123 +28,123 @@ type State = {
 const SelectReactTable = selectTableHOC(ReactTable);
 
 function classes(cell) {
-  return cx('text-right', {
-    'text-danger': cell != null && cell < 0,
-    'text-success': cell != null && cell >= 0,
+  return cx("text-right", {
+    "text-danger": cell != null && cell < 0,
+    "text-success": cell != null && cell >= 0,
   });
 }
 
 const TABLE_COLUMNS = [
   {
-    accessor: 'companyName',
-    Cell: props => (props.value == null ? '...' : props.value),
+    accessor: "companyName",
+    Cell: (props) => (props.value == null ? "..." : props.value),
     Footer: <strong>Portfolio value:</strong>,
-    Header: 'Name',
-    headerClassName: 'text-left',
+    Header: "Name",
+    headerClassName: "text-left",
   },
   {
-    accessor: 'symbol',
-    Cell: props => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
-    Header: 'Symbol',
-    headerClassName: 'text-left',
+    accessor: "symbol",
+    Cell: (props) => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
+    Header: "Symbol",
+    headerClassName: "text-left",
   },
   {
-    accessor: 'latestPrice',
-    Cell: props => (
+    accessor: "latestPrice",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Last Price',
-    headerClassName: 'text-right',
+    Header: "Last Price",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'change.change',
-    Cell: props => {
+    accessor: "change.change",
+    Cell: (props) => {
       const cell = props.original.change;
       return (
         <div className={classes(props.value)}>
           {cell.change == null
-            ? '...'
-            : `${cell.change >= 0 ? '+' : ''}${currencyFormatter.format(cell.change)} (${
-                cell.changePercent >= 0 ? '+' : ''
+            ? "..."
+            : `${cell.change >= 0 ? "+" : ""}${currencyFormatter.format(cell.change)} (${
+                cell.changePercent >= 0 ? "+" : ""
               }${percentFormatter.format(cell.changePercent)})`}
         </div>
       );
     },
-    Header: 'Change',
-    headerClassName: 'text-right',
+    Header: "Change",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'marketCap',
-    Cell: props => (
+    accessor: "marketCap",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : abbreviatedNumberFormatter.format(props.value)}
+        {props.value == null ? "..." : abbreviatedNumberFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Mkt. Cap',
-    headerClassName: 'text-right',
+    Header: "Mkt. Cap",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'latestVolume',
-    Cell: props => (
+    accessor: "latestVolume",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : abbreviatedNumberFormatter.format(props.value)}
+        {props.value == null ? "..." : abbreviatedNumberFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Volume',
-    headerClassName: 'text-right',
+    Header: "Volume",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'open',
-    Cell: props => (
+    accessor: "open",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Open',
-    headerClassName: 'text-right',
+    Header: "Open",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'high',
-    Cell: props => (
+    accessor: "high",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'High',
-    headerClassName: 'text-right',
+    Header: "High",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'low',
-    Cell: props => (
+    accessor: "low",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Low',
-    headerClassName: 'text-right',
+    Header: "Low",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'daysGain',
-    Cell: props => (
+    accessor: "daysGain",
+    Cell: (props) => (
       <div className={classes(props.value)}>
         {props.value == null
-          ? '...'
-          : `${props.value >= 0 ? '+' : ''}${currencyFormatter.format(props.value)}`}
+          ? "..."
+          : `${props.value >= 0 ? "+" : ""}${currencyFormatter.format(props.value)}`}
       </div>
     ),
-    Footer: props => {
+    Footer: (props) => {
       const totalDaysGain = props.data.reduce((total, current) => total + current.daysGain, 0);
       return (
         <div className={classes(totalDaysGain)}>
-          {totalDaysGain >= 0 ? '+' : ''}
+          {totalDaysGain >= 0 ? "+" : ""}
           {currencyFormatter.format(totalDaysGain)}
         </div>
       );
     },
     Header: "Day's gain",
-    headerClassName: 'text-right',
+    headerClassName: "text-right",
   },
 ];
 
@@ -209,10 +209,10 @@ class Overview extends React.Component<Props, State> {
   };
 
   render() {
-    const tableData = this.props.symbols.map(symbol => {
+    const tableData = this.props.symbols.map((symbol) => {
       const quote = this.props.quotes[symbol];
       const transactions = this.props.transactions.filter(
-        transaction => transaction.symbol === symbol
+        (transaction) => transaction.symbol === symbol
       );
       const totalShares = transactions.reduce((prev, curr) => prev + curr.shares, 0);
 
@@ -237,17 +237,18 @@ class Overview extends React.Component<Props, State> {
     return (
       <PortfolioContainer
         deleteDisabled={deleteDisabled}
-        onDelete={this.handleDeleteSelectedSymbols}>
+        onDelete={this.handleDeleteSelectedSymbols}
+      >
         <Row className="mb-4">
           <Col>
             <SelectReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
-              defaultSorted={[{ desc: false, id: 'symbol' }]}
+              defaultSorted={[{ desc: false, id: "symbol" }]}
               getPaginationProps={() => ({
-                className: 'pt-2',
-                NextComponent: props => <Button className="btn-sm" outline {...props} />,
-                PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                className: "pt-2",
+                NextComponent: (props) => <Button className="btn-sm" outline {...props} />,
+                PreviousComponent: (props) => <Button className="btn-sm" outline {...props} />,
                 showPageJump: false,
               })}
               isSelected={this.isSymbolSelected}

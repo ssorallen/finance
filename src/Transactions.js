@@ -1,15 +1,15 @@
 /* @flow */
 
-import * as React from 'react';
-import { Button, Col, Row } from 'reactstrap';
-import type { AppSettings, AppState, Dispatch, Quote, Transaction } from './types';
-import { changePageSize, deleteTransactions } from './actions';
-import { currencyFormatter, numberFormatter } from './formatters';
-import { Link } from 'react-router-dom';
-import PortfolioContainer from './PortfolioContainer';
-import ReactTable from 'react-table';
-import { connect } from 'react-redux';
-import selectTableHOC from 'react-table/lib/hoc/selectTable';
+import * as React from "react";
+import { Button, Col, Row } from "reactstrap";
+import type { AppSettings, AppState, Dispatch, Quote, Transaction } from "./types";
+import { changePageSize, deleteTransactions } from "./actions";
+import { currencyFormatter, numberFormatter } from "./formatters";
+import { Link } from "react-router-dom";
+import PortfolioContainer from "./PortfolioContainer";
+import ReactTable from "react-table";
+import { connect } from "react-redux";
+import selectTableHOC from "react-table/lib/hoc/selectTable";
 
 type StateProps = {
   appSettings: AppSettings,
@@ -28,53 +28,53 @@ const SelectReactTable = selectTableHOC(ReactTable);
 
 const TABLE_COLUMNS = [
   {
-    accessor: 'companyName',
-    Cell: props => (props.value == null ? '...' : props.value),
-    Header: 'Name',
-    headerClassName: 'text-left',
+    accessor: "companyName",
+    Cell: (props) => (props.value == null ? "..." : props.value),
+    Header: "Name",
+    headerClassName: "text-left",
   },
   {
-    accessor: 'symbol',
-    Cell: props => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
-    Header: 'Symbol',
-    headerClassName: 'text-left',
+    accessor: "symbol",
+    Cell: (props) => <Link to={`/stocks/${props.value}`}>{props.value}</Link>,
+    Header: "Symbol",
+    headerClassName: "text-left",
   },
-  { accessor: 'type', Header: 'Type', headerClassName: 'text-left' },
+  { accessor: "type", Header: "Type", headerClassName: "text-left" },
   {
-    accessor: 'date',
-    Cell: props => <time>{props.value}</time>,
-    Header: 'Date',
-    headerClassName: 'text-left',
+    accessor: "date",
+    Cell: (props) => <time>{props.value}</time>,
+    Header: "Date",
+    headerClassName: "text-left",
   },
   {
-    accessor: 'shares',
-    Cell: props => (
+    accessor: "shares",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : numberFormatter.format(props.value)}
+        {props.value == null ? "..." : numberFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Shares',
-    headerClassName: 'text-right',
+    Header: "Shares",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'price',
-    Cell: props => (
+    accessor: "price",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Price',
-    headerClassName: 'text-right',
+    Header: "Price",
+    headerClassName: "text-right",
   },
   {
-    accessor: 'commission',
-    Cell: props => (
+    accessor: "commission",
+    Cell: (props) => (
       <div className="text-right">
-        {props.value == null ? '...' : currencyFormatter.format(props.value)}
+        {props.value == null ? "..." : currencyFormatter.format(props.value)}
       </div>
     ),
-    Header: 'Commission',
-    headerClassName: 'text-right',
+    Header: "Commission",
+    headerClassName: "text-right",
   },
 ];
 
@@ -104,7 +104,7 @@ class Transactions extends React.Component<Props, State> {
   }
 
   handleDeleteSelectedTransactions = () => {
-    const transactionsToDelete = this.props.transactions.filter(transaction =>
+    const transactionsToDelete = this.props.transactions.filter((transaction) =>
       this.state.selectedTransactionIds.has(transaction.id)
     );
     this.props.dispatch(deleteTransactions(transactionsToDelete));
@@ -119,7 +119,9 @@ class Transactions extends React.Component<Props, State> {
       this.setState({ selectedTransactionIds: new Set() });
     } else {
       this.setState({
-        selectedTransactionIds: new Set(this.props.transactions.map(transaction => transaction.id)),
+        selectedTransactionIds: new Set(
+          this.props.transactions.map((transaction) => transaction.id)
+        ),
       });
     }
   };
@@ -142,7 +144,7 @@ class Transactions extends React.Component<Props, State> {
   };
 
   render() {
-    const tableData = this.props.transactions.map(transaction => {
+    const tableData = this.props.transactions.map((transaction) => {
       const quote = this.props.quotes[transaction.symbol];
       return {
         ...transaction,
@@ -154,17 +156,18 @@ class Transactions extends React.Component<Props, State> {
     return (
       <PortfolioContainer
         deleteDisabled={deleteDisabled}
-        onDelete={this.handleDeleteSelectedTransactions}>
+        onDelete={this.handleDeleteSelectedTransactions}
+      >
         <Row className="mb-3">
           <Col>
             <SelectReactTable
               columns={TABLE_COLUMNS}
               data={tableData}
-              defaultSorted={[{ desc: false, id: 'symbol' }]}
+              defaultSorted={[{ desc: false, id: "symbol" }]}
               getPaginationProps={() => ({
-                className: 'pt-2',
-                NextComponent: props => <Button className="btn-sm" outline {...props} />,
-                PreviousComponent: props => <Button className="btn-sm" outline {...props} />,
+                className: "pt-2",
+                NextComponent: (props) => <Button className="btn-sm" outline {...props} />,
+                PreviousComponent: (props) => <Button className="btn-sm" outline {...props} />,
                 showPageJump: false,
               })}
               isSelected={this.isTransactionIdSelected}

@@ -1,8 +1,8 @@
 /* @flow */
 
-import * as React from 'react';
-import { Button, Collapse, Form, FormGroup, Input, Label } from 'reactstrap';
-import formSerialize from 'form-serialize';
+import * as React from "react";
+import { Button, Collapse, Form, FormGroup, Input, Label } from "reactstrap";
+import formSerialize from "form-serialize";
 
 type Props = {
   isLoading: boolean,
@@ -36,7 +36,8 @@ export default function AddSymbolForm(props: Props): React.Node {
                   setShowTransactionData(false);
                 }}
                 size="sm"
-                type="button">
+                type="button"
+              >
                 - Remove transaction data
               </Button>
             </FormGroup>
@@ -48,7 +49,8 @@ export default function AddSymbolForm(props: Props): React.Node {
                   setShowTransactionData(true);
                 }}
                 size="sm"
-                type="button">
+                type="button"
+              >
                 + Add transaction data
               </Button>
             </FormGroup>
@@ -63,7 +65,8 @@ export default function AddSymbolForm(props: Props): React.Node {
                 id="type"
                 name="type"
                 required
-                type="select">
+                type="select"
+              >
                 <option>Buy</option>
                 <option>Sell</option>
               </Input>

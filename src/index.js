@@ -1,20 +1,20 @@
 /* @flow */
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-table/react-table.css';
-import { applyMiddleware, compose, createStore } from 'redux';
-import App from './App';
-import type { AppState } from './types';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import persistState from 'redux-localstorage';
-import reducers from './reducers';
-import registerServiceWorker from './registerServiceWorker';
-import thunk from 'redux-thunk';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-table/react-table.css";
+import { applyMiddleware, compose, createStore } from "redux";
+import App from "./App";
+import type { AppState } from "./types";
+import { Provider } from "react-redux";
+import React from "react";
+import ReactDOM from "react-dom";
+import persistState from "redux-localstorage";
+import reducers from "./reducers";
+import registerServiceWorker from "./registerServiceWorker";
+import thunk from "redux-thunk";
 
-const rootElement = document.getElementById('root');
-if (rootElement == null) throw new Error('Missing element #root to render app');
+const rootElement = document.getElementById("root");
+if (rootElement == null) throw new Error("Missing element #root to render app");
 
 // Enable Redux Devtools in the browser.
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -28,7 +28,7 @@ const initialState: AppState = {
   },
   charts: {},
   fetchErrorMessage: null,
-  iexApiKey: '',
+  iexApiKey: "",
   isFetchingAllIexSymbols: false,
   isFetchingCount: 0,
   nextTransactionId: 1,
@@ -47,17 +47,17 @@ const store = createStore(
       // Any keys in the following Array will be persisted from the store to local storage and
       // re-hydrated when the app re-loads.
       [
-        'allIexSymbols',
-        'appSettings',
-        'iexApiKey',
-        'nextTransactionId',
-        'quotes',
-        'symbols',
-        'transactions',
-        'updatedAt',
+        "allIexSymbols",
+        "appSettings",
+        "iexApiKey",
+        "nextTransactionId",
+        "quotes",
+        "symbols",
+        "transactions",
+        "updatedAt",
       ],
       {
-        key: 'default',
+        key: "default",
       }
     )
   )

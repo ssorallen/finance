@@ -1,7 +1,7 @@
 /* @flow */
 
-import * as React from 'react';
-import { Button, Col, Input, Label } from 'reactstrap';
+import * as React from "react";
+import { Button, Col, Input, Label } from "reactstrap";
 
 type Props = {
   onDeletePortfolio: () => void,
@@ -19,7 +19,7 @@ export default function PortfolioActions(props: Props): React.Node {
     // Reset the input so the same file can be uploaded multiple times in a row (without
     // resetting the `onchange` would not fire). Why upload multiple times? Testing testing
     // testing. ABT: Always Be Testing.
-    currentTarget.value = '';
+    currentTarget.value = "";
   };
 
   return (

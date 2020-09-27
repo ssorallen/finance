@@ -1,9 +1,9 @@
 /* @flow */
 
-import './PortfolioNav.css';
-import * as React from 'react';
-import { Nav, NavItem } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import "./PortfolioNav.css";
+import * as React from "react";
+import { Nav, NavItem } from "reactstrap";
+import { NavLink } from "react-router-dom";
 
 export default function PortfolioNav(): React.Node {
   return (

@@ -1,19 +1,19 @@
 /* @flow */
 
-import './App.css';
-import * as React from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
-import { Col, Container, Row } from 'reactstrap';
-import type { Dispatch } from './types';
-import Navbar from './Navbar';
-import SpinKit from './SpinKit';
-import { fetchAllQuotes } from './actions';
-import { useDispatch } from 'react-redux';
+import "./App.css";
+import * as React from "react";
+import { HashRouter as Router, Route } from "react-router-dom";
+import { Col, Container, Row } from "reactstrap";
+import type { Dispatch } from "./types";
+import Navbar from "./Navbar";
+import SpinKit from "./SpinKit";
+import { fetchAllQuotes } from "./actions";
+import { useDispatch } from "react-redux";
 
-const Overview = React.lazy(() => import('./Overview'));
-const Performance = React.lazy(() => import('./Performance'));
-const Stock = React.lazy(() => import('./Stock'));
-const Transactions = React.lazy(() => import('./Transactions'));
+const Overview = React.lazy(() => import("./Overview"));
+const Performance = React.lazy(() => import("./Performance"));
+const Stock = React.lazy(() => import("./Stock"));
+const Transactions = React.lazy(() => import("./Transactions"));
 
 function LoadingIndicator() {
   return (
@@ -56,7 +56,7 @@ export default function App(): React.Node {
                   <a className="link-secondary" href="https://github.com/ssorallen">
                     ssorallen
                   </a>
-                  &gt;{' '}
+                  &gt;{" "}
                   <span aria-label="" role="img">
                     🦉
                   </span>
@@ -66,7 +66,7 @@ export default function App(): React.Node {
             <Row>
               <Col>
                 <small className="text-secondary">
-                  Source available at{' '}
+                  Source available at{" "}
                   <a className="link-secondary" href="https://github.com/ssorallen/finance">
                     ssorallen/finance
                   </a>
@@ -76,7 +76,7 @@ export default function App(): React.Node {
             <Row>
               <Col>
                 <small className="text-secondary">
-                  Data provided by{' '}
+                  Data provided by{" "}
                   <a className="link-secondary" href="https://iexcloud.io">
                     IEX Cloud
                   </a>

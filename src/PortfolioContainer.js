@@ -1,19 +1,19 @@
 /* @flow */
 
-import * as React from 'react';
-import type { AppState, Dispatch } from './types';
-import { Button, Col, Container, Row } from 'reactstrap';
+import * as React from "react";
+import type { AppState, Dispatch } from "./types";
+import { Button, Col, Container, Row } from "reactstrap";
 import {
   addTransaction,
   deletePortfolio,
   downloadPortfolio,
   fetchAllQuotes,
   importTransactionsFile,
-} from './actions';
-import AddSymbolForm from './AddSymbolForm';
-import PortfolioActions from './PortfolioActions';
-import PortfolioNav from './PortfolioNav';
-import { connect } from 'react-redux';
+} from "./actions";
+import AddSymbolForm from "./AddSymbolForm";
+import PortfolioActions from "./PortfolioActions";
+import PortfolioNav from "./PortfolioNav";
+import { connect } from "react-redux";
 
 type OwnProps = {
   children?: React.Node,
@@ -34,7 +34,7 @@ class PortfolioContainer extends React.Component<Props> {
     price: string,
     shares: string,
     symbol: string,
-    type: 'Buy' | 'Sell',
+    type: "Buy" | "Sell",
   }) => {
     // Set some defaults and override the symbol to make sure it's always UPPERCASE.
     const transaction = {
@@ -46,7 +46,7 @@ class PortfolioContainer extends React.Component<Props> {
       price: parseFloat(data.price) || 0,
       shares: parseFloat(data.shares) || 0,
       symbol: data.symbol.toUpperCase(),
-      type: data.type || 'Buy', // Match the behavior of Google Finance; 0 value is a 'Buy'.
+      type: data.type || "Buy", // Match the behavior of Google Finance; 0 value is a 'Buy'.
     };
 
     this.props.dispatch(addTransaction(transaction));
@@ -55,7 +55,7 @@ class PortfolioContainer extends React.Component<Props> {
 
   handleDeletePortfolio = () => {
     if (
-      window.confirm('Are you sure you want to delete the entire portfolio? This is irreversible.')
+      window.confirm("Are you sure you want to delete the entire portfolio? This is irreversible.")
     ) {
       this.props.dispatch(deletePortfolio());
     }
@@ -77,11 +77,12 @@ class PortfolioContainer extends React.Component<Props> {
           <Row className="mb-3 mt-3">
             <Col>
               <Button
-                color={this.props.deleteDisabled ? 'secondary' : 'danger'}
+                color={this.props.deleteDisabled ? "secondary" : "danger"}
                 disabled={this.props.deleteDisabled}
                 onClick={this.props.onDelete}
                 outline
-                size="sm">
+                size="sm"
+              >
                 Delete
               </Button>
             </Col>
