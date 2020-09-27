@@ -56,7 +56,7 @@ export default function Stock({ match }: Props): React.Node {
 
   React.useEffect(() => {
     dispatch(fetchSymbolData(match.params.symbol));
-  }, [match.params.symbol]);
+  }, [dispatch, match.params.symbol]);
 
   let xScale;
   let yScale;

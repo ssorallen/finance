@@ -17,7 +17,7 @@ export default function App(): React.Node {
   const dispatch = useDispatch<Dispatch>();
   React.useEffect(() => {
     dispatch(fetchAllQuotes());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
