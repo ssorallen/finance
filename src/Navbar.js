@@ -267,6 +267,7 @@ class Navbar extends React.Component<Props, State> {
   }
 }
 
+// $FlowFixMe: stop using these HOC, switch to hooks
 export default (withRouter<Navbar>(
   connect<ConnectProps, {}, _, _, _, _>(state => ({
     allIexSymbols: state.allIexSymbols,

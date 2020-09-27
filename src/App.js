@@ -6,12 +6,25 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import type { Dispatch } from './types';
 import Navbar from './Navbar';
-import Overview from './Overview';
-import Performance from './Performance';
-import Stock from './Stock';
-import Transactions from './Transactions';
+import SpinKit from './SpinKit';
 import { fetchAllQuotes } from './actions';
 import { useDispatch } from 'react-redux';
+
+const Overview = React.lazy(() => import('./Overview'));
+const Performance = React.lazy(() => import('./Performance'));
+const Stock = React.lazy(() => import('./Stock'));
+const Transactions = React.lazy(() => import('./Transactions'));
+
+function LoadingIndicator() {
+  return (
+    <div className="container my-3">
+      <div className="d-flex align-items-center">
+        <SpinKit className="mr-2" type="folding-cube" />
+        Loading…
+      </div>
+    </div>
+  );
+}
 
 export default function App(): React.Node {
   const dispatch = useDispatch<Dispatch>();
@@ -28,10 +41,12 @@ export default function App(): React.Node {
 
             See: React Router's ["Dealing With Update Blocking"][0] */}
         <Route component={Navbar} />
-        <Route exact path="/" component={Overview} />
-        <Route path="/performance" component={Performance} />
-        <Route path="/stocks/:symbol" component={Stock} />
-        <Route path="/transactions" component={Transactions} />
+        <React.Suspense fallback={<LoadingIndicator />}>
+          <Route exact path="/" component={Overview} />
+          <Route path="/performance" component={Performance} />
+          <Route path="/stocks/:symbol" component={Stock} />
+          <Route path="/transactions" component={Transactions} />
+        </React.Suspense>
         <footer className="bg-light py-4">
           <Container>
             <Row>

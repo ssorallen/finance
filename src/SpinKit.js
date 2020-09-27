@@ -2,19 +2,23 @@
 
 import './SpinKit.css';
 import * as React from 'react';
+import cx from 'classnames';
 
 type Props = {
-  title: ?string,
+  className?: string,
+  title?: string,
   type: 'folding-cube',
 };
 
 export default function SpinKit(props: Props): React.Node {
   return (
-    <div className="sk-folding-cube mr-3" title={props.title}>
-      <div className="sk-cube1 sk-cube" />
-      <div className="sk-cube2 sk-cube" />
-      <div className="sk-cube4 sk-cube" />
-      <div className="sk-cube3 sk-cube" />
+    <div className={cx('sk-folding-cube-wrapper', props.className)}>
+      <div className="sk-folding-cube" title={props.title}>
+        <div className="sk-cube1 sk-cube" />
+        <div className="sk-cube2 sk-cube" />
+        <div className="sk-cube4 sk-cube" />
+        <div className="sk-cube3 sk-cube" />
+      </div>
     </div>
   );
 }
