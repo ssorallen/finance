@@ -10,32 +10,29 @@ import {
   fetchAllQuotes,
   importTransactionsFile,
 } from "./actions";
+import { useDispatch, useSelector } from "react-redux";
 import AddSymbolForm from "./AddSymbolForm";
 import PortfolioActions from "./PortfolioActions";
 import PortfolioNav from "./PortfolioNav";
-import { connect } from "react-redux";
 
-type OwnProps = {
+type Props = {
   children?: React.Node,
   deleteDisabled: boolean,
   onDelete: () => void,
 };
 
-type StateProps = {
-  isLoading: boolean,
-};
+export default function Portfolio({ children, deleteDisabled, onDelete }: Props): React.Node {
+  const dispatch = useDispatch<Dispatch>();
+  const isLoading = useSelector<AppState, boolean>(state => state.isFetchingCount > 0);
 
-type Props = OwnProps & StateProps & { dispatch: Dispatch };
-
-class PortfolioContainer extends React.Component<Props> {
-  handleAddSymbol = (data: {
+  function handleAddSymbol(data: {
     commission: string,
     date: string,
     price: string,
     shares: string,
     symbol: string,
     type: "Buy" | "Sell",
-  }) => {
+  }) {
     // Set some defaults and override the symbol to make sure it's always UPPERCASE.
     const transaction = {
       cashValue: null,
@@ -49,61 +46,55 @@ class PortfolioContainer extends React.Component<Props> {
       type: data.type || "Buy", // Match the behavior of Google Finance; 0 value is a 'Buy'.
     };
 
-    this.props.dispatch(addTransaction(transaction));
-    this.props.dispatch(fetchAllQuotes());
+    dispatch(addTransaction(transaction));
+    dispatch(fetchAllQuotes());
   };
 
-  handleDeletePortfolio = () => {
+  function handleDeletePortfolio() {
     if (
       window.confirm("Are you sure you want to delete the entire portfolio? This is irreversible.")
     ) {
-      this.props.dispatch(deletePortfolio());
+      dispatch(deletePortfolio());
     }
   };
 
-  handleDownloadPortfolio = () => {
-    this.props.dispatch(downloadPortfolio());
+  function handleDownloadPortfolio() {
+    dispatch(downloadPortfolio());
   };
 
-  handleImportPortfolio = (file: Blob) => {
-    this.props.dispatch(importTransactionsFile(file));
+  function handleImportPortfolio(file: Blob) {
+    dispatch(importTransactionsFile(file));
   };
 
-  render() {
-    return (
-      <>
-        <PortfolioNav />
-        <Container className="mb-4">
-          <Row className="mb-3 mt-3">
-            <Col>
-              <Button
-                color={this.props.deleteDisabled ? "secondary" : "danger"}
-                disabled={this.props.deleteDisabled}
-                onClick={this.props.onDelete}
-                outline
-                size="sm"
-              >
-                Delete
-              </Button>
-            </Col>
-            <PortfolioActions
-              onDeletePortfolio={this.handleDeletePortfolio}
-              onDownloadPortfolio={this.handleDownloadPortfolio}
-              onImportPortfolio={this.handleImportPortfolio}
-            />
-          </Row>
-          {this.props.children}
-          <Row>
-            <Col md="6">
-              <AddSymbolForm isLoading={this.props.isLoading} onAddSymbol={this.handleAddSymbol} />
-            </Col>
-          </Row>
-        </Container>
-      </>
-    );
-  }
+  return (
+    <>
+      <PortfolioNav />
+      <Container className="mb-4">
+        <Row className="mb-3 mt-3">
+          <Col>
+            <Button
+              color={deleteDisabled ? "secondary" : "danger"}
+              disabled={deleteDisabled}
+              onClick={onDelete}
+              outline
+              size="sm"
+            >
+              Delete
+            </Button>
+          </Col>
+          <PortfolioActions
+            onDeletePortfolio={handleDeletePortfolio}
+            onDownloadPortfolio={handleDownloadPortfolio}
+            onImportPortfolio={handleImportPortfolio}
+          />
+        </Row>
+        {children}
+        <Row>
+          <Col md="6">
+            <AddSymbolForm isLoading={isLoading} onAddSymbol={handleAddSymbol} />
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
 }
-
-export default (connect<Props, OwnProps, _, _, _, _>((state: AppState) => ({
-  isLoading: state.isFetchingCount > 0,
-}))(PortfolioContainer): React.ComponentType<*>);
