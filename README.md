@@ -79,8 +79,9 @@ the entire app runs inside your browser.
 
 ### What does Finance! do with my transaction data?
 
-Transaction data and which symbols you're watching is stored entirely in your browser (using
-[local storage][0]). Transaction data is never sent anywhere; it never leaves your computer.
+Your IEX API key, transaction data, and which symbols you're watching are stored entirely in your
+browser (using [local storage][0]). Transaction data is never sent anywhere; it never leaves your
+computer.
 
 ### What data of mine *does* leave my computer?
 
