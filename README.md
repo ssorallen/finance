@@ -3,6 +3,23 @@
 A fast, free, in-browser stock portfolio manager that you can deploy anywhere. You can use the version
 deployed at https://ssorallen.github.io/finance/ or [deploy your own](#deploy-your-own).
 
+* [Getting Started](#getting-started)
+* [Importing Your Portfolio](#importing-your-portfolio)
+  * [Data Format](#data-format)
+  * [Google Finance Portfolios](#google-finance-portfolios)
+* [Exporting Your Portfolio](#exporting-your-portfolio)
+* [Data Privacy](#data-privacy)
+* [How to Build](#how-to-build)
+
+## Getting Started
+
+1. Create an [IEX Cloud](https://iexcloud.io/) account if you don't already have one
+2. Create an IEX API Token on the [API Tokens](https://iexcloud.io/console/tokens) section of the console
+3. Copy the "publishable" token from the API Token console page
+4. Open "Settings" in the upper right of your Finance! instance
+5. Past the "publishable" API token and click "Save"
+6. Start creating your portfolio!
+
 ## Importing Your Portfolio
 
 If you have a spreadsheet (.csv) file containting transactions in your portfolio, you can import the
@@ -87,6 +104,8 @@ For example, if your portfolio looked like the following:
 the following data would be sent to IEX:
 
 ```
+// Note: your publishable IEX API key is necessarily used in every API request to IEX
+PUBLISHABLE_IEX_API_KEY
 ['F', 'GM']
 ```
 
