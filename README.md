@@ -124,11 +124,6 @@ The IEX API currently does not provide market index data. For more information, 
 The best replacement is ETFs that track associated indices like SPY for the S&P500 and DIA for the
 Dow Jones Industrial Average (DJIA).
 
-### Why is there no data for mutual funds?
-
-The IEX API currently does not provide mutual fund data. Please watch [IEX-API Issue #16][4] for
-updates on when that data might become available.
-
 ## How to Build
 
 1. Clone this repository
@@ -174,7 +169,6 @@ The idea to run this all in a browser was sparked by seeing Todd Schneider's
 [1]: https://iextrading.com/
 [2]: https://iextrading.com/developer/
 [3]: https://iextrading.com/api-exhibit-a/
-[4]: https://github.com/iexg/IEX-API/issues/16
 [5]: https://github.com/iexg/IEX-API/issues/36
 [6]: https://help.github.com/articles/user-organization-and-project-pages/
 [7]: https://yarnpkg.com/
