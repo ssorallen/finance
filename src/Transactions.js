@@ -83,10 +83,10 @@ class Transactions extends React.Component<Props, State> {
     // If any currently selected transactions are not in the next props update, remove them from the
     // internal selected transactions `Set` to stay up-to-date.
     let hasChanges = false;
-    const nextTransactions = new Set(nextProps.transactions);
+    const nextTransactionIds = new Set(nextProps.transactions.map((transaction) => transaction.id));
     const nextSelectedTransactionIds = new Set<number>();
     for (const transactionId of prevState.selectedTransactionIds) {
-      if (nextTransactions.has(transactionId)) nextSelectedTransactionIds.add(transactionId);
+      if (nextTransactionIds.has(transactionId)) nextSelectedTransactionIds.add(transactionId);
       else hasChanges = true;
     }
 
@@ -126,11 +126,12 @@ class Transactions extends React.Component<Props, State> {
     }
   };
 
-  handleToggleTransactionIdSelected = (transactionId: number) => {
-    if (this.isTransactionIdSelected(transactionId)) {
-      this.state.selectedTransactionIds.delete(transactionId);
+  handleToggleTransactionIdSelected = (transactionId: string) => {
+    const normalizedTransactionId = parseInt(transactionId.replace(/^select-/, ""), 10);
+    if (this.isTransactionIdSelected(normalizedTransactionId)) {
+      this.state.selectedTransactionIds.delete(normalizedTransactionId);
     } else {
-      this.state.selectedTransactionIds.add(transactionId);
+      this.state.selectedTransactionIds.add(normalizedTransactionId);
     }
     this.forceUpdate();
   };

@@ -235,10 +235,11 @@ class Performance extends React.Component<Props, State> {
   };
 
   handleToggleSymbolSelected = (symbol: string) => {
-    if (this.isSymbolSelected(symbol)) {
-      this.state.selectedSymbols.delete(symbol);
+    const normalizedSymbol = symbol.replace(/^select-/, "");
+    if (this.isSymbolSelected(normalizedSymbol)) {
+      this.state.selectedSymbols.delete(normalizedSymbol);
     } else {
-      this.state.selectedSymbols.add(symbol);
+      this.state.selectedSymbols.add(normalizedSymbol);
     }
     this.forceUpdate();
   };
@@ -248,6 +249,7 @@ class Performance extends React.Component<Props, State> {
   };
 
   isSymbolSelected = (symbol: string) => {
+    console.log("is selected?", symbol);
     return this.state.selectedSymbols.has(symbol);
   };
 
