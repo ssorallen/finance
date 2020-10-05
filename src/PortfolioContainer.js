@@ -69,7 +69,7 @@ export default function Portfolio({ children, deleteDisabled, onDelete }: Props)
   return (
     <>
       <PortfolioNav />
-      <Container className="mb-4">
+      <Container fluid>
         <Row className="mb-3 mt-3">
           <Col>
             <Button
@@ -89,6 +89,8 @@ export default function Portfolio({ children, deleteDisabled, onDelete }: Props)
           />
         </Row>
         {children}
+      </Container>
+      <Container className="mb-4">
         <Row>
           <Col md="6">
             <AddSymbolForm isLoading={isLoading} onAddSymbol={handleAddSymbol} />
