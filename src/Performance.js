@@ -254,7 +254,6 @@ class Performance extends React.Component<Props, State> {
   };
 
   isSymbolSelected = (symbol: string) => {
-    console.log("is selected?", symbol);
     return this.state.selectedSymbols.has(symbol);
   };
 
