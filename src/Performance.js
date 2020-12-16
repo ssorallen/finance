@@ -133,10 +133,15 @@ const TABLE_COLUMNS = [
     headerClassName: "text-right",
     Footer: (props) => {
       const totalCostBasis = props.data.reduce((total, current) => total + current.costBasis, 0);
+      const totalMarketValue = props.data.reduce(
+        (total, current) => total + current.marketValue,
+        0
+      );
+      const totalGain = totalMarketValue - totalCostBasis;
       return (
-        <div className={classes(totalCostBasis)}>
-          {totalCostBasis >= 0 ? "+" : ""}
-          {currencyFormatter.format(totalCostBasis)}
+        <div className={classes(totalGain)}>
+          {totalGain >= 0 ? "+" : ""}
+          {currencyFormatter.format(totalGain)}
         </div>
       );
     },
@@ -162,7 +167,7 @@ const TABLE_COLUMNS = [
         totalMarketValue === 0 ? 0 : (totalMarketValue - totalCostBasis) / totalCostBasis;
       return (
         <div className={classes(totalGainPercent)}>
-          {totalCostBasis >= 0 ? "+" : ""}
+          {totalGainPercent >= 0 ? "+" : ""}
           {percentFormatter.format(totalGainPercent)}
         </div>
       );
