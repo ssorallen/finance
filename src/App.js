@@ -52,30 +52,6 @@ export default function App(): React.Node {
             <Row>
               <Col>
                 <small className="text-secondary">
-                  Created by Ross Allen &lt;
-                  <a className="link-secondary" href="https://github.com/ssorallen">
-                    ssorallen
-                  </a>
-                  &gt;{" "}
-                  <span aria-label="" role="img">
-                    🦉
-                  </span>
-                </small>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <small className="text-secondary">
-                  Source available at{" "}
-                  <a className="link-secondary" href="https://github.com/ssorallen/finance">
-                    ssorallen/finance
-                  </a>
-                </small>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <small className="text-secondary">
                   Data provided by{" "}
                   <a className="link-secondary" href="https://iexcloud.io">
                     IEX Cloud
