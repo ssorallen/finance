@@ -8,25 +8,6 @@ export default class PerformanceStats extends Component {
             <React.Fragment>
                 <div className="card">
                     <div className="card-body">
-
-                        <Table>
-                            <tbody>
-                            <tr>
-                                <td>Datum</td>
-                                <td>19/02/2021</td>
-
-                            </tr>
-                            <tr>
-                                <td>Depot Julius Bär</td>
-                                <td>2,162,913.10 €</td>
-                            </tr>
-                            </tbody>
-                        </Table>
-                    </div>
-                </div>
-                <br/>
-                <div className="card">
-                    <div className="card-body">
                         <Table>
                             <tbody>
                             <tr>
