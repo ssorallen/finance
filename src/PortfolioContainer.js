@@ -22,7 +22,7 @@ type Props = {
     onDelete: () => void,
 };
 
-export default function Portfolio({children, deleteDisabled, onDelete}: Props): React.Node {
+export default function Portfolio({children, deleteDisabled, onDelete, marketValueTotal}: Props): React.Node {
     const dispatch = useDispatch<Dispatch>();
     const isLoading = useSelector<AppState, boolean>(state => state.isFetchingCount > 0);
 
@@ -49,6 +49,8 @@ export default function Portfolio({children, deleteDisabled, onDelete}: Props): 
 
         dispatch(addTransaction(transaction));
         dispatch(fetchAllQuotes());
+
+
     };
 
     function handleDeletePortfolio() {
@@ -94,7 +96,7 @@ export default function Portfolio({children, deleteDisabled, onDelete}: Props): 
             <Container className="mb-4">
                 <Row>
                     <Col md="6">
-                        <PerformanceStats/>
+                        <PerformanceStats marketValueTotal={marketValueTotal}/>
                     </Col>
                 </Row>
                 <Row>
