@@ -303,7 +303,7 @@ class Performance extends React.Component<Props, State> {
         });
 
         let marketValueTotal = 0;
-        tableData.forEach(element => marketValueTotal = marketValueTotal + 20);
+        tableData.forEach(element => marketValueTotal = marketValueTotal + element.marketValue);
 
 
         const deleteDisabled = this.props.symbols.length === 0 || this.state.selectedSymbols.size === 0;
