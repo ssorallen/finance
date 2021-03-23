@@ -27,16 +27,16 @@ export default function PortfolioActions(props: Props): React.Node {
       <Button color="link" size="sm" type="button">
         <Label className="label-button">
           <Input accept="text/csv" hidden onChange={handleImportTransactions} type="file" />
-          Import transactions
+          Transaktionen importieren
         </Label>
       </Button>
       |
       <Button color="link" onClick={props.onDeletePortfolio} size="sm" type="button">
-        Delete portfolio
+        Portfolio löschen
       </Button>
       |
       <Button color="link" onClick={props.onDownloadPortfolio} size="sm" type="button">
-        Download to spreadsheet
+        CSV Export
       </Button>
     </Col>
   );

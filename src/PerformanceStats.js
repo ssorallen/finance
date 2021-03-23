@@ -7,6 +7,8 @@ export default class PerformanceStats extends Component {
         super(props);
         this.state = {
             marketValueTotal: props.marketValueTotal,
+            fcraktien: 0,
+            depotjulius: 0,
             darlehen: 0,
             kontostand: 0,
             dividende_2020: 0,
@@ -47,8 +49,20 @@ export default class PerformanceStats extends Component {
                     <div className="card-body">
                         <Table>
                             <tbody>
+                            <h4>Depot</h4>
                             <tr>
-                                <td>- Darlehen</td>
+                                <td>FCR Aktien</td>
+                                <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
+                                           name={"fcraktien"}/></td>
+                            </tr>
+                            <tr>
+                                <td>Depot Julius Bär</td>
+                                <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
+                                           name={"depotjulius"}/></td>
+                            </tr>
+                            <h4>Liquidation</h4>
+                            <tr>
+                                <td>Darlehen</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"darlehen"}/></td>
                             </tr>
@@ -57,7 +71,7 @@ export default class PerformanceStats extends Component {
                                 <td>{this.state.zwischensumme}</td>
                             </tr>
                             <tr>
-                                <td>Kontostand::</td>
+                                <td>Kontostand:</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"kontostand"}/></td>
                             </tr>
@@ -66,22 +80,22 @@ export default class PerformanceStats extends Component {
                                 <td>{this.state.liquidationssaldo}</td>
                             </tr>
                             <tr>
-                                <td>- Dividende 2020:</td>
+                                <td>Dividende 2020:</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"dividende_2020"}/></td>
                             </tr>
                             <tr>
-                                <td>- Dividende 2019</td>
+                                <td>Dividende 2019</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"dividende_2019"}/></td>
                             </tr>
                             <tr>
-                                <td>- Geldtransfer 2020</td>
+                                <td>Geldtransfer 2020</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"geldtransfer_2020"}/></td>
                             </tr>
                             <tr>
-                                <td>- Geldtransfer 2019</td>
+                                <td>Geldtransfer 2019</td>
                                 <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
                                            name={"geldtransfer_2019"}/></td>
                             </tr>

@@ -189,7 +189,7 @@ class Navbar extends React.Component<Props, State> {
                 onBlur: this.handleSearchBlur,
                 onChange: this.handleSearchQueryChange,
                 onFocus: this.handleSearchFocus,
-                placeholder: "Search...",
+                placeholder: "Suchen...",
                 value: this.state.searchQuery,
               }}
               onSuggestionsClearRequested={this.handleSearchQueryClear}
@@ -222,7 +222,7 @@ class Navbar extends React.Component<Props, State> {
             </abbr>
           )}
           <small>
-            <span className="text-white-50">Quotes last fetched: </span>
+            <span className="text-white-50">letztes Update: </span>
             {updatedAt == null ? (
               <span className="text-white">never</span>
             ) : (
@@ -232,7 +232,7 @@ class Navbar extends React.Component<Props, State> {
             )}
           </small>
           <Button className="ml-2" onClick={this.openSettingsModal} size="sm">
-            Settings
+            Einstellungen
           </Button>
         </Collapse>
         <Modal

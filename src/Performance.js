@@ -39,7 +39,7 @@ const TABLE_COLUMNS = [
     {
         accessor: "companyName",
         Cell: (props) => (props.value == null ? "..." : props.value),
-        Footer: <strong>Portfolio value:</strong>,
+        Footer: <strong>Portfolio Wert:</strong>,
         Header: "Name",
         headerClassName: "text-left",
     },
