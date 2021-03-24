@@ -93,18 +93,18 @@ export default function Stock({ match }: Props): React.Node {
       </h3>
       <Row className="mt-4">
         <Col className="border-top border-top-lg pt-2" md="4">
-          <h4 className="mb-3">Summary</h4>
+          <h4 className="mb-3">Zusammenfassung</h4>
           <ul className="list-unstyled">
             <SummaryListItem
-              title="Volume"
+              title="Volumen"
               value={quote == null ? "..." : wholeNumberFormatter.format(quote.latestVolume)}
             />
             <SummaryListItem
-              title="Avg Daily Volume"
+              title="Avg Tägl. Volumen"
               value={quote == null ? "..." : wholeNumberFormatter.format(quote.avgTotalVolume)}
             />
             <SummaryListItem
-              title="Previous Close"
+              title="Schlusskurs"
               value={quote == null ? "..." : currencyFormatter.format(quote.previousClose)}
             />
             <SummaryListItem
@@ -132,7 +132,7 @@ export default function Stock({ match }: Props): React.Node {
           </ul>
         </Col>
         <Col className="border-top border-top-lg pt-2" md={{ offset: 1, size: 7 }}>
-          <h4 className="mb-3">History</h4>
+          <h4 className="mb-3">Historie</h4>
           {chart == null ? (
             <div
               className="text-center"
@@ -144,7 +144,7 @@ export default function Stock({ match }: Props): React.Node {
                 lineHeight: `${height}px`,
               }}
             >
-              Loading...
+              Laden...
             </div>
           ) : (
             <svg width={width} height={height}>

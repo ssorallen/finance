@@ -84,7 +84,7 @@ export default function Portfolio({children, deleteDisabled, onDelete, marketVal
                             outline
                             size="sm"
                         >
-                            Delete
+                            Löschen
                         </Button>
                     </Col>
                     <PortfolioActions

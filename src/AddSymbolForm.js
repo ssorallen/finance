@@ -84,7 +84,7 @@ export default function AddSymbolForm(props: Props): React.Node {
                 size="sm"
                 type="button"
               >
-                + Add transaction data
+                + Transaktionsdaten hinzufügen
               </Button>
             </FormGroup>
           )}
@@ -118,7 +118,7 @@ export default function AddSymbolForm(props: Props): React.Node {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="price">Price/Amount</Label>
+              <Label for="price">Kaufpreis/Stück</Label>
               <Input
                 bsSize="sm"
                 disabled={!showTransactionData}
@@ -158,7 +158,7 @@ export default function AddSymbolForm(props: Props): React.Node {
           </Collapse>
           <FormGroup style={{ marginBottom: 0 }}>
             <Button color="primary" disabled={props.isLoading} size="sm" type="submit">
-              Add to portfolio
+              Zu Portfolio hinzufügen
             </Button>
           </FormGroup>
         </Form>
