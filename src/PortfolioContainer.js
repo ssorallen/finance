@@ -32,6 +32,7 @@ export default function Portfolio({children, deleteDisabled, onDelete, marketVal
         price: string,
         shares: string,
         symbol: string,
+        exSuffix: string,
         type: "Buy" | "Sell",
     }) {
         // Set some defaults and override the symbol to make sure it's always UPPERCASE.
@@ -43,7 +44,8 @@ export default function Portfolio({children, deleteDisabled, onDelete, marketVal
             notes: null,
             price: parseFloat(data.price) || 0,
             shares: parseFloat(data.shares) || 0,
-            symbol: data.symbol.toUpperCase(),
+            symbol: data.symbol.toUpperCase() + data.exSuffix,
+            exSuffix: data.exSuffix,
             type: data.type || "Buy", // Match the behavior of Google Finance; 0 value is a 'Buy'.
         };
 

@@ -1,8 +1,9 @@
 /* @flow */
 
 import * as React from "react";
-import { Button, Collapse, Form, FormGroup, Input, Label } from "reactstrap";
+import {Button, Col, Collapse, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import formSerialize from "form-serialize";
+import {useEffect} from "react";
 
 type Props = {
   isLoading: boolean,
@@ -11,6 +12,18 @@ type Props = {
 
 export default function AddSymbolForm(props: Props): React.Node {
   const [showTransactionData, setShowTransactionData] = React.useState(false);
+  const [exchanges, setExchanges] = React.useState([]);
+
+  useEffect(()=>{
+    fetch("https://cloud.iexapis.com/v1/ref-data/exchanges?token=pk_910bbfc7787940c3888df3571efe3fab")
+        .then(res => res.json())
+        .then(
+            (result) => {
+              setExchanges(result);
+            }
+        )
+  },[])
+
   const formEl = React.useRef(null);
 
   function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
@@ -20,14 +33,34 @@ export default function AddSymbolForm(props: Props): React.Node {
     if (formEl.current != null) formEl.current.reset();
   }
 
+  const _options = () =>{
+    return exchanges.map(( item, index) => {
+      return <option value={item.exchangeSuffix} key={index}>{item.description + ' (' + item.mic + ')'}</option>
+    })
+  }
+
   return (
     <div className="card">
       <div className="card-body">
         <Form action="/api" method="post" onSubmit={handleSubmit} innerRef={formEl}>
-          <FormGroup>
-            <Label for="symbol">Symbol</Label>
-            <Input autoComplete="off" bsSize="sm" id="symbol" name="symbol" required />
-          </FormGroup>
+          <Row>
+            <Col sm={6} xs={12}>
+              <FormGroup>
+                <Label for="symbol">Symbol</Label>
+                <Input autoComplete="off" bsSize="sm" id="symbol" name="symbol" required />
+              </FormGroup>
+            </Col>
+            <Col sm={6} xs={12}>
+              <FormGroup>
+                <Label for='ex-suffix'>Stock Exchange</Label>
+                <Input type="select" name="exSuffix" bsSize="sm" id="exSuffix" required>
+                  <option value=''>All Stock Exchanges</option>
+                  {_options()}
+                </Input>
+              </FormGroup>
+            </Col>
+          </Row>
+
           {showTransactionData ? (
             <FormGroup>
               <Button
