@@ -173,7 +173,7 @@ class Transactions extends React.Component<Props, State> {
               })}
               isSelected={this.isTransactionIdSelected}
               keyField="id"
-              noDataText="No transactions yet. Add one using the form below."
+              noDataText="Noch keine Transaktionen. Fügen Sie eine mit dem unten stehenden Formular hinzu."
               onPageSizeChange={this.handlePageSizeChange}
               pageSize={this.props.appSettings.pageSize}
               selectAll={this.isAllTransactionIdsSelected()}

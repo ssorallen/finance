@@ -327,7 +327,7 @@ class Performance extends React.Component<Props, State> {
                             })}
                             isSelected={this.isSymbolSelected}
                             keyField="symbol"
-                            noDataText="No symbols yet. Add one using the form below."
+                            noDataText="Noch keine Symbole. Fügen Sie eine mit dem unten stehenden Formular hinzu."
                             onPageSizeChange={this.handlePageSizeChange}
                             pageSize={this.props.appSettings.pageSize}
                             selectAll={this.isAllSymbolsSelected()}
