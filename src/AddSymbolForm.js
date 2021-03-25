@@ -15,7 +15,7 @@ export default function AddSymbolForm(props: Props): React.Node {
   const [exchanges, setExchanges] = React.useState([]);
 
   useEffect(()=>{
-    fetch("https://cloud.iexapis.com/v1/ref-data/exchanges?token=pk_910bbfc7787940c3888df3571efe3fab")
+    fetch("https://cloud.iexapis.com/v1/ref-data/exchanges?token="+JSON.parse(localStorage['default'])['iexApiKey'])
         .then(res => res.json())
         .then(
             (result) => {
