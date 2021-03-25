@@ -171,7 +171,7 @@ class Navbar extends React.Component<Props, State> {
     return (
       <ReactstrapNavbar color="dark" dark expand="md">
         <NavbarBrand className="text-warning" tag={NavLink} to="/">
-          Finance!
+        FCR Depot Julius Bär
         </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
