@@ -33,7 +33,10 @@ export default class PerformanceStats extends Component {
                     (this.state.marketValueTotal - this.state.darlehen).toFixed(2),
                 liquidationssaldo:
                     (parseFloat(this.state.kontostand) + parseFloat(this.state.zwischensumme)).toFixed(2),
-                ergebnis: (this.state.liquidationssaldo - this.state.dividende_2020 - this.state.dividende_2019 - this.state.geldtransfer_2020 - this.state.geldtransfer_2019).toFixed(2)
+                ergebnis: (this.state.liquidationssaldo - this.state.dividende_2020 - this.state.dividende_2019 - this.state.geldtransfer_2020 - this.state.geldtransfer_2019).toFixed(2),
+                depotjulius: (this.state.marketValueTotal - this.state.fcraktien).toFixed(2),
+
+
             })
         })
 
@@ -57,8 +60,7 @@ export default class PerformanceStats extends Component {
                             </tr>
                             <tr>
                                 <td>Depot Julius Bär</td>
-                                <td><input type="number" className="form-text" onChange={this.__handleFieldChange}
-                                           name={"depotjulius"}/></td>
+                                <td>{this.state.depotjulius}</td>
                             </tr>
                             <h4>Liquidation</h4>
                             <tr>
