@@ -12,6 +12,7 @@ import persistState from "redux-localstorage";
 import reducers from "./reducers";
 import registerServiceWorker from "./registerServiceWorker";
 import thunk from "redux-thunk";
+import {symbols, transactions} from "./SymbolTransactions";
 
 const rootElement = document.getElementById("root");
 if (rootElement == null) throw new Error("Missing element #root to render app");
@@ -33,8 +34,8 @@ const initialState: AppState = {
   isFetchingCount: 0,
   nextTransactionId: 1,
   quotes: {},
-  symbols: [],
-  transactions: [],
+  symbols: symbols,
+  transactions: transactions,
   updatedAt: null,
 };
 
