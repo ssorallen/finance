@@ -15,7 +15,7 @@ import type {
   ThunkAction,
   Transaction,
 } from "./types";
-import csvParse from "csv-parse/lib/es5/sync";
+import { parse } from "csv-parse/browser/esm/sync";
 import { transformGfToStocks } from "./transformers";
 
 const IEX_ROOT = "https://cloud.iexapis.com/v1";
@@ -187,7 +187,7 @@ export function importTransactionsFile(file: Blob): ThunkAction {
       dispatch({ type: "IMPORT_TRANSACTIONS_FILE_FAILURE" });
     };
     fileReader.onload = () => {
-      const parsedCsv = csvParse(fileReader.result, { columns: true });
+      const parsedCsv = parse(fileReader.result, { columns: true });
       dispatch(addTransactions(transformGfToStocks(parsedCsv)));
       dispatch(fetchAllQuotes());
       dispatch({ type: "IMPORT_TRANSACTIONS_FILE_SUCCESS" });

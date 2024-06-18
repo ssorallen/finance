@@ -12,8 +12,8 @@
     "@vx/shape": "^0.0.162",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.5",
-    "csv-parse": "^4.4.6",
-    "csv-stringify": "^3.0.0",
+    "csv-parse": "^5.5.6",
+    "csv-stringify": "^6.5.0",
     "d3-array": "^1.2.1",
     "form-serialize": "^0.7.2",
     "react": "^16.13.1",
@@ -21,7 +21,7 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^5.0.1",
     "react-table": "^6.8.2",
     "reactstrap": "^6.0.1",
     "redux": "^4.0.0",
@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "flow-bin": "^0.134.0",
-    "gh-pages": "^1.1.0",
-    "prettier": "^2.1.2"
+    "gh-pages": "^6.1.1",
+    "prettier": "^3.3.2"
   },
   "browserslist": [
     ">0.2%",

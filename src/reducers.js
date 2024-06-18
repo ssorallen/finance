@@ -1,10 +1,10 @@
 /* @flow */
 
 import type { Action, AppState } from "./types";
-import csvStringify from "csv-stringify/lib/es5/sync";
+import { stringify } from "csv-stringify/browser/esm/sync";
 import { transformStocksToGf } from "./transformers";
 
-export default function (state: AppState, action: Action): AppState {
+export default function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "ADD_SYMBOL": {
       const nextSymbols =
@@ -89,7 +89,7 @@ export default function (state: AppState, action: Action): AppState {
       const documentBody = document.body;
       if (documentBody == null) throw new Error("How in the hell did we get here?");
 
-      const csvData = csvStringify(transformStocksToGf(state.transactions, state.quotes), {
+      const csvData = stringify(transformStocksToGf(state.transactions, state.quotes), {
         columns: [
           "Symbol",
           "Name",
